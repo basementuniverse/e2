@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Collapsible Panel Demo - E2 Elements</title>
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      .panels-container {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .vertical-panel-demo {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .horizontal-panel-demo {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .sample-content {
+        margin: 0;
+      }
+
+      .sample-content h4 {
+        margin: 0 0 10px 0;
+        color: #666;
+      }
+
+      .sample-content p {
+        margin: 0 0 10px 0;
+        line-height: 1.4;
+      }
+
+      .sample-content ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .controls {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f8f8;
+        border-radius: 4px;
+      }
+
+      .controls button {
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        background: white;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+
+      .controls button:hover {
+        background: #f0f0f0;
+      }
+
+      /* Dark theme demo */
+      .dark-theme-demo {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 4px;
+      }
+
+      .dark-theme-demo h3 {
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="index.html" style="text-decoration: none; color: inherit">
+          &laquo;
+        </a>
+        E2 - Collapsible Panel Demo
+      </h1>
+      <p>
+        Interactive demonstration of the
+        <code>&lt;e2-collapsible-panel&gt;</code> element
+      </p>
+    </header>
+
+    <main>
+      <div class="demo-section">
+        <h3>Vertical Panels (Default)</h3>
+        <p>
+          Panels that collapse/expand vertically, useful for sidebars and tool
+          panels.
+        </p>
+
+        <div class="panels-container">
+          <div class="vertical-panel-demo">
+            <e2-collapsible-panel id="vertical-panel-1" orientation="vertical">
+              <span slot="title">Properties Panel</span>
+              <div class="sample-content">
+                <h4>Object Properties</h4>
+                <p>Position: (100, 50)</p>
+                <p>Size: 200x150</p>
+                <p>Rotation: 45°</p>
+                <ul>
+                  <li>Visible: Yes</li>
+                  <li>Locked: No</li>
+                  <li>Layer: Foreground</li>
+                </ul>
+              </div>
+            </e2-collapsible-panel>
+          </div>
+
+          <div class="vertical-panel-demo">
+            <e2-collapsible-panel
+              id="vertical-panel-2"
+              orientation="vertical"
+              collapsed
+            >
+              <span slot="title">Layers Panel</span>
+              <div class="sample-content">
+                <h4>Layer Structure</h4>
+                <ul>
+                  <li>Background Layer</li>
+                  <li>Main Content</li>
+                  <li>UI Elements</li>
+                  <li>Debug Overlay</li>
+                </ul>
+              </div>
+            </e2-collapsible-panel>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h3>Horizontal Panels</h3>
+        <p>
+          Panels that collapse/expand horizontally, useful for toolboxes and
+          inspector panels.
+        </p>
+
+        <div class="horizontal-panel-demo">
+          <e2-collapsible-panel
+            id="horizontal-panel-1"
+            orientation="horizontal"
+          >
+            <span slot="title">Tools</span>
+            <div class="sample-content">
+              <h4>Drawing Tools</h4>
+              <p>Select your tool:</p>
+              <ul>
+                <li>Brush</li>
+                <li>Eraser</li>
+                <li>Fill Bucket</li>
+                <li>Text Tool</li>
+              </ul>
+            </div>
+          </e2-collapsible-panel>
+
+          <e2-collapsible-panel
+            id="horizontal-panel-2"
+            orientation="horizontal"
+            collapsed
+          >
+            <span slot="title">Colors</span>
+            <div class="sample-content">
+              <h4>Color Palette</h4>
+              <p>Primary: #ff0000</p>
+              <p>Secondary: #00ff00</p>
+              <p>Background: #ffffff</p>
+            </div>
+          </e2-collapsible-panel>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h3>Dark Theme</h3>
+        <div class="dark-theme-demo">
+          <e2-collapsible-panel
+            id="dark-panel"
+            theme="dark"
+            orientation="vertical"
+          >
+            <span slot="title">Dark Theme Panel</span>
+            <div class="sample-content">
+              <h4>Dark Mode Content</h4>
+              <p>This panel uses the dark theme.</p>
+              <p>Perfect for night-time editing sessions!</p>
+            </div>
+          </e2-collapsible-panel>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h3>Programmatic Controls</h3>
+        <div class="controls">
+          <button onclick="togglePanel('vertical-panel-1')">
+            Toggle Vertical Panel 1
+          </button>
+          <button onclick="togglePanel('vertical-panel-2')">
+            Toggle Vertical Panel 2
+          </button>
+          <button onclick="togglePanel('horizontal-panel-1')">
+            Toggle Horizontal Panel 1
+          </button>
+          <button onclick="togglePanel('horizontal-panel-2')">
+            Toggle Horizontal Panel 2
+          </button>
+          <br />
+          <button onclick="expandAll()">Expand All</button>
+          <button onclick="collapseAll()">Collapse All</button>
+          <button onclick="switchOrientation()">
+            Switch First Panel Orientation
+          </button>
+        </div>
+
+        <div class="demo-section">
+          <h3>Output</h3>
+          <p>Panel events will appear here:</p>
+          <div class="output" id="panel-output"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Load the library -->
+    <script src="../build/e2.min.js"></script>
+
+    <script>
+      // Add event listeners to demonstrate functionality
+      const output = document.getElementById('panel-output');
+
+      // Listen for panel toggle events
+      document.addEventListener('collapsible-panel-toggle', event => {
+        const { panelId, collapsed, orientation } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Panel "${panelId}" ${
+          collapsed ? 'collapsed' : 'expanded'
+        } (${orientation})</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      // Control functions
+      function togglePanel(panelId) {
+        const panel = document.getElementById(panelId);
+        if (panel) {
+          panel.toggle();
+        }
+      }
+
+      function expandAll() {
+        const panels = document.querySelectorAll('e2-collapsible-panel');
+        panels.forEach(panel => panel.expand());
+
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `
+          <div>[${timestamp}] All panels expanded</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      function collapseAll() {
+        const panels = document.querySelectorAll('e2-collapsible-panel');
+        panels.forEach(panel => panel.collapse());
+
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `
+          <div>[${timestamp}] All panels collapsed</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      function switchOrientation() {
+        const panel = document.getElementById('vertical-panel-1');
+        if (panel) {
+          const currentOrientation = panel.orientation;
+          const newOrientation =
+            currentOrientation === 'vertical' ? 'horizontal' : 'vertical';
+          panel.orientation = newOrientation;
+
+          const timestamp = new Date().toLocaleTimeString();
+          output.innerHTML += `
+            <div>[${timestamp}] Panel orientation switched to ${newOrientation}</div>
+          `;
+          output.scrollTop = output.scrollHeight;
+        }
+      }
+
+      console.log('E2 loaded:', E2);
+      console.log('Version:', E2.VERSION);
+    </script>
+  </body>
+</html>

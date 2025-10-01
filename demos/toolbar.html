@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E2 - Editor Elements - Toolbar Demo</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="index.html" style="text-decoration: none; color: inherit">
+          &laquo;
+        </a>
+        E2 - Toolbar Demo
+      </h1>
+      <p>
+        Interactive demonstration of the <code>&lt;e2-toolbar&gt;</code> element
+      </p>
+    </header>
+
+    <main>
+      <div class="demo-section">
+        <h2>Toolbar Components</h2>
+        <p>Toolbar with buttons and separators:</p>
+
+        <e2-toolbar class="demo-toolbar">
+          <e2-toolbar-button
+            label="New"
+            icon="📄"
+            id="btn-new"
+          ></e2-toolbar-button>
+          <e2-toolbar-button
+            label="Open"
+            icon="📁"
+            id="btn-open"
+          ></e2-toolbar-button>
+          <e2-toolbar-button
+            label="Save"
+            icon="💾"
+            id="btn-save"
+          ></e2-toolbar-button>
+          <input type="number" value="42" style="width: 60px" />
+          <e2-toolbar-separator></e2-toolbar-separator>
+          <e2-toolbar-button
+            label="Cut"
+            icon="✂️"
+            id="btn-cut"
+          ></e2-toolbar-button>
+          <e2-toolbar-button
+            label="Copy"
+            icon="📋"
+            id="btn-copy"
+          ></e2-toolbar-button>
+          <e2-toolbar-button
+            label="Paste"
+            icon="📌"
+            id="btn-paste"
+          ></e2-toolbar-button>
+          <e2-toolbar-separator></e2-toolbar-separator>
+          <e2-toolbar-button
+            label="Play"
+            icon="▶️"
+            id="btn-play"
+            active
+          ></e2-toolbar-button>
+          <e2-toolbar-button
+            label="Stop"
+            icon="⏹️"
+            id="btn-stop"
+            disabled
+          ></e2-toolbar-button>
+        </e2-toolbar>
+      </div>
+
+      <div class="demo-section">
+        <h2>Dark Theme Example</h2>
+        <p>Toolbar with dark theme:</p>
+
+        <e2-toolbar theme="dark" class="demo-toolbar">
+          <e2-toolbar-button
+            label="Undo"
+            icon="↶"
+            theme="dark"
+          ></e2-toolbar-button>
+          <e2-toolbar-button
+            label="Redo"
+            icon="↷"
+            theme="dark"
+          ></e2-toolbar-button>
+          <e2-toolbar-separator theme="dark"></e2-toolbar-separator>
+          <e2-toolbar-button
+            label="Zoom In"
+            icon="🔍"
+            theme="dark"
+          ></e2-toolbar-button>
+          <e2-toolbar-button
+            label="Zoom Out"
+            icon="🔍"
+            theme="dark"
+          ></e2-toolbar-button>
+        </e2-toolbar>
+      </div>
+
+      <div class="demo-section">
+        <h2>Output</h2>
+        <p>Click buttons to see events:</p>
+        <div class="output" id="toolbar-output"></div>
+      </div>
+    </main>
+
+    <!-- Load the library -->
+    <script src="../build/e2.min.js"></script>
+
+    <script>
+      // Add event listeners to demonstrate functionality
+      const output = document.getElementById('toolbar-output');
+
+      // Listen for toolbar button clicks
+      document.addEventListener('toolbar-button-click', event => {
+        const { buttonId, button } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Button clicked: ${buttonId} (${
+          button.label || 'no label'
+        })</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      // Demonstrate programmatic control
+      setTimeout(() => {
+        const playBtn = document.getElementById('btn-play');
+        const stopBtn = document.getElementById('btn-stop');
+
+        if (playBtn && stopBtn) {
+          // Toggle states
+          playBtn.active = false;
+          stopBtn.removeAttribute('disabled');
+
+          output.innerHTML += `
+            <div>[${new Date().toLocaleTimeString()}] Programmatically toggled Play/Stop states</div>
+          `;
+        }
+      }, 3000);
+
+      console.log('E2 loaded:', E2);
+      console.log('Version:', E2.VERSION);
+    </script>
+  </body>
+</html>

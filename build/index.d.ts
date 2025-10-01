@@ -1,0 +1,14 @@
+/**
+ * E2 - A collection of custom HTML elements for building editors
+ *
+ * This library provides a set of reusable UI components designed specifically
+ * for creating level editors, sprite editors, and similar desktop-like web applications.
+ */
+import './elements/panel/collapsible-panel';
+import './elements/toolbar/toolbar';
+import './elements/toolbar/toolbar-button';
+import './elements/toolbar/toolbar-separator';
+export * from './types';
+export * from './utils';
+export declare const VERSION = "1.0.0";
+//# sourceMappingURL=index.d.ts.map
