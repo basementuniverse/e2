@@ -14,12 +14,12 @@ A lightweight, portable collection of custom HTML elements designed for building
 </head>
 <body>
     <!-- Your editor UI -->
-    <editor-toolbar>
-        <editor-toolbar-button label="New" icon="📄"></editor-toolbar-button>
-        <editor-toolbar-button label="Save" icon="💾"></editor-toolbar-button>
-        <editor-toolbar-separator></editor-toolbar-separator>
-        <editor-toolbar-button label="Play" icon="▶️"></editor-toolbar-button>
-    </editor-toolbar>
+    <e2-toolbar>
+        <e2-toolbar-button label="New" icon="📄"></e2-toolbar-button>
+        <e2-toolbar-button label="Save" icon="💾"></e2-toolbar-button>
+        <e2-toolbar-separator></e2-toolbar-separator>
+        <e2-toolbar-button label="Play" icon="▶️"></e2-toolbar-button>
+    </e2-toolbar>
 
     <!-- Load the library -->
     <script src="path/to/e2/build/e2.min.js"></script>
@@ -44,45 +44,18 @@ import { generateId, applyTheme } from '@basementuniverse/e2';
 import type { ToolbarButtonClickEvent } from '@basementuniverse/e2';
 ```
 
+## Notes
+
+For list views, tree views, JSON viewing, JSON editing etc. consider using:
+
+- [native-json-editor](https://www.npmjs.com/package/native-json-editor)
+- [jsoneditor](https://www.npmjs.com/package/jsoneditor)
+- [dat.gui](https://www.npmjs.com/package/dat.gui)
+
 ## Components
 
-@todo
-
-## Component Documentation
-
-### Toolbar Button
-
-```html
-<editor-toolbar-button
-    label="Save"
-    icon="💾"
-    id="save-btn"
-    theme="auto"
-    active
-    disabled>
-</editor-toolbar-button>
-```
-
-**Attributes:**
-- `label` - Text label for the button
-- `icon` - Icon (emoji or text) to display
-- `theme` - Theme: "light", "dark", or "auto"
-- `active` - Whether button appears pressed/active
-- `disabled` - Whether button is disabled
-
-**Events:**
-- `toolbar-button-click` - Fired when button is clicked
-
-**JavaScript API:**
-```javascript
-const button = document.querySelector('#save-btn');
-button.label = 'Save File';
-button.active = true;
-
-button.addEventListener('toolbar-button-click', (event) => {
-    console.log('Button clicked:', event.detail.buttonId);
-});
-```
+- [Toolbar](docs/toolbar.md)
+- [Collapsible Panel](docs/collapsible-panel.md)
 
 ## Theming
 
