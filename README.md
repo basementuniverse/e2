@@ -55,7 +55,17 @@ For list views, tree views, JSON viewing, JSON editing etc. consider using:
 ## Components
 
 - [Toolbar](docs/toolbar.md)
+- [Toolbar Menu](docs/toolbar-menu.md)
+- [Context Menu](docs/context-menu.md)
 - [Collapsible Panel](docs/collapsible-panel.md)
+- [Tabs](docs/tabs.md)
+- [Dialog](docs/dialog.md)
+
+## Coming soon...
+
+- Notifications/Toasts
+- Split View
+- Status Bar
 
 ## Theming
 
