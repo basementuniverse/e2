@@ -41,45 +41,13 @@ src/
     │   ├── toolbar.ts
     │   ├── toolbar-button.ts
     │   └── toolbar-separator.ts
-    ├── menu/            # Menu components (placeholders)
-    ├── listview/        # List view components (placeholders)
-    ├── treeview/        # Tree view components (placeholders)
-    └── panel/           # Panel components (placeholders)
+    └── contextmenu/           # Context menu components (placeholders)
 ```
 
 ### Component Naming Convention
-- Custom elements use `editor-` prefix (e.g., `editor-toolbar`, `editor-toolbar-button`)
+- Custom elements use `e2-` prefix (e.g., `e2-toolbar`, `e2-toolbar-button`)
 - TypeScript classes use PascalCase with `Element` suffix (e.g., `ToolbarElement`)
 - File names use kebab-case matching the element name
-
-## Current Implementation Status
-
-### ✅ Fully Implemented Components
-
-#### Toolbar System
-- **`<editor-toolbar>`**: Container for toolbar items
-  - Flexbox layout with gap spacing
-  - Theme support (light/dark/auto)
-  - CSS custom properties for styling
-  - Disabled state support
-
-- **`<editor-toolbar-button>`**: Interactive toolbar button
-  - Icon and label support
-  - Active/disabled states
-  - Click events (`toolbar-button-click`)
-  - Hover and active styling
-  - Programmatic API (properties and methods)
-
-- **`<editor-toolbar-separator>`**: Visual separator
-  - Simple 1px vertical line
-  - Theme-aware coloring
-  - Consistent spacing
-
-### 🚧 Placeholder Components (Not Yet Implemented)
-- Menu system (`<editor-menu>`, `<editor-menu-item>`)
-- List view (`<editor-listview>`, `<editor-listview-item>`)
-- Tree view (`<editor-treeview>`, `<editor-treeview-item>`)
-- Collapsible panels (`<editor-collapsible-panel>`)
 
 ## Development Patterns
 

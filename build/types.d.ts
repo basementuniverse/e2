@@ -96,6 +96,35 @@ export interface ContextMenuItemClickEvent extends EditorElementEvent {
         value?: string;
     };
 }
+export interface TabSelectEvent extends EditorElementEvent {
+    detail: {
+        tabId: string;
+        tab: HTMLElement;
+        panelId: string;
+        panel: HTMLElement;
+        containerId: string;
+        container: HTMLElement;
+        previousTabId?: string;
+    };
+}
+export interface TabCloseEvent extends EditorElementEvent {
+    detail: {
+        tabId: string;
+        tab: HTMLElement;
+        panelId: string;
+        panel: HTMLElement;
+        containerId: string;
+        container: HTMLElement;
+    };
+}
+export interface TabContainerChangeEvent extends EditorElementEvent {
+    detail: {
+        containerId: string;
+        container: HTMLElement;
+        activeTabId: string;
+        activePanelId: string;
+    };
+}
 export type Theme = 'light' | 'dark' | 'auto';
 export interface ThemeableElement {
     theme: Theme;

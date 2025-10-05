@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E2 - Editor Elements - Tabs Demo</title>
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      .tab-demo {
+        height: 400px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .tab-demo-small {
+        height: 300px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      /* Custom tab content styling */
+      .sample-content {
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .sample-content h3 {
+        margin-top: 0;
+        color: #007acc;
+      }
+
+      .sample-content p {
+        margin-bottom: 1em;
+      }
+
+      .sample-content code {
+        background: #f1f3f4;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Consolas', 'Monaco', monospace;
+      }
+
+      .feature-list {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .feature-list li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .feature-list li:last-child {
+        border-bottom: none;
+      }
+
+      .feature-list li::before {
+        content: '✓ ';
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      .controls select {
+        margin-right: 10px;
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      /* Dark theme overrides for tab content */
+      body.theme-dark .sample-content h3 {
+        color: #4d9fff;
+      }
+
+      body.theme-dark .sample-content code {
+        background: #3d3d3d;
+        color: #ffffff;
+      }
+
+      body.theme-dark .feature-list li {
+        border-bottom-color: #555;
+      }
+
+      body.theme-dark .tab-demo,
+      body.theme-dark .tab-demo-small {
+        border-color: #555;
+      }
+
+      body.theme-dark .controls select {
+        background: #2d2d2d;
+        color: #fff;
+        border-color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
+    <header>
+      <h1>
+        <a href="index.html">&laquo;</a>
+        E2 - Tabs Demo
+      </h1>
+      <p>
+        Interactive demonstration of E2's tab system for organizing content into
+        switchable panels.
+      </p>
+    </header>
+
+    <main>
+      <!-- Basic Tab Demo -->
+      <div class="demo-section">
+        <h2>Basic Tab Interface</h2>
+        <p>
+          A simple tab interface with three tabs. Click on the tabs to switch
+          between different content panels.
+        </p>
+
+        <e2-tab-container id="basic-tabs" class="tab-demo">
+          <e2-tab slot="tabs" label="Overview" icon="📋">Overview</e2-tab>
+          <e2-tab slot="tabs" label="Features" icon="⭐">Features</e2-tab>
+          <e2-tab slot="tabs" label="Examples" icon="💡">Examples</e2-tab>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Welcome to E2 Tabs</h3>
+            <p>
+              This is a demonstration of the E2 tab system. The tab components
+              provide a clean and intuitive way to organize content into
+              separate, switchable sections.
+            </p>
+            <p>Key benefits include:</p>
+            <ul class="feature-list">
+              <li>Easy content organization</li>
+              <li>Space-efficient layout</li>
+              <li>Intuitive navigation</li>
+              <li>Flexible styling options</li>
+            </ul>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Tab Features</h3>
+            <p>The E2 tab system includes many powerful features:</p>
+            <ul class="feature-list">
+              <li>Multiple tab positions (top, bottom, left, right)</li>
+              <li>Closable tabs with confirmation</li>
+              <li>Icons and labels</li>
+              <li>Theme support (light, dark, auto)</li>
+              <li>Keyboard navigation</li>
+              <li>Programmatic API</li>
+              <li>Custom events</li>
+              <li>Responsive design</li>
+            </ul>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Usage Examples</h3>
+            <p>Here's how to create a basic tab interface:</p>
+            <pre><code>&lt;e2-tab-container&gt;
+  &lt;e2-tab slot="tabs" label="Tab 1"&gt;Tab 1&lt;/e2-tab&gt;
+  &lt;e2-tab slot="tabs" label="Tab 2"&gt;Tab 2&lt;/e2-tab&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    Content for Tab 1
+  &lt;/e2-tab-panel&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    Content for Tab 2
+  &lt;/e2-tab-panel&gt;
+&lt;/e2-tab-container&gt;</code></pre>
+          </e2-tab-panel>
+        </e2-tab-container>
+
+        <div class="code-example">
+          <button class="copy-button" onclick="copyToClipboard(this)">
+            Copy
+          </button>
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-tab-container&gt;
+  &lt;e2-tab slot="tabs" label="Overview" icon="📋"&gt;Overview&lt;/e2-tab&gt;
+  &lt;e2-tab slot="tabs" label="Features" icon="⭐"&gt;Features&lt;/e2-tab&gt;
+  &lt;e2-tab slot="tabs" label="Examples" icon="💡"&gt;Examples&lt;/e2-tab&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Overview Content&lt;/h3&gt;
+    &lt;p&gt;Content for the overview tab goes here.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Features Content&lt;/h3&gt;
+    &lt;p&gt;Content for the features tab goes here.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Examples Content&lt;/h3&gt;
+    &lt;p&gt;Content for the examples tab goes here.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+&lt;/e2-tab-container&gt;</pre
+          >
+        </div>
+      </div>
+
+      <!-- Closable Tabs Demo -->
+      <div class="demo-section">
+        <h2>Closable Tabs</h2>
+        <p>
+          Tabs that can be closed by clicking the × button. New tabs can be
+          added dynamically.
+        </p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="addNewTab()">Add New Tab</button>
+          <button class="demo-button secondary" onclick="removeAllTabs()">
+            Remove All Tabs
+          </button>
+        </div>
+
+        <e2-tab-container id="closable-tabs" closable class="tab-demo">
+          <e2-tab slot="tabs" label="Document 1" icon="📄" closable
+            >Document 1</e2-tab
+          >
+          <e2-tab slot="tabs" label="Document 2" icon="📄" active closable
+            >Document 2</e2-tab
+          >
+          <e2-tab slot="tabs" label="Settings" icon="⚙️" closable
+            >Settings</e2-tab
+          >
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Document 1</h3>
+            <p>
+              This is the content of Document 1. This tab can be closed by
+              clicking the × button.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Document 2</h3>
+            <p>
+              This is the content of Document 2. Notice how each tab maintains
+              its own content state.
+            </p>
+            <p>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Settings Panel</h3>
+            <p>
+              Configuration options would go here. Tabs are perfect for
+              organizing complex forms and settings.
+            </p>
+            <div style="margin: 20px 0">
+              <label
+                ><input type="checkbox" checked /> Enable notifications</label
+              ><br />
+              <label><input type="checkbox" /> Auto-save documents</label><br />
+              <label><input type="checkbox" checked /> Use dark theme</label>
+            </div>
+          </e2-tab-panel>
+        </e2-tab-container>
+
+        <div class="code-example">
+          <button class="copy-button" onclick="copyToClipboard(this)">
+            Copy
+          </button>
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-tab-container closable&gt;
+  &lt;e2-tab slot="tabs" label="Document 1" icon="📄" closable&gt;Document 1&lt;/e2-tab&gt;
+  &lt;e2-tab slot="tabs" label="Document 2" icon="📄" closable&gt;Document 2&lt;/e2-tab&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Document 1&lt;/h3&gt;
+    &lt;p&gt;Content for document 1.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Document 2&lt;/h3&gt;
+    &lt;p&gt;Content for document 2.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+&lt;/e2-tab-container&gt;</pre
+          >
+        </div>
+      </div>
+
+      <!-- Tab Positions Demo -->
+      <div class="demo-section">
+        <h2>Tab Positions</h2>
+        <p>
+          Tabs can be positioned on any side of the container: top, bottom,
+          left, or right.
+        </p>
+
+        <div class="controls">
+          <label>
+            Position:
+            <select id="position-select" onchange="changeTabPosition()">
+              <option value="top">Top</option>
+              <option value="bottom">Bottom</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </label>
+        </div>
+
+        <e2-tab-container
+          id="positioned-tabs"
+          tab-position="top"
+          class="tab-demo"
+        >
+          <e2-tab slot="tabs" label="Home" icon="🏠">Home</e2-tab>
+          <e2-tab slot="tabs" label="Profile" icon="👤">Profile</e2-tab>
+          <e2-tab slot="tabs" label="Messages" icon="💬">Messages</e2-tab>
+          <e2-tab slot="tabs" label="Settings" icon="⚙️">Settings</e2-tab>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Home Dashboard</h3>
+            <p>
+              Welcome to your dashboard! This demonstrates how tabs work in
+              different positions.
+            </p>
+            <p>
+              Try changing the tab position using the dropdown above to see how
+              the layout adapts.
+            </p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>User Profile</h3>
+            <p>
+              Your profile information and settings would be displayed here.
+            </p>
+            <p>
+              Tab positioning is especially useful for different types of
+              interfaces and user preferences.
+            </p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Messages</h3>
+            <p>Your messages and conversations would appear in this panel.</p>
+            <p>
+              Left and right positioned tabs work great for navigation-heavy
+              interfaces.
+            </p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Application Settings</h3>
+            <p>Configure your application preferences here.</p>
+            <p>
+              Bottom tabs are useful for mobile-style interfaces or when you
+              want the content to be the primary focus.
+            </p>
+          </e2-tab-panel>
+        </e2-tab-container>
+
+        <div class="code-example">
+          <button class="copy-button" onclick="copyToClipboard(this)">
+            Copy
+          </button>
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-tab-container tab-position="top"&gt;
+  &lt;e2-tab slot="tabs" label="Home" icon="🏠"&gt;Home&lt;/e2-tab&gt;
+  &lt;e2-tab slot="tabs" label="Profile" icon="👤"&gt;Profile&lt;/e2-tab&gt;
+  &lt;e2-tab slot="tabs" label="Settings" icon="⚙️"&gt;Settings&lt;/e2-tab&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Home Content&lt;/h3&gt;
+    &lt;p&gt;Home dashboard content.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Profile Content&lt;/h3&gt;
+    &lt;p&gt;User profile information.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Settings Content&lt;/h3&gt;
+    &lt;p&gt;Application settings.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+&lt;/e2-tab-container&gt;</pre
+          >
+        </div>
+      </div>
+
+      <!-- Theme Demo -->
+      <div class="demo-section">
+        <h2>Theme Support</h2>
+        <p>
+          Tabs support light, dark, and auto themes. The auto theme follows
+          system preferences.
+        </p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="setTabTheme('light')">
+            Light Theme
+          </button>
+          <button class="demo-button" onclick="setTabTheme('dark')">
+            Dark Theme
+          </button>
+          <button class="demo-button" onclick="setTabTheme('auto')">
+            Auto Theme
+          </button>
+        </div>
+
+        <e2-tab-container id="themed-tabs" theme="auto" class="tab-demo-small">
+          <e2-tab slot="tabs" label="Light Mode" icon="☀️">Light</e2-tab>
+          <e2-tab slot="tabs" label="Dark Mode" icon="🌙">Dark</e2-tab>
+          <e2-tab slot="tabs" label="Auto Mode" icon="🔄">Auto</e2-tab>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Light Theme</h3>
+            <p>
+              The light theme provides a clean, bright interface that's easy on
+              the eyes in well-lit environments.
+            </p>
+            <p>Perfect for daytime use and professional applications.</p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Dark Theme</h3>
+            <p>
+              The dark theme reduces eye strain in low-light conditions and
+              provides a modern, sleek appearance.
+            </p>
+            <p>Great for coding, creative work, and evening use.</p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>Auto Theme</h3>
+            <p>
+              Auto theme automatically switches between light and dark based on
+              your system settings.
+            </p>
+            <p>
+              Provides the best experience throughout the day without manual
+              intervention.
+            </p>
+          </e2-tab-panel>
+        </e2-tab-container>
+
+        <div class="code-example">
+          <button class="copy-button" onclick="copyToClipboard(this)">
+            Copy
+          </button>
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-tab-container theme="auto"&gt;
+  &lt;e2-tab slot="tabs" label="Light Mode" icon="☀️"&gt;Light&lt;/e2-tab&gt;
+  &lt;e2-tab slot="tabs" label="Dark Mode" icon="🌙"&gt;Dark&lt;/e2-tab&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Light Theme&lt;/h3&gt;
+    &lt;p&gt;Clean, bright interface for daytime use.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+
+  &lt;e2-tab-panel slot="panels"&gt;
+    &lt;h3&gt;Dark Theme&lt;/h3&gt;
+    &lt;p&gt;Modern, sleek appearance for low-light conditions.&lt;/p&gt;
+  &lt;/e2-tab-panel&gt;
+&lt;/e2-tab-container&gt;</pre
+          >
+        </div>
+      </div>
+
+      <!-- API Demo -->
+      <div class="demo-section">
+        <h2>Programmatic API</h2>
+        <p>
+          Tabs can be controlled programmatically using JavaScript. This demo
+          shows various API methods.
+        </p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="selectTabByIndex(0)">
+            Select Tab 1
+          </button>
+          <button class="demo-button" onclick="selectTabByIndex(1)">
+            Select Tab 2
+          </button>
+          <button class="demo-button" onclick="selectTabByIndex(2)">
+            Select Tab 3
+          </button>
+          <button class="demo-button secondary" onclick="addDynamicTab()">
+            Add Dynamic Tab
+          </button>
+          <button class="demo-button secondary" onclick="getTabInfo()">
+            Get Tab Info
+          </button>
+        </div>
+
+        <e2-tab-container id="api-tabs" class="tab-demo-small">
+          <e2-tab slot="tabs" label="API Demo 1" icon="🔧">API 1</e2-tab>
+          <e2-tab slot="tabs" label="API Demo 2" icon="🛠️">API 2</e2-tab>
+          <e2-tab slot="tabs" label="API Demo 3" icon="⚡">API 3</e2-tab>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>API Demo Tab 1</h3>
+            <p>
+              This tab was selected programmatically. You can control tab
+              selection using the API.
+            </p>
+            <p>
+              <strong>Current tab ID:</strong>
+              <span id="current-tab-id">-</span>
+            </p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>API Demo Tab 2</h3>
+            <p>
+              The tab container provides methods for adding, removing, and
+              selecting tabs programmatically.
+            </p>
+            <p><strong>Total tabs:</strong> <span id="total-tabs">-</span></p>
+          </e2-tab-panel>
+
+          <e2-tab-panel slot="panels" class="sample-content">
+            <h3>API Demo Tab 3</h3>
+            <p>
+              You can also listen for tab events and respond to user
+              interactions.
+            </p>
+            <p><strong>Last event:</strong> <span id="last-event">-</span></p>
+          </e2-tab-panel>
+        </e2-tab-container>
+
+        <div class="code-example">
+          <button class="copy-button" onclick="copyToClipboard(this)">
+            Copy
+          </button>
+          <h3>JavaScript API:</h3>
+          <pre>
+// Get tab container
+const container = document.querySelector('e2-tab-container');
+
+// Select a tab by ID
+container.selectTabById('tab-id');
+
+// Add a new tab
+const result = container.addTab('New Tab', '&lt;p&gt;Tab content&lt;/p&gt;');
+
+// Remove a tab
+container.removeTabById('tab-id');
+
+// Listen for events
+container.addEventListener('tab-select', (event) => {
+  console.log('Selected tab:', event.detail.tabId);
+});
+
+container.addEventListener('tab-close', (event) => {
+  console.log('Closed tab:', event.detail.tabId);
+});</pre
+          >
+        </div>
+
+        <div class="result" id="api-result">Ready to test API methods...</div>
+      </div>
+    </main>
+
+    <script src="../build/e2.min.js"></script>
+    <script>
+      let tabCounter = 1;
+
+      // Event listeners for API demo
+      const apiTabs = document.getElementById('api-tabs');
+      apiTabs.addEventListener('tab-select', event => {
+        document.getElementById('current-tab-id').textContent =
+          event.detail.tabId;
+        document.getElementById('last-event').textContent = 'tab-select';
+        updateTabInfo();
+      });
+
+      apiTabs.addEventListener('tab-close', event => {
+        document.getElementById('last-event').textContent = 'tab-close';
+        updateTabInfo();
+      });
+
+      // Closable tabs event listeners
+      const closableTabs = document.getElementById('closable-tabs');
+      closableTabs.addEventListener('tab-close', event => {
+        console.log('Tab closed:', event.detail.tabId);
+      });
+
+      function addNewTab() {
+        const container = document.getElementById('closable-tabs');
+        const result = container.addTab(
+          `New Tab ${tabCounter}`,
+          `<div class="sample-content">
+                    <h3>Dynamically Added Tab ${tabCounter}</h3>
+                    <p>This tab was added programmatically using the addTab() method.</p>
+                    <p>Created at: ${new Date().toLocaleTimeString()}</p>
+                </div>`
+        );
+        tabCounter++;
+        console.log('Added tab:', result);
+      }
+
+      function removeAllTabs() {
+        const container = document.getElementById('closable-tabs');
+        const tabs = container.tabs;
+        tabs.forEach(tab => {
+          container.removeTabById(tab.id);
+        });
+      }
+
+      function changeTabPosition() {
+        const select = document.getElementById('position-select');
+        const container = document.getElementById('positioned-tabs');
+        container.tabPosition = select.value;
+      }
+
+      function setTabTheme(theme) {
+        const container = document.getElementById('themed-tabs');
+        container.theme = theme;
+      }
+
+      function selectTabByIndex(index) {
+        const container = document.getElementById('api-tabs');
+        const tabs = container.tabs;
+        if (tabs[index]) {
+          container.selectTabById(tabs[index].id);
+        }
+      }
+
+      function addDynamicTab() {
+        const container = document.getElementById('api-tabs');
+        const result = container.addTab(
+          `Dynamic ${tabCounter}`,
+          `<div class="sample-content">
+                    <h3>Dynamic Tab ${tabCounter}</h3>
+                    <p>This tab was created dynamically.</p>
+                </div>`
+        );
+        tabCounter++;
+        updateTabInfo();
+      }
+
+      function getTabInfo() {
+        updateTabInfo();
+        const container = document.getElementById('api-tabs');
+        const result = document.getElementById('api-result');
+        result.textContent = `Active tab: ${
+          container.activeTabId || 'none'
+        }, Total tabs: ${container.tabs.length}`;
+      }
+
+      function updateTabInfo() {
+        const container = document.getElementById('api-tabs');
+        document.getElementById('total-tabs').textContent =
+          container.tabs.length;
+        document.getElementById('current-tab-id').textContent =
+          container.activeTabId || 'none';
+      }
+
+      // Theme management (standardized)
+      function setTheme(theme) {
+        // Apply theme to body
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        document
+          .querySelector(`[onclick="setTheme('${theme}')"]`)
+          .classList.add('active');
+
+        // Update all tab containers except the themed demo
+        document.querySelectorAll('e2-tab-container').forEach(container => {
+          if (container.id !== 'themed-tabs') {
+            container.theme = theme;
+          }
+        });
+      }
+
+      // Copy to clipboard functionality
+      function copyToClipboard(button) {
+        const codeBlock = button.nextElementSibling.nextElementSibling;
+        const text = codeBlock.textContent;
+
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            const original = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+              button.textContent = original;
+            }, 2000);
+          })
+          .catch(() => {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            const original = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+              button.textContent = original;
+            }, 2000);
+          });
+      }
+
+      // Initialize tab info
+      updateTabInfo();
+    </script>
+  </body>
+</html>

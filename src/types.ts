@@ -135,6 +135,42 @@ export interface ContextMenuItemClickEvent extends EditorElementEvent {
 }
 
 // -----------------------------------------------------------------------------
+// Tab types & events
+// -----------------------------------------------------------------------------
+
+export interface TabSelectEvent extends EditorElementEvent {
+  detail: {
+    tabId: string;
+    tab: HTMLElement;
+    panelId: string;
+    panel: HTMLElement;
+    containerId: string;
+    container: HTMLElement;
+    previousTabId?: string;
+  };
+}
+
+export interface TabCloseEvent extends EditorElementEvent {
+  detail: {
+    tabId: string;
+    tab: HTMLElement;
+    panelId: string;
+    panel: HTMLElement;
+    containerId: string;
+    container: HTMLElement;
+  };
+}
+
+export interface TabContainerChangeEvent extends EditorElementEvent {
+  detail: {
+    containerId: string;
+    container: HTMLElement;
+    activeTabId: string;
+    activePanelId: string;
+  };
+}
+
+// -----------------------------------------------------------------------------
 // Themes
 // -----------------------------------------------------------------------------
 
