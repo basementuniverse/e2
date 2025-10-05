@@ -13,5 +13,10 @@ export declare class Toolbar extends HTMLElement implements EditorElementPropert
     get theme(): Theme;
     set theme(value: Theme);
     applyTheme(theme: Theme): void;
+    /**
+     * Close all toolbar menus except the specified one
+     * @param exceptMenu The menu to keep open (optional)
+     */
+    closeAllMenus(exceptMenu?: HTMLElement): void;
 }
 //# sourceMappingURL=toolbar.d.ts.map

@@ -86,6 +86,19 @@ export class Toolbar extends HTMLElement implements EditorElementProperties {
   applyTheme(theme: Theme): void {
     applyTheme(this, theme);
   }
+
+  /**
+   * Close all toolbar menus except the specified one
+   * @param exceptMenu The menu to keep open (optional)
+   */
+  closeAllMenus(exceptMenu?: HTMLElement): void {
+    const toolbarMenus = this.querySelectorAll('e2-toolbar-menu');
+    toolbarMenus.forEach(menu => {
+      if (menu !== exceptMenu && typeof (menu as any).close === 'function') {
+        (menu as any).close();
+      }
+    });
+  }
 }
 
 // Register the custom element

@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="main.css" />
   </head>
   <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
     <header>
       <h1>
         <a href="index.html">&laquo;</a>
@@ -295,6 +303,25 @@ panel.orientation = "horizontal";</pre>
           setTimeout(() => {
             button.textContent = originalText;
           }, 2000);
+        });
+      }
+
+      // Theme control
+      let currentTheme = 'light';
+
+      function setTheme(theme) {
+        currentTheme = theme;
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all collapsible panel elements
+        document.querySelectorAll('e2-collapsible-panel').forEach(panel => {
+          panel.theme = theme;
         });
       }
 

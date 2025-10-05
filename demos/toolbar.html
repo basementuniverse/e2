@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="main.css" />
   </head>
   <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
     <header>
       <h1>
         <a href="index.html" style="text-decoration: none; color: inherit">
@@ -74,6 +82,49 @@
       </div>
 
       <div class="demo-section">
+        <h2>Toolbar Menu Example</h2>
+        <p>Toolbar with dropdown menus (menu bar style):</p>
+
+        <e2-toolbar class="demo-toolbar">
+          <e2-toolbar-menu label="File" id="file-menu">
+            <e2-context-menu-item label="New File" icon="📄" value="new"></e2-context-menu-item>
+            <e2-context-menu-item label="Open File" icon="📁" value="open"></e2-context-menu-item>
+            <e2-context-menu-item label="Recent Files" icon="📋" value="recent"></e2-context-menu-item>
+            <e2-context-menu-separator></e2-context-menu-separator>
+            <e2-context-menu-item label="Save" icon="💾" value="save" shortcut="Ctrl+S"></e2-context-menu-item>
+            <e2-context-menu-item label="Save As..." value="save-as" shortcut="Ctrl+Shift+S"></e2-context-menu-item>
+            <e2-context-menu-separator></e2-context-menu-separator>
+            <e2-context-menu-item label="Exit" value="exit" shortcut="Alt+F4"></e2-context-menu-item>
+          </e2-toolbar-menu>
+
+          <e2-toolbar-menu label="Edit" id="edit-menu">
+            <e2-context-menu-item label="Undo" icon="↶" value="undo" shortcut="Ctrl+Z"></e2-context-menu-item>
+            <e2-context-menu-item label="Redo" icon="↷" value="redo" shortcut="Ctrl+Y"></e2-context-menu-item>
+            <e2-context-menu-separator></e2-context-menu-separator>
+            <e2-context-menu-item label="Cut" icon="✂️" value="cut" shortcut="Ctrl+X"></e2-context-menu-item>
+            <e2-context-menu-item label="Copy" icon="📋" value="copy" shortcut="Ctrl+C"></e2-context-menu-item>
+            <e2-context-menu-item label="Paste" icon="📌" value="paste" shortcut="Ctrl+V"></e2-context-menu-item>
+          </e2-toolbar-menu>
+
+          <e2-toolbar-menu label="View" id="view-menu">
+            <e2-context-menu-item label="Zoom In" icon="🔍" value="zoom-in" shortcut="Ctrl+="></e2-context-menu-item>
+            <e2-context-menu-item label="Zoom Out" icon="🔍" value="zoom-out" shortcut="Ctrl+-"></e2-context-menu-item>
+            <e2-context-menu-item label="Reset Zoom" value="zoom-reset" shortcut="Ctrl+0"></e2-context-menu-item>
+            <e2-context-menu-separator></e2-context-menu-separator>
+            <e2-context-menu-item label="Full Screen" value="fullscreen" shortcut="F11"></e2-context-menu-item>
+          </e2-toolbar-menu>
+
+          <e2-toolbar-separator></e2-toolbar-separator>
+
+          <e2-toolbar-button
+            label="Play"
+            icon="▶️"
+            id="btn-play-2"
+          ></e2-toolbar-button>
+        </e2-toolbar>
+      </div>
+
+      <div class="demo-section">
         <h2>Dark Theme Example</h2>
         <p>Toolbar with dark theme:</p>
 
@@ -136,6 +187,25 @@
         </div>
 
         <div class="code-example">
+          <h3>Toolbar Menu (Menu Bar Style):</h3>
+          <button class="copy-button" onclick="copyToClipboard('toolbar-menu')">Copy</button>
+          <pre id="toolbar-menu">&lt;e2-toolbar&gt;
+  &lt;e2-toolbar-menu label="File"&gt;
+    &lt;e2-context-menu-item label="New" icon="📄" value="new"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-item label="Open" icon="📁" value="open"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-separator&gt;&lt;/e2-context-menu-separator&gt;
+    &lt;e2-context-menu-item label="Save" icon="💾" value="save" shortcut="Ctrl+S"&gt;&lt;/e2-context-menu-item&gt;
+  &lt;/e2-toolbar-menu&gt;
+
+  &lt;e2-toolbar-menu label="Edit"&gt;
+    &lt;e2-context-menu-item label="Cut" icon="✂️" value="cut" shortcut="Ctrl+X"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-item label="Copy" icon="📋" value="copy" shortcut="Ctrl+C"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-item label="Paste" icon="📌" value="paste" shortcut="Ctrl+V"&gt;&lt;/e2-context-menu-item&gt;
+  &lt;/e2-toolbar-menu&gt;
+&lt;/e2-toolbar&gt;</pre>
+        </div>
+
+        <div class="code-example">
           <h3>JavaScript Event Handling:</h3>
           <button class="copy-button" onclick="copyToClipboard('toolbar-js')">Copy</button>
           <pre id="toolbar-js">// Listen for toolbar button clicks
@@ -144,10 +214,31 @@ document.addEventListener('toolbar-button-click', event => {
   console.log(`Button clicked: ${buttonId}`, button);
 });
 
+// Listen for toolbar menu events
+document.addEventListener('toolbar-menu-show', event => {
+  const { menuId, menu } = event.detail;
+  console.log(`Menu opened: ${menuId}`, menu);
+});
+
+document.addEventListener('toolbar-menu-hide', event => {
+  const { menuId, menu } = event.detail;
+  console.log(`Menu closed: ${menuId}`, menu);
+});
+
+// Listen for menu item clicks
+document.addEventListener('context-menu-item-click', event => {
+  const { itemId, value, menuId } = event.detail;
+  console.log(`Menu item clicked: ${value} in menu ${menuId}`);
+});
+
 // Programmatic control
 const button = document.querySelector('e2-toolbar-button');
 button.active = true;
-button.disabled = false;</pre>
+button.disabled = false;
+
+const menu = document.querySelector('e2-toolbar-menu');
+menu.open(); // Open dropdown
+menu.close(); // Close dropdown</pre>
         </div>
       </div>
 
@@ -174,6 +265,42 @@ button.disabled = false;</pre>
           <div>[${timestamp}] Button clicked: ${buttonId} (${
           button.label || 'no label'
         })</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      // Listen for toolbar menu events
+      document.addEventListener('toolbar-menu-show', event => {
+        const { menuId, menu } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Menu opened: ${menuId} (${
+          menu.label || 'no label'
+        })</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      document.addEventListener('toolbar-menu-hide', event => {
+        const { menuId, menu } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Menu closed: ${menuId} (${
+          menu.label || 'no label'
+        })</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      // Listen for context menu item clicks (from toolbar menus)
+      document.addEventListener('context-menu-item-click', event => {
+        const { itemId, value, menuId } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Menu item clicked: "${value || itemId}" ${menuId ? `(menu: ${menuId})` : ''}</div>
         `;
         output.scrollTop = output.scrollHeight;
       });
@@ -205,6 +332,34 @@ button.disabled = false;</pre>
           setTimeout(() => {
             button.textContent = originalText;
           }, 2000);
+        });
+      }
+
+      // Theme control
+      let currentTheme = 'light';
+
+      function setTheme(theme) {
+        currentTheme = theme;
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all toolbar elements
+        document.querySelectorAll('e2-toolbar').forEach(toolbar => {
+          toolbar.theme = theme;
+        });
+        document.querySelectorAll('e2-toolbar-button').forEach(button => {
+          button.theme = theme;
+        });
+        document.querySelectorAll('e2-toolbar-menu').forEach(menu => {
+          menu.theme = theme;
+        });
+        document.querySelectorAll('e2-context-menu').forEach(contextMenu => {
+          contextMenu.theme = theme;
         });
       }
 

@@ -14,6 +14,7 @@ import './elements/dialog/prompt';
 import './elements/panel/collapsible-panel';
 import './elements/toolbar/toolbar';
 import './elements/toolbar/toolbar-button';
+import './elements/toolbar/toolbar-menu';
 import './elements/toolbar/toolbar-separator';
 export * from './types';
 export * from './utils';

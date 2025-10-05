@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Menu Exclusivity</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .demo-toolbar {
+            margin: 10px 0;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Toolbar Menu Exclusivity Test</h1>
+
+    <div class="instructions">
+        <strong>Test Instructions:</strong>
+        <ol>
+            <li>Click on the "File" menu to open it</li>
+            <li>Click on the "Edit" menu - the File menu should automatically close</li>
+            <li>Click on the "View" menu - the Edit menu should automatically close</li>
+            <li>Try opening multiple menus in different toolbars - they should work independently</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Toolbar 1 - Menu Bar Style</h2>
+        <e2-toolbar class="demo-toolbar">
+            <e2-toolbar-menu label="File" id="file-menu1">
+                <e2-context-menu-item label="New File" icon="📄" value="new"></e2-context-menu-item>
+                <e2-context-menu-item label="Open File" icon="📁" value="open"></e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item label="Save" icon="💾" value="save"></e2-context-menu-item>
+                <e2-context-menu-item label="Exit" value="exit"></e2-context-menu-item>
+            </e2-toolbar-menu>
+
+            <e2-toolbar-menu label="Edit" id="edit-menu1">
+                <e2-context-menu-item label="Undo" icon="↶" value="undo"></e2-context-menu-item>
+                <e2-context-menu-item label="Redo" icon="↷" value="redo"></e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item label="Cut" icon="✂️" value="cut"></e2-context-menu-item>
+                <e2-context-menu-item label="Copy" icon="📋" value="copy"></e2-context-menu-item>
+                <e2-context-menu-item label="Paste" icon="📌" value="paste"></e2-context-menu-item>
+            </e2-toolbar-menu>
+
+            <e2-toolbar-menu label="View" id="view-menu1">
+                <e2-context-menu-item label="Zoom In" icon="🔍" value="zoom-in"></e2-context-menu-item>
+                <e2-context-menu-item label="Zoom Out" icon="🔍" value="zoom-out"></e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item label="Full Screen" value="fullscreen"></e2-context-menu-item>
+            </e2-toolbar-menu>
+        </e2-toolbar>
+    </div>
+
+    <div class="test-section">
+        <h2>Toolbar 2 - Independent Menu Bar</h2>
+        <p>This toolbar should work independently from the first one</p>
+        <e2-toolbar class="demo-toolbar">
+            <e2-toolbar-menu label="Tools" id="tools-menu2">
+                <e2-context-menu-item label="Settings" icon="⚙️" value="settings"></e2-context-menu-item>
+                <e2-context-menu-item label="Preferences" value="preferences"></e2-context-menu-item>
+            </e2-toolbar-menu>
+
+            <e2-toolbar-menu label="Help" id="help-menu2">
+                <e2-context-menu-item label="Documentation" icon="📖" value="docs"></e2-context-menu-item>
+                <e2-context-menu-item label="About" value="about"></e2-context-menu-item>
+            </e2-toolbar-menu>
+        </e2-toolbar>
+    </div>
+
+    <div id="output" style="margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-family: monospace; font-size: 12px;"></div>
+
+    <script src="build/e2.min.js"></script>
+    <script>
+        // Add event listeners to log menu activity
+        const output = document.getElementById('output');
+
+        function logEvent(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            output.innerHTML += `[${timestamp}] ${message}<br>`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Listen for menu show/hide events
+        document.addEventListener('toolbar-menu-show', (event) => {
+            logEvent(`Menu opened: ${event.detail.menu.label} (ID: ${event.detail.menuId})`);
+        });
+
+        document.addEventListener('toolbar-menu-hide', (event) => {
+            logEvent(`Menu closed: ${event.detail.menu.label} (ID: ${event.detail.menuId})`);
+        });
+
+        // Listen for menu item clicks
+        document.addEventListener('context-menu-item-click', (event) => {
+            logEvent(`Menu item clicked: ${event.detail.label} (Value: ${event.detail.value})`);
+        });
+
+        logEvent('Test page loaded. Try opening different menus to test exclusivity behavior.');
+    </script>
+</body>
+</html>

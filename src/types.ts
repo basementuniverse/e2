@@ -27,6 +27,20 @@ export interface ToolbarButtonClickEvent extends EditorElementEvent {
   };
 }
 
+export interface ToolbarMenuShowEvent extends EditorElementEvent {
+  detail: {
+    menuId: string;
+    menu: HTMLElement;
+  };
+}
+
+export interface ToolbarMenuHideEvent extends EditorElementEvent {
+  detail: {
+    menuId: string;
+    menu: HTMLElement;
+  };
+}
+
 // -----------------------------------------------------------------------------
 // Collapsible panel types & events
 // -----------------------------------------------------------------------------
