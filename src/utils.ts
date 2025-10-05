@@ -6,7 +6,7 @@
  * Generate a unique ID for elements
  */
 export function generateId(prefix = 'element'): string {
-  return `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${prefix}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
 /**

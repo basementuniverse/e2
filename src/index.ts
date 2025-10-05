@@ -6,6 +6,13 @@
  */
 
 // Import and register all custom elements
+import './elements/contextmenu/context-menu';
+import './elements/contextmenu/context-menu-item';
+import './elements/contextmenu/context-menu-separator';
+import './elements/dialog/alert';
+import './elements/dialog/confirm';
+import './elements/dialog/dialog';
+import './elements/dialog/prompt';
 import './elements/panel/collapsible-panel';
 import './elements/toolbar/toolbar';
 import './elements/toolbar/toolbar-button';

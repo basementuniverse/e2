@@ -103,6 +103,55 @@
       </div>
 
       <div class="demo-section">
+        <h2>Copy-Paste Examples</h2>
+        <p>Ready-to-use code snippets for your projects:</p>
+
+        <div class="code-example">
+          <h3>Basic Toolbar HTML:</h3>
+          <button class="copy-button" onclick="copyToClipboard('toolbar-html')">Copy</button>
+          <pre id="toolbar-html">&lt;!-- Load E2 Library --&gt;
+&lt;script src="path/to/e2.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Basic Toolbar --&gt;
+&lt;e2-toolbar&gt;
+  &lt;e2-toolbar-button label="New" icon="📄"&gt;&lt;/e2-toolbar-button&gt;
+  &lt;e2-toolbar-button label="Open" icon="📁"&gt;&lt;/e2-toolbar-button&gt;
+  &lt;e2-toolbar-button label="Save" icon="💾"&gt;&lt;/e2-toolbar-button&gt;
+  &lt;e2-toolbar-separator&gt;&lt;/e2-toolbar-separator&gt;
+  &lt;e2-toolbar-button label="Cut" icon="✂️"&gt;&lt;/e2-toolbar-button&gt;
+  &lt;e2-toolbar-button label="Copy" icon="📋"&gt;&lt;/e2-toolbar-button&gt;
+  &lt;e2-toolbar-button label="Paste" icon="📌"&gt;&lt;/e2-toolbar-button&gt;
+&lt;/e2-toolbar&gt;</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Dark Theme Toolbar:</h3>
+          <button class="copy-button" onclick="copyToClipboard('toolbar-dark')">Copy</button>
+          <pre id="toolbar-dark">&lt;e2-toolbar theme="dark"&gt;
+  &lt;e2-toolbar-button label="Undo" icon="↶" theme="dark"&gt;&lt;/e2-toolbar-button&gt;
+  &lt;e2-toolbar-button label="Redo" icon="↷" theme="dark"&gt;&lt;/e2-toolbar-button&gt;
+  &lt;e2-toolbar-separator theme="dark"&gt;&lt;/e2-toolbar-separator&gt;
+  &lt;e2-toolbar-button label="Zoom In" icon="🔍" theme="dark"&gt;&lt;/e2-toolbar-button&gt;
+&lt;/e2-toolbar&gt;</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>JavaScript Event Handling:</h3>
+          <button class="copy-button" onclick="copyToClipboard('toolbar-js')">Copy</button>
+          <pre id="toolbar-js">// Listen for toolbar button clicks
+document.addEventListener('toolbar-button-click', event => {
+  const { buttonId, button } = event.detail;
+  console.log(`Button clicked: ${buttonId}`, button);
+});
+
+// Programmatic control
+const button = document.querySelector('e2-toolbar-button');
+button.active = true;
+button.disabled = false;</pre>
+        </div>
+      </div>
+
+      <div class="demo-section">
         <h2>Output</h2>
         <p>Click buttons to see events:</p>
         <div class="output" id="toolbar-output"></div>
@@ -144,6 +193,20 @@
           `;
         }
       }, 3000);
+
+      // Copy to clipboard functionality
+      function copyToClipboard(id) {
+        const element = document.getElementById(id);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const button = element.previousElementSibling;
+          const originalText = button.textContent;
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        });
+      }
 
       console.log('E2 loaded:', E2);
       console.log('Version:', E2.VERSION);

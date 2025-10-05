@@ -3,85 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Collapsible Panel Demo - E2 Elements</title>
+    <title>E2 - Editor Elements - Collapsible Panel Demo</title>
     <link rel="stylesheet" href="main.css" />
-    <style>
-      .panels-container {
-        display: flex;
-        gap: 20px;
-        align-items: flex-start;
-        flex-wrap: wrap;
-      }
-
-      .vertical-panel-demo {
-        flex: 1;
-        min-width: 300px;
-      }
-
-      .horizontal-panel-demo {
-        display: flex;
-        gap: 10px;
-        align-items: flex-start;
-      }
-
-      .sample-content {
-        margin: 0;
-      }
-
-      .sample-content h4 {
-        margin: 0 0 10px 0;
-        color: #666;
-      }
-
-      .sample-content p {
-        margin: 0 0 10px 0;
-        line-height: 1.4;
-      }
-
-      .sample-content ul {
-        margin: 0;
-        padding-left: 20px;
-      }
-
-      .controls {
-        margin-top: 20px;
-        padding: 15px;
-        background: #f8f8f8;
-        border-radius: 4px;
-      }
-
-      .controls button {
-        margin-right: 10px;
-        margin-bottom: 10px;
-        padding: 8px 16px;
-        border: 1px solid #ccc;
-        background: white;
-        cursor: pointer;
-        border-radius: 3px;
-      }
-
-      .controls button:hover {
-        background: #f0f0f0;
-      }
-
-      /* Dark theme demo */
-      .dark-theme-demo {
-        background: #1e1e1e;
-        padding: 20px;
-        border-radius: 4px;
-      }
-
-      .dark-theme-demo h3 {
-        color: #fff;
-      }
-    </style>
   </head>
   <body>
     <header>
       <h1>
-        <a href="index.html" style="text-decoration: none; color: inherit">
-          &laquo;
-        </a>
+        <a href="index.html">&laquo;</a>
         E2 - Collapsible Panel Demo
       </h1>
       <p>
@@ -197,6 +125,69 @@
       </div>
 
       <div class="demo-section">
+        <h2>Copy-Paste Examples</h2>
+        <p>Ready-to-use code snippets for your projects:</p>
+
+        <div class="code-example">
+          <h3>Basic Vertical Panel HTML:</h3>
+          <button class="copy-button" onclick="copyToClipboard('panel-html')">Copy</button>
+          <pre id="panel-html">&lt;!-- Load E2 Library --&gt;
+&lt;script src="path/to/e2.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Basic Collapsible Panel --&gt;
+&lt;e2-collapsible-panel
+  title="Panel Title"
+  expanded
+  icon="📁"&gt;
+  &lt;div&gt;
+    &lt;h4&gt;Content Title&lt;/h4&gt;
+    &lt;p&gt;Your panel content goes here...&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;List item 1&lt;/li&gt;
+      &lt;li&gt;List item 2&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/e2-collapsible-panel&gt;</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Horizontal Panel:</h3>
+          <button class="copy-button" onclick="copyToClipboard('panel-horizontal')">Copy</button>
+          <pre id="panel-horizontal">&lt;e2-collapsible-panel
+  title="Horizontal Panel"
+  orientation="horizontal"
+  expanded&gt;
+  &lt;div&gt;Panel content...&lt;/div&gt;
+&lt;/e2-collapsible-panel&gt;</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>JavaScript Control:</h3>
+          <button class="copy-button" onclick="copyToClipboard('panel-js')">Copy</button>
+          <pre id="panel-js">// Get panel reference
+const panel = document.querySelector('e2-collapsible-panel');
+
+// Control programmatically
+panel.expand();    // Expand panel
+panel.collapse();  // Collapse panel
+panel.toggle();    // Toggle state
+
+// Listen for events
+panel.addEventListener('expand', () => {
+  console.log('Panel expanded');
+});
+
+panel.addEventListener('collapse', () => {
+  console.log('Panel collapsed');
+});
+
+// Change properties
+panel.title = "New Title";
+panel.orientation = "horizontal";</pre>
+        </div>
+      </div>
+
+      <div class="demo-section">
         <h3>Programmatic Controls</h3>
         <div class="controls">
           <button onclick="togglePanel('vertical-panel-1')">
@@ -291,6 +282,20 @@
           `;
           output.scrollTop = output.scrollHeight;
         }
+      }
+
+      // Copy to clipboard functionality
+      function copyToClipboard(id) {
+        const element = document.getElementById(id);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const button = element.previousElementSibling;
+          const originalText = button.textContent;
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        });
       }
 
       console.log('E2 loaded:', E2);

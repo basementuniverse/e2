@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E2 - Editor Elements - Dialog Demo</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
+    <header>
+      <h1>
+        <a href="index.html">&laquo;</a>
+        E2 - Dialog Demo
+      </h1>
+      <p>
+        Interactive demonstration of E2's dialog system built on native HTML
+        &lt;dialog&gt; elements.
+      </p>
+    </header>
+
+    <main>
+      <!-- Basic Dialog -->
+      <div class="demo-section">
+        <h2>Basic Dialog (e2-dialog)</h2>
+        <p>A flexible dialog wrapper that can contain any content.</p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="showBasicDialog()">
+            Show Basic Dialog
+          </button>
+          <button
+            class="demo-button secondary"
+            onclick="showBasicDialogModal()"
+          >
+            Show Modal Dialog
+          </button>
+        </div>
+
+        <div class="markup-section">
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-dialog id="basic-dialog" title="Basic Dialog" closable&gt;
+  &lt;p&gt;This is a basic dialog with custom content.&lt;/p&gt;
+  &lt;p&gt;You can put any HTML content here.&lt;/p&gt;
+
+  &lt;div slot="footer"&gt;
+    &lt;button onclick="closeBasicDialog()"&gt;Close&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/e2-dialog&gt;</pre
+          >
+        </div>
+
+        <div class="result" id="basic-result">Ready to show dialog...</div>
+      </div>
+
+      <!-- Confirmation Dialog -->
+      <div class="demo-section">
+        <h2>Confirmation Dialog (e2-confirm)</h2>
+        <p>Promise-based confirmation dialogs for yes/no decisions.</p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="showConfirmDialog()">
+            Show Confirmation
+          </button>
+          <button class="demo-button danger" onclick="showDangerConfirm()">
+            Show Danger Confirmation
+          </button>
+          <button class="demo-button secondary" onclick="showCustomConfirm()">
+            Custom Text Confirmation
+          </button>
+        </div>
+
+        <div class="markup-section">
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-confirm
+  id="confirm-dialog"
+  title="Delete File"
+  message="Are you sure you want to delete this file? This action cannot be undone."
+  confirm-text="Delete"
+  cancel-text="Cancel"
+  danger&gt;
+&lt;/e2-confirm&gt;</pre
+          >
+        </div>
+
+        <div class="result" id="confirm-result">
+          Ready to show confirmation...
+        </div>
+      </div>
+
+      <!-- Alert Dialog -->
+      <div class="demo-section">
+        <h2>Alert Dialog (e2-alert)</h2>
+        <p>Simple message dialogs for notifications and information.</p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="showInfoAlert()">
+            Show Info
+          </button>
+          <button
+            class="demo-button"
+            onclick="showSuccessAlert()"
+            style="background: #28a745; border-color: #28a745"
+          >
+            Show Success
+          </button>
+          <button
+            class="demo-button"
+            onclick="showWarningAlert()"
+            style="background: #ffc107; border-color: #ffc107; color: #212529"
+          >
+            Show Warning
+          </button>
+          <button class="demo-button danger" onclick="showErrorAlert()">
+            Show Error
+          </button>
+        </div>
+
+        <div class="markup-section">
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-alert
+  id="alert-dialog"
+  type="error"
+  title="Error Occurred"
+  message="Something went wrong while processing your request."
+  button-text="OK"&gt;
+&lt;/e2-alert&gt;</pre
+          >
+        </div>
+
+        <div class="result" id="alert-result">Ready to show alert...</div>
+      </div>
+
+      <!-- Prompt Dialog -->
+      <div class="demo-section">
+        <h2>Prompt Dialog (e2-prompt)</h2>
+        <p>Input dialogs with validation for collecting user input.</p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="showSimplePrompt()">
+            Simple Prompt
+          </button>
+          <button class="demo-button secondary" onclick="showValidatedPrompt()">
+            Validated Prompt
+          </button>
+          <button class="demo-button secondary" onclick="showMultilinePrompt()">
+            Multiline Prompt
+          </button>
+          <button class="demo-button secondary" onclick="showPatternPrompt()">
+            Pattern Validation
+          </button>
+        </div>
+
+        <div class="markup-section">
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-prompt
+  id="prompt-dialog"
+  title="Enter Your Name"
+  message="Please enter your full name:"
+  placeholder="John Doe"
+  required
+  min-length="2"
+  max-length="50"&gt;
+&lt;/e2-prompt&gt;</pre
+          >
+        </div>
+
+        <div class="result" id="prompt-result">Ready to show prompt...</div>
+      </div>
+
+      <!-- Copy-Paste Examples -->
+      <div class="demo-section">
+        <h2>Copy-Paste Examples</h2>
+        <p>Ready-to-use code snippets for your projects:</p>
+
+        <div class="code-example">
+          <h3>Complete Setup HTML:</h3>
+          <button class="copy-button" onclick="copyToClipboard('dialog-setup')">Copy</button>
+          <pre id="dialog-setup">&lt;!-- Load E2 Library --&gt;
+&lt;script src="path/to/e2.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Basic Dialog --&gt;
+&lt;e2-dialog id="my-dialog" title="Dialog Title" closable&gt;
+  &lt;p&gt;Your dialog content goes here.&lt;/p&gt;
+  &lt;div slot="footer"&gt;
+    &lt;button onclick="document.getElementById('my-dialog').close()"&gt;Close&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/e2-dialog&gt;
+
+&lt;!-- Alert Dialog --&gt;
+&lt;e2-alert
+  id="alert-dialog"
+  type="info"
+  title="Information"
+  message="This is an informational message."&gt;
+&lt;/e2-alert&gt;
+
+&lt;!-- Confirmation Dialog --&gt;
+&lt;e2-confirm
+  id="confirm-dialog"
+  title="Confirm Action"
+  message="Are you sure you want to continue?"
+  confirm-text="Yes"
+  cancel-text="No"&gt;
+&lt;/e2-confirm&gt;
+
+&lt;!-- Prompt Dialog --&gt;
+&lt;e2-prompt
+  id="prompt-dialog"
+  title="Enter Value"
+  message="Please enter a value:"
+  placeholder="Type here..."
+  required&gt;
+&lt;/e2-prompt&gt;</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>JavaScript Usage Patterns:</h3>
+          <button class="copy-button" onclick="copyToClipboard('dialog-js')">Copy</button>
+          <pre id="dialog-js">// Show dialogs
+document.getElementById('my-dialog').show();        // Non-modal
+document.getElementById('my-dialog').showModal();   // Modal
+
+// Alert examples
+const alert = document.getElementById('alert-dialog');
+alert.type = 'success';
+alert.message = 'Operation completed!';
+await alert.show();
+
+// Confirmation with result
+const confirmed = await document.getElementById('confirm-dialog').show();
+if (confirmed) {
+  console.log('User confirmed');
+} else {
+  console.log('User cancelled');
+}
+
+// Prompt with validation
+const prompt = document.getElementById('prompt-dialog');
+prompt.required = true;
+prompt.placeholder = 'Enter email...';
+prompt.setAttribute('pattern', '[^@]+@[^@]+\\.[^@]+');
+const result = await prompt.show();
+console.log('User entered:', result);</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Programmatic Creation:</h3>
+          <button class="copy-button" onclick="copyToClipboard('dialog-create')">Copy</button>
+          <pre id="dialog-create">// Create and show alert programmatically
+const alert = document.createElement('e2-alert');
+alert.type = 'error';
+alert.title = 'Error';
+alert.message = 'Something went wrong!';
+document.body.appendChild(alert);
+await alert.show();
+alert.remove(); // Clean up
+
+// Create confirmation dialog
+const confirm = document.createElement('e2-confirm');
+confirm.title = 'Delete Item';
+confirm.message = 'This action cannot be undone.';
+confirm.danger = true;
+document.body.appendChild(confirm);
+const result = await confirm.show();
+confirm.remove();</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Theme Support:</h3>
+          <button class="copy-button" onclick="copyToClipboard('dialog-theme')">Copy</button>
+          <pre id="dialog-theme">// Apply theme to all dialogs
+function setTheme(theme) {
+  document.querySelectorAll('e2-dialog, e2-confirm, e2-alert, e2-prompt')
+    .forEach(dialog => dialog.theme = theme);
+}
+
+// Set theme on individual dialog
+const dialog = document.getElementById('my-dialog');
+dialog.theme = 'dark';
+
+// CSS custom properties for theming
+:root {
+  --e2-dialog-bg: #ffffff;
+  --e2-dialog-text: #333333;
+  --e2-dialog-border: #cccccc;
+}</pre>
+        </div>
+      </div>
+
+      <!-- Usage Notes -->
+      <div class="demo-section">
+        <h2>Usage Notes</h2>
+        <p>Best practices for using E2 dialog components in your projects.</p>
+
+        <div class="markup-section">
+          <h3>Recommended Usage Pattern:</h3>
+          <pre>
+&lt;!-- Declare dialogs in your HTML markup --&gt;
+&lt;e2-confirm id="delete-confirm"
+  title="Delete File"
+  message="Are you sure you want to delete this file?"
+  confirm-text="Delete"
+  cancel-text="Cancel"
+  danger&gt;
+&lt;/e2-confirm&gt;
+
+&lt;e2-alert id="success-alert"
+  type="success"
+  title="Success"
+  message="Operation completed successfully!"&gt;
+&lt;/e2-alert&gt;
+
+&lt;script&gt;
+// Use JavaScript to show/hide and handle results
+async function handleDelete() {
+  const confirmed = await document.getElementById('delete-confirm').show();
+  if (confirmed) {
+    // Perform delete operation
+    await document.getElementById('success-alert').show();
+  }
+}
+&lt;/script&gt;</pre>
+        </div>
+
+        <div class="markup-section">
+          <h3>Theme Integration:</h3>
+          <pre>
+// Apply theme to all dialogs at once
+function setTheme(theme) {
+  document.querySelectorAll('e2-dialog, e2-confirm, e2-alert, e2-prompt')
+    .forEach(dialog => dialog.theme = theme);
+}</pre>
+        </div>
+      </div>
+    </main>
+
+    <!-- Dialog Elements -->
+    <e2-dialog id="basic-dialog" title="Basic Dialog" closable>
+      <p>This is a basic dialog with custom content.</p>
+      <p>
+        You can put any HTML content here, including forms, images, or other
+        components.
+      </p>
+
+      <div slot="footer">
+        <button onclick="closeBasicDialog()">Close</button>
+      </div>
+    </e2-dialog>
+
+    <e2-confirm id="confirm-dialog"></e2-confirm>
+    <e2-alert id="alert-dialog"></e2-alert>
+    <e2-prompt id="prompt-dialog"></e2-prompt>
+
+    <!-- Load E2 Library -->
+    <script src="../build/e2.min.js"></script>
+
+    <script>
+      let currentTheme = 'light';
+
+      function setTheme(theme) {
+        currentTheme = theme;
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all dialogs
+        document
+          .querySelectorAll('e2-dialog, e2-confirm, e2-alert, e2-prompt')
+          .forEach(dialog => {
+            dialog.theme = theme;
+          });
+      }
+
+      // Basic Dialog Functions
+      function showBasicDialog() {
+        const dialog = document.getElementById('basic-dialog');
+        dialog.show();
+        document.getElementById('basic-result').textContent =
+          'Dialog shown (non-modal)';
+      }
+
+      function showBasicDialogModal() {
+        const dialog = document.getElementById('basic-dialog');
+        dialog.showModal();
+        document.getElementById('basic-result').textContent =
+          'Dialog shown (modal)';
+      }
+
+      function closeBasicDialog() {
+        const dialog = document.getElementById('basic-dialog');
+        dialog.close();
+        document.getElementById('basic-result').textContent =
+          'Dialog closed programmatically';
+      }
+
+      // Confirmation Dialog Functions
+      async function showConfirmDialog() {
+        const confirm = document.getElementById('confirm-dialog');
+        confirm.title = 'Confirm Action';
+        confirm.message = 'Are you sure you want to proceed with this action?';
+        confirm.confirmText = 'Yes, Proceed';
+        confirm.cancelText = 'Cancel';
+        confirm.danger = false;
+
+        const result = await confirm.show();
+        document.getElementById(
+          'confirm-result'
+        ).textContent = `User confirmed: ${result}`;
+      }
+
+      async function showDangerConfirm() {
+        const confirm = document.getElementById('confirm-dialog');
+        confirm.title = 'Delete File';
+        confirm.message =
+          'Are you sure you want to delete this file? This action cannot be undone.';
+        confirm.confirmText = 'Delete';
+        confirm.cancelText = 'Cancel';
+        confirm.danger = true;
+
+        const result = await confirm.show();
+        document.getElementById(
+          'confirm-result'
+        ).textContent = `Delete confirmed: ${result}`;
+      }
+
+      async function showCustomConfirm() {
+        const confirm = document.getElementById('confirm-dialog');
+        confirm.title = 'Save Document';
+        confirm.message = 'Do you want to save your changes before closing?';
+        confirm.confirmText = 'Save';
+        confirm.cancelText = "Don't Save";
+        confirm.danger = false;
+
+        const result = await confirm.show();
+        document.getElementById('confirm-result').textContent = `Save action: ${
+          result ? 'Save' : "Don't Save"
+        }`;
+      }
+
+      // Alert Dialog Functions
+      async function showInfoAlert() {
+        const alert = document.getElementById('alert-dialog');
+        alert.type = 'info';
+        alert.title = 'Information';
+        alert.message =
+          "This is an informational message to help you understand what's happening.";
+        alert.buttonText = 'Got it';
+
+        await alert.show();
+        document.getElementById('alert-result').textContent =
+          'Info alert dismissed';
+      }
+
+      async function showSuccessAlert() {
+        const alert = document.getElementById('alert-dialog');
+        alert.type = 'success';
+        alert.title = 'Success!';
+        alert.message = 'Your operation completed successfully.';
+        alert.buttonText = 'Awesome!';
+
+        await alert.show();
+        document.getElementById('alert-result').textContent =
+          'Success alert dismissed';
+      }
+
+      async function showWarningAlert() {
+        const alert = document.getElementById('alert-dialog');
+        alert.type = 'warning';
+        alert.title = 'Warning';
+        alert.message =
+          'Please review your input before proceeding. Some values may need attention.';
+        alert.buttonText = 'I Understand';
+
+        await alert.show();
+        document.getElementById('alert-result').textContent =
+          'Warning alert dismissed';
+      }
+
+      async function showErrorAlert() {
+        const alert = document.getElementById('alert-dialog');
+        alert.type = 'error';
+        alert.title = 'Error Occurred';
+        alert.message =
+          'Something went wrong while processing your request. Please try again.';
+        alert.buttonText = 'OK';
+
+        await alert.show();
+        document.getElementById('alert-result').textContent =
+          'Error alert dismissed';
+      }
+
+      // Prompt Dialog Functions
+      async function showSimplePrompt() {
+        const prompt = document.getElementById('prompt-dialog');
+        prompt.title = 'Enter Your Name';
+        prompt.message = 'What should we call you?';
+        prompt.placeholder = 'Your name here...';
+        prompt.defaultValue = '';
+        prompt.required = false;
+        prompt.multiline = false;
+
+        const result = await prompt.show();
+        document.getElementById(
+          'prompt-result'
+        ).textContent = `Name entered: "${result || 'cancelled'}"`;
+      }
+
+      async function showValidatedPrompt() {
+        const prompt = document.getElementById('prompt-dialog');
+        prompt.title = 'Enter Email Address';
+        prompt.message = 'Please provide a valid email address:';
+        prompt.placeholder = 'user@example.com';
+        prompt.defaultValue = '';
+        prompt.required = true;
+        prompt.multiline = false;
+        prompt.setAttribute(
+          'pattern',
+          '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}'
+        );
+
+        const result = await prompt.show();
+        document.getElementById(
+          'prompt-result'
+        ).textContent = `Email entered: "${result || 'cancelled'}"`;
+      }
+
+      async function showMultilinePrompt() {
+        const prompt = document.getElementById('prompt-dialog');
+        prompt.title = 'Leave a Comment';
+        prompt.message = 'Please share your thoughts:';
+        prompt.placeholder = 'Enter your comment here...';
+        prompt.defaultValue = '';
+        prompt.required = false;
+        prompt.multiline = true;
+        prompt.setAttribute('max-length', '500');
+
+        const result = await prompt.show();
+        document.getElementById('prompt-result').textContent = `Comment: "${
+          result || 'cancelled'
+        }"`;
+      }
+
+      async function showPatternPrompt() {
+        const prompt = document.getElementById('prompt-dialog');
+        prompt.title = 'Enter Phone Number';
+        prompt.message = 'Please enter a US phone number:';
+        prompt.placeholder = '(555) 123-4567';
+        prompt.defaultValue = '';
+        prompt.required = true;
+        prompt.multiline = false;
+        prompt.setAttribute('pattern', '\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}');
+
+        const result = await prompt.show();
+        document.getElementById('prompt-result').textContent = `Phone: "${
+          result || 'cancelled'
+        }"`;
+      }
+
+
+
+      // Copy to clipboard functionality
+      function copyToClipboard(id) {
+        const element = document.getElementById(id);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const button = element.previousElementSibling;
+          const originalText = button.textContent;
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        });
+      }
+
+      // Set initial theme on all dialogs
+      document.addEventListener('DOMContentLoaded', () => {
+        document
+          .querySelectorAll('e2-dialog, e2-confirm, e2-alert, e2-prompt')
+          .forEach(dialog => {
+            dialog.theme = currentTheme;
+          });
+      });
+    </script>
+  </body>
+</html>

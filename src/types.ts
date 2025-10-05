@@ -2,12 +2,24 @@
  * Common types and interfaces used across editor elements
  */
 
-// Base interface for custom element events
+// -----------------------------------------------------------------------------
+// General types & events
+// -----------------------------------------------------------------------------
+
 export interface EditorElementEvent extends CustomEvent {
   target: HTMLElement;
 }
 
-// Toolbar related types
+export interface EditorElementProperties {
+  id?: string;
+  disabled?: boolean;
+  hidden?: boolean;
+}
+
+// -----------------------------------------------------------------------------
+// Toolbar types & events
+// -----------------------------------------------------------------------------
+
 export interface ToolbarButtonClickEvent extends EditorElementEvent {
   detail: {
     buttonId: string;
@@ -15,34 +27,10 @@ export interface ToolbarButtonClickEvent extends EditorElementEvent {
   };
 }
 
-// Menu related types
-export interface MenuItemClickEvent extends EditorElementEvent {
-  detail: {
-    itemId: string;
-    item: HTMLElement;
-    value?: any;
-  };
-}
+// -----------------------------------------------------------------------------
+// Collapsible panel types & events
+// -----------------------------------------------------------------------------
 
-// List/Tree view related types
-export interface ListItemSelectEvent extends EditorElementEvent {
-  detail: {
-    itemId: string;
-    item: HTMLElement;
-    selected: boolean;
-    value?: any;
-  };
-}
-
-export interface TreeItemExpandEvent extends EditorElementEvent {
-  detail: {
-    itemId: string;
-    item: HTMLElement;
-    expanded: boolean;
-  };
-}
-
-// Panel related types
 export interface PanelToggleEvent extends EditorElementEvent {
   detail: {
     panelId: string;
@@ -60,14 +48,82 @@ export interface CollapsiblePanelToggleEvent extends EditorElementEvent {
   };
 }
 
-// Common properties for all editor elements
-export interface EditorElementProperties {
-  id?: string;
-  disabled?: boolean;
-  hidden?: boolean;
+// -----------------------------------------------------------------------------
+// Dialog types & events
+// -----------------------------------------------------------------------------
+
+export type AlertType = 'info' | 'success' | 'warning' | 'error';
+
+export interface DialogEvent extends EditorElementEvent {
+  detail: {
+    dialogId: string;
+    dialog: HTMLElement;
+  };
 }
 
-// Theme support
+export interface DialogShowEvent extends DialogEvent {
+  detail: DialogEvent['detail'] & {
+    modal?: boolean;
+  };
+}
+
+export interface DialogCloseEvent extends DialogEvent {
+  detail: DialogEvent['detail'] & {
+    returnValue?: string;
+  };
+}
+
+export interface ConfirmDialogEvent extends DialogEvent {
+  detail: DialogEvent['detail'] & {
+    confirmed: boolean;
+  };
+}
+
+export interface AlertDialogEvent extends DialogEvent {
+  detail: DialogEvent['detail'];
+}
+
+export interface PromptDialogEvent extends DialogEvent {
+  detail: DialogEvent['detail'] & {
+    value: string | null;
+  };
+}
+
+// -----------------------------------------------------------------------------
+// Context Menu types & events
+// -----------------------------------------------------------------------------
+
+export interface ContextMenuShowEvent extends EditorElementEvent {
+  detail: {
+    menuId: string;
+    menu: HTMLElement;
+    x: number;
+    y: number;
+    trigger: HTMLElement;
+  };
+}
+
+export interface ContextMenuHideEvent extends EditorElementEvent {
+  detail: {
+    menuId: string;
+    menu: HTMLElement;
+  };
+}
+
+export interface ContextMenuItemClickEvent extends EditorElementEvent {
+  detail: {
+    itemId: string;
+    item: HTMLElement;
+    menuId: string;
+    menu: HTMLElement;
+    value?: string;
+  };
+}
+
+// -----------------------------------------------------------------------------
+// Themes
+// -----------------------------------------------------------------------------
+
 export type Theme = 'light' | 'dark' | 'auto';
 
 export interface ThemeableElement {

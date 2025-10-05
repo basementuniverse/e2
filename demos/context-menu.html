@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E2 - Editor Elements - Context Menu Demo</title>
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      .demo-area {
+        min-height: 200px;
+        background: #f5f5f5;
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1rem 0;
+        padding: 2rem;
+        text-align: center;
+        color: #666;
+        cursor: pointer;
+      }
+
+      .demo-area:hover {
+        background: #eee;
+        border-color: #999;
+      }
+
+      .editor-area {
+        background: #fff;
+        border: 1px solid #ccc;
+        min-height: 150px;
+        padding: 1rem;
+        margin: 1rem 0;
+        cursor: text;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
+    <header>
+      <h1>
+        <a href="index.html">&laquo;</a>
+        E2 - Context Menu Demo
+      </h1>
+      <p>
+        Interactive demonstration of the <code>&lt;e2-context-menu&gt;</code>
+        component and its usage patterns.
+      </p>
+    </header>
+
+    <main>
+
+      <!-- Basic Context Menu Demo -->
+      <div class="demo-section">
+        <h2>Basic Context Menu</h2>
+        <p>
+          Right-click anywhere in the area below to see a basic context menu:
+        </p>
+
+        <div class="demo-area" id="basic-demo">
+          Right-click here for basic context menu
+        </div>
+
+        <div class="code-example">
+          <button class="copy-button" onclick="copyToClipboard('basic-code')">
+            Copy
+          </button>
+          <h3>HTML Markup:</h3>
+          <pre id="basic-code">&lt;e2-context-menu id="basic-menu" target="#basic-demo"&gt;
+  &lt;e2-context-menu-item
+    label="Cut"
+    icon="✂️"
+    shortcut="Ctrl+X"
+    value="cut"&gt;
+  &lt;/e2-context-menu-item&gt;
+  &lt;e2-context-menu-item
+    label="Copy"
+    icon="📋"
+    shortcut="Ctrl+C"
+    value="copy"&gt;
+  &lt;/e2-context-menu-item&gt;
+  &lt;e2-context-menu-item
+    label="Paste"
+    icon="📄"
+    shortcut="Ctrl+V"
+    value="paste"&gt;
+  &lt;/e2-context-menu-item&gt;
+  &lt;e2-context-menu-separator&gt;&lt;/e2-context-menu-separator&gt;
+  &lt;e2-context-menu-item
+    label="Properties"
+    icon="⚙️"
+    value="properties"&gt;
+  &lt;/e2-context-menu-item&gt;
+&lt;/e2-context-menu&gt;</pre>
+        </div>
+
+        <!-- Basic Context Menu -->
+        <e2-context-menu id="basic-menu" target="#basic-demo">
+          <e2-context-menu-item
+            label="Cut"
+            icon="✂️"
+            shortcut="Ctrl+X"
+            value="cut"
+          ></e2-context-menu-item>
+          <e2-context-menu-item
+            label="Copy"
+            icon="📋"
+            shortcut="Ctrl+C"
+            value="copy"
+          ></e2-context-menu-item>
+          <e2-context-menu-item
+            label="Paste"
+            icon="📄"
+            shortcut="Ctrl+V"
+            value="paste"
+          ></e2-context-menu-item>
+          <e2-context-menu-separator></e2-context-menu-separator>
+          <e2-context-menu-item
+            label="Select All"
+            icon="🔲"
+            shortcut="Ctrl+A"
+            value="select-all"
+          ></e2-context-menu-item>
+          <e2-context-menu-separator></e2-context-menu-separator>
+          <e2-context-menu-item
+            label="Properties"
+            icon="⚙️"
+            value="properties"
+          ></e2-context-menu-item>
+        </e2-context-menu>
+      </div>
+
+      <!-- Editor Area Context Menu Demo -->
+      <div class="demo-section">
+        <h2>Editor Area Context Menu</h2>
+        <p>Right-click in the editor area for editor-specific actions:</p>
+
+        <div class="editor-area" id="editor-area">
+          <p>
+            This is a simulated editor area. Right-click here for
+            editor-specific context menu options.
+          </p>
+          <p>You can select text and right-click for text-specific actions.</p>
+        </div>
+
+        <div class="code-example">
+          <button class="copy-button" onclick="copyToClipboard('editor-code')">
+            Copy
+          </button>
+          <h3>HTML Markup:</h3>
+          <pre id="editor-code">&lt;e2-context-menu id="editor-menu" target="#editor-area"&gt;
+  &lt;e2-context-menu-item
+    label="Insert..."
+    icon="➕"
+    value="insert"&gt;
+  &lt;/e2-context-menu-item&gt;
+  &lt;e2-context-menu-item
+    label="Find &amp; Replace"
+    icon="🔍"
+    shortcut="Ctrl+H"
+    value="find-replace"&gt;
+  &lt;/e2-context-menu-item&gt;
+  &lt;e2-context-menu-separator&gt;&lt;/e2-context-menu-separator&gt;
+  &lt;e2-context-menu-item
+    label="Format Document"
+    icon="📐"
+    shortcut="Shift+Alt+F"
+    value="format"&gt;
+  &lt;/e2-context-menu-item&gt;
+&lt;/e2-context-menu&gt;</pre>
+        </div>
+
+        <!-- Editor Context Menu -->
+        <e2-context-menu id="editor-menu" target="#editor-area">
+          <e2-context-menu-item
+            label="Insert..."
+            icon="➕"
+            value="insert"
+          ></e2-context-menu-item>
+          <e2-context-menu-item
+            label="Find & Replace"
+            icon="🔍"
+            shortcut="Ctrl+H"
+            value="find-replace"
+          ></e2-context-menu-item>
+          <e2-context-menu-separator></e2-context-menu-separator>
+          <e2-context-menu-item
+            label="Go to Line"
+            icon="📍"
+            shortcut="Ctrl+G"
+            value="goto-line"
+          ></e2-context-menu-item>
+          <e2-context-menu-item
+            label="Toggle Comment"
+            icon="💬"
+            shortcut="Ctrl+/"
+            value="toggle-comment"
+          ></e2-context-menu-item>
+          <e2-context-menu-separator></e2-context-menu-separator>
+          <e2-context-menu-item
+            label="Format Document"
+            icon="📐"
+            shortcut="Shift+Alt+F"
+            value="format"
+          ></e2-context-menu-item>
+        </e2-context-menu>
+      </div>
+
+      <!-- Disabled Items Demo -->
+      <div class="demo-section">
+        <h2>Disabled Items</h2>
+        <p>Context menu with some disabled items:</p>
+
+        <div class="demo-area" id="disabled-demo">
+          Right-click here for context menu with disabled items
+        </div>
+
+        <div class="code-example">
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('disabled-code')"
+          >
+            Copy
+          </button>
+          <h3>HTML Markup:</h3>
+          <pre id="disabled-code">&lt;e2-context-menu-item
+  label="Available Action"
+  icon="✅"
+  value="available"&gt;
+&lt;/e2-context-menu-item&gt;
+&lt;e2-context-menu-item
+  label="Disabled Action"
+  icon="❌"
+  value="disabled"
+  disabled&gt;
+&lt;/e2-context-menu-item&gt;</pre>
+        </div>
+
+        <!-- Disabled Items Context Menu -->
+        <e2-context-menu id="disabled-menu" target="#disabled-demo">
+          <e2-context-menu-item
+            label="Available Action"
+            icon="✅"
+            value="available"
+          ></e2-context-menu-item>
+          <e2-context-menu-item
+            label="Disabled Action"
+            icon="❌"
+            value="disabled"
+            disabled
+          ></e2-context-menu-item>
+          <e2-context-menu-separator></e2-context-menu-separator>
+          <e2-context-menu-item
+            label="Another Available"
+            icon="🟢"
+            value="another-available"
+          ></e2-context-menu-item>
+          <e2-context-menu-item
+            label="Another Disabled"
+            icon="🔴"
+            value="another-disabled"
+            disabled
+          ></e2-context-menu-item>
+        </e2-context-menu>
+      </div>
+
+      <!-- Programmatic Context Menu Demo -->
+      <div class="demo-section">
+        <h2>Programmatic Control</h2>
+        <p>Show context menu programmatically:</p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" id="show-menu-btn">
+            Show Context Menu
+          </button>
+          <button class="demo-button secondary" id="hide-menu-btn">
+            Hide Context Menu
+          </button>
+        </div>
+
+        <div class="code-example">
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('programmatic-code')"
+          >
+            Copy
+          </button>
+          <h3>JavaScript Example:</h3>
+          <pre id="programmatic-code">// Show context menu at specific position
+const menu = document.getElementById('programmatic-menu');
+const rect = button.getBoundingClientRect();
+menu.show(rect.right + 10, rect.top);
+
+// Hide context menu
+menu.hide();</pre>
+        </div>
+
+        <!-- Programmatic Context Menu -->
+        <e2-context-menu id="programmatic-menu">
+          <e2-context-menu-item
+            label="Programmatic Item 1"
+            icon="1️⃣"
+            value="prog1"
+          ></e2-context-menu-item>
+          <e2-context-menu-item
+            label="Programmatic Item 2"
+            icon="2️⃣"
+            value="prog2"
+          ></e2-context-menu-item>
+          <e2-context-menu-item
+            label="Programmatic Item 3"
+            icon="3️⃣"
+            value="prog3"
+          ></e2-context-menu-item>
+        </e2-context-menu>
+      </div>
+
+      <!-- Output -->
+      <div class="demo-section">
+        <h2>Output</h2>
+        <p>Context menu events are logged here:</p>
+        <div class="output" id="context-menu-output"></div>
+      </div>
+    </main>
+
+    <script src="../build/e2.min.js"></script>
+    <script>
+      let currentTheme = 'light';
+
+      function setTheme(theme) {
+        currentTheme = theme;
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all context menus
+        document.querySelectorAll('e2-context-menu').forEach(menu => {
+          menu.theme = theme;
+        });
+      }
+
+      // Event logging
+      const output = document.getElementById('context-menu-output');
+
+      function logEvent(event) {
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `
+          <div>[${timestamp}] ${event.type}: ${JSON.stringify(
+          event.detail
+        )}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      // Listen for all context menu events
+      document.addEventListener('context-menu-show', logEvent);
+      document.addEventListener('context-menu-hide', logEvent);
+      document.addEventListener('context-menu-item-click', logEvent);
+
+      // Programmatic menu controls
+      const showMenuBtn = document.getElementById('show-menu-btn');
+      const hideMenuBtn = document.getElementById('hide-menu-btn');
+      const programmaticMenu = document.getElementById('programmatic-menu');
+
+      showMenuBtn.addEventListener('click', e => {
+        const rect = e.target.getBoundingClientRect();
+        programmaticMenu.show(rect.right + 10, rect.top);
+      });
+
+      hideMenuBtn.addEventListener('click', () => {
+        programmaticMenu.hide();
+      });
+
+      // Handle context menu item clicks
+      document.addEventListener('context-menu-item-click', e => {
+        const { value, itemId, menuId } = e.detail;
+
+        // You can handle specific actions here
+        switch (value) {
+          case 'cut':
+            alert('Cut action triggered');
+            break;
+          case 'copy':
+            alert('Copy action triggered');
+            break;
+          case 'paste':
+            alert('Paste action triggered');
+            break;
+          case 'customize':
+            alert('Customize toolbar triggered');
+            break;
+          default:
+            console.log(`Context menu item clicked: ${value}`);
+        }
+      });
+
+      // Copy to clipboard functionality
+      function copyToClipboard(id) {
+        const element = document.getElementById(id);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const button = element.previousElementSibling;
+          const originalText = button.textContent;
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        });
+      }
+
+      // Add initial log entry
+      setTimeout(() => {
+        output.innerHTML += `
+          <div>[${new Date().toLocaleTimeString()}] Context menu demo loaded. Right-click in the demo areas above.</div>
+        `;
+      }, 100);
+    </script>
+  </body>
+</html>
