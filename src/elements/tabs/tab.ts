@@ -32,7 +32,6 @@ export class Tab extends HTMLElement implements EditorElementProperties {
 
   constructor() {
     super();
-    this.id = this.id || generateId('tab');
     this.setupElement();
     this.setupEventListeners();
   }
@@ -201,9 +200,6 @@ export class Tab extends HTMLElement implements EditorElementProperties {
         <button class="close-button" type="button">&times;</button>
       </div>
     `;
-
-    this.updateContent();
-    this.applyTheme(this._theme);
   }
 
   private setupEventListeners(): void {
@@ -391,6 +387,12 @@ export class Tab extends HTMLElement implements EditorElementProperties {
   }
 
   connectedCallback(): void {
+    if (!this.id) {
+      this.id = generateId('tab');
+    }
+    this.applyTheme(this._theme);
+    this.updateContent();
+
     // Handle pending setup from dynamic creation
     if ((this as any)._pendingSetup) {
       const setup = (this as any)._pendingSetup;

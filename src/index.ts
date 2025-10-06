@@ -6,6 +6,7 @@
  */
 
 // Import and register all custom elements
+import './elements/app/app';
 import './elements/contextmenu/context-menu';
 import './elements/contextmenu/context-menu-item';
 import './elements/contextmenu/context-menu-separator';

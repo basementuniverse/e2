@@ -16,7 +16,6 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
 
   constructor() {
     super();
-    this.id = this.id || generateId('tab-panel');
     this.setupElement();
   }
 
@@ -181,8 +180,6 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
 
       <slot></slot>
     `;
-
-    this.applyTheme(this._theme);
   }
 
   // Public API
@@ -213,6 +210,8 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
   }
 
   public setContent(content: string): void {
+    // Clear existing content first to avoid conflicts
+    this.innerHTML = '';
     this.innerHTML = content;
   }
 
@@ -310,6 +309,11 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
   }
 
   connectedCallback(): void {
+    if (!this.id) {
+      this.id = generateId('tab-panel');
+    }
+    this.applyTheme(this._theme);
+
     // Handle pending setup from dynamic creation
     if ((this as any)._pendingSetup) {
       const setup = (this as any)._pendingSetup;
@@ -319,7 +323,11 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
         this.setAttribute('slot', setup.slot);
       }
       if (setup.content) {
-        this.innerHTML = setup.content;
+        // Only set innerHTML if the element doesn't already have content
+        // This prevents conflicts when the element is declared with existing content
+        if (this.children.length === 0 && this.textContent?.trim() === '') {
+          this.innerHTML = setup.content;
+        }
       }
       if (setup.theme) {
         this.applyTheme(setup.theme);

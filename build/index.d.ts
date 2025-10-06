@@ -4,6 +4,7 @@
  * This library provides a set of reusable UI components designed specifically
  * for creating level editors, sprite editors, and similar desktop-like web applications.
  */
+import './elements/app/app';
 import './elements/contextmenu/context-menu';
 import './elements/contextmenu/context-menu-item';
 import './elements/contextmenu/context-menu-separator';

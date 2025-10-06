@@ -32,7 +32,6 @@ export class TabContainer
 
   constructor() {
     super();
-    this.id = this.id || generateId('tab-container');
     this.setupElement();
     this.setupEventListeners();
   }
@@ -156,8 +155,6 @@ export class TabContainer
         <slot name="panels"></slot>
       </div>
     `;
-
-    this.applyTheme(this._theme);
   }
 
   private setupEventListeners(): void {
@@ -356,28 +353,57 @@ export class TabContainer
 
     tabs.forEach((tab, index) => {
       const tabElement = tab as HTMLElement;
-      if (!tabElement.id) {
-        tabElement.id = generateId('tab');
+
+      // Only set ID if it's not already set and the element doesn't have attributes being processed
+      if (!tabElement.id && !tabElement.hasAttribute('id')) {
+        try {
+          tabElement.id = generateId('tab');
+        } catch (e) {
+          // If setting ID fails, skip this tab for now
+          console.warn('Failed to set tab ID, skipping:', e);
+          return;
+        }
       }
 
-      // Set closable attribute if container is closable
-      if (this._closable) {
-        tabElement.setAttribute('closable', '');
+      // Set closable attribute if container is closable, but avoid if element is being processed
+      if (this._closable && !tabElement.hasAttribute('closable')) {
+        try {
+          tabElement.setAttribute('closable', '');
+        } catch (e) {
+          // If setting attribute fails, the element might still be initializing
+          console.warn('Failed to set closable attribute, skipping:', e);
+        }
       }
 
       // Apply current theme
       if ((tabElement as any).applyTheme) {
-        (tabElement as any).applyTheme(this._theme);
+        try {
+          (tabElement as any).applyTheme(this._theme);
+        } catch (e) {
+          console.warn('Failed to apply theme to tab:', e);
+        }
       }
 
       // Link to panel
       if (!tabElement.getAttribute('panel')) {
         const correspondingPanel = panels[index] as HTMLElement;
         if (correspondingPanel) {
-          if (!correspondingPanel.id) {
-            correspondingPanel.id = `${tabElement.id}-panel`;
+          if (
+            !correspondingPanel.id &&
+            !correspondingPanel.hasAttribute('id')
+          ) {
+            try {
+              correspondingPanel.id = `${tabElement.id}-panel`;
+            } catch (e) {
+              console.warn('Failed to set panel ID:', e);
+              return;
+            }
           }
-          tabElement.setAttribute('panel', correspondingPanel.id);
+          try {
+            tabElement.setAttribute('panel', correspondingPanel.id);
+          } catch (e) {
+            console.warn('Failed to link tab to panel:', e);
+          }
         }
       }
     });
@@ -413,29 +439,56 @@ export class TabContainer
 
     panels.forEach(panel => {
       const panelElement = panel as HTMLElement;
-      if (!panelElement.id) {
-        panelElement.id = generateId('tab-panel');
+
+      // Only set ID if it's not already set and the element is ready
+      if (!panelElement.id && !panelElement.hasAttribute('id')) {
+        try {
+          panelElement.id = generateId('tab-panel');
+        } catch (e) {
+          console.warn('Failed to set panel ID:', e);
+          return;
+        }
       }
 
       // Apply current theme
       if ((panelElement as any).applyTheme) {
-        (panelElement as any).applyTheme(this._theme);
+        try {
+          (panelElement as any).applyTheme(this._theme);
+        } catch (e) {
+          console.warn('Failed to apply theme to panel:', e);
+        }
       }
 
       // Hide all panels except the one that should be active
       if (panelElement.id === activePanelId) {
         // This will be the initially active panel - ensure it's visible
         if ((panelElement as any).active !== undefined) {
-          (panelElement as any).active = true;
+          try {
+            (panelElement as any).active = true;
+          } catch (e) {
+            console.warn('Failed to set panel active property:', e);
+          }
         } else {
-          panelElement.setAttribute('active', '');
-          panelElement.style.display = 'flex';
+          try {
+            panelElement.setAttribute('active', '');
+            panelElement.style.display = 'flex';
+          } catch (e) {
+            console.warn('Failed to set panel active state:', e);
+          }
         }
       } else {
         if ((panelElement as any).active !== undefined) {
-          (panelElement as any).active = false;
+          try {
+            (panelElement as any).active = false;
+          } catch (e) {
+            console.warn('Failed to set panel inactive property:', e);
+          }
         } else {
-          panelElement.style.display = 'none';
+          try {
+            panelElement.style.display = 'none';
+          } catch (e) {
+            console.warn('Failed to hide panel:', e);
+          }
         }
       }
     });
@@ -621,17 +674,27 @@ export class TabContainer
   }
 
   connectedCallback(): void {
-    // Use a longer delay to ensure all child elements are fully initialized
-    setTimeout(() => {
-      this.updateTabsAndPanels();
+    if (!this.id) {
+      this.id = generateId('tab-container');
+    }
+    this.applyTheme(this._theme);
+    this.updateTabsAndPanels();
 
-      // If still no active tab after initialization, try again
-      if (!this._activeTabId) {
-        setTimeout(() => {
-          this.updateTabsAndPanels();
-        }, 50);
-      }
-    }, 10);
+    // Defer initialization until the next frame to avoid conflicts with custom element initialization
+    // Use requestAnimationFrame instead of setTimeout for better timing
+    // requestAnimationFrame(() => {
+    //   // Wait one more frame to ensure all child custom elements are fully initialized
+    //   requestAnimationFrame(() => {
+    //     this.updateTabsAndPanels();
+
+    //     // If still no active tab after initialization, try once more
+    //     if (!this._activeTabId) {
+    //       requestAnimationFrame(() => {
+    //         this.updateTabsAndPanels();
+    //       });
+    //     }
+    //   });
+    // });
   }
 }
 
