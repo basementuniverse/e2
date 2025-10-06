@@ -12,6 +12,8 @@ import './elements/dialog/confirm';
 import './elements/dialog/dialog';
 import './elements/dialog/prompt';
 import './elements/panel/collapsible-panel';
+import './elements/panel/split-panel';
+import './elements/panel/split-panel-container';
 import './elements/tabs/tab';
 import './elements/tabs/tab-container';
 import './elements/tabs/tab-panel';

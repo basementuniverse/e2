@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E2 - Editor Elements - Split Panel Demo</title>
+  <link rel="stylesheet" href="main.css">
+  <style>
+    .demo-container {
+      height: 400px;
+      margin: 20px 0;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .panel-content {
+      padding: 20px;
+      height: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .panel-content h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+
+    .panel-content p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* Theme-specific styles for panel content */
+    body.theme-dark .panel-content h3 {
+      color: #fff;
+    }
+
+    body.theme-dark .panel-content p {
+      color: #ccc;
+    }
+
+    body.theme-dark .demo-container {
+      border-color: #555;
+    }
+
+    /* Demo-specific dark theme styles */
+    .theme-demo e2-split-panel-container[theme="dark"] .panel-content h3 {
+      color: #fff;
+    }
+
+    .theme-demo e2-split-panel-container[theme="dark"] .panel-content p {
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-controls">
+    <button class="theme-button active" onclick="setTheme('light')">
+      Light
+    </button>
+    <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+    <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+  </div>
+
+  <header>
+    <h1>
+      <a href="index.html">&laquo;</a>
+      E2 - Split Panel Demo
+    </h1>
+    <p>Interactive demonstration of resizable split panel components</p>
+  </header>
+
+  <main>
+    <div class="demo-section">
+      <h2>Basic Horizontal Split Panel</h2>
+      <p>Drag the vertical divider to resize panels</p>
+
+      <div class="demo-container">
+        <e2-split-panel-container id="horizontal-demo" orientation="horizontal">
+          <e2-split-panel id="panel-1" size="30">
+            <div class="panel-content">
+              <h3>Panel 1</h3>
+              <p>30% width<br>Min: 10%, Max: 70%</p>
+            </div>
+          </e2-split-panel>
+          <e2-split-panel id="panel-2" size="70" min-size="20" max-size="80">
+            <div class="panel-content">
+              <h3>Panel 2</h3>
+              <p>70% width<br>Min: 20%, Max: 80%</p>
+            </div>
+          </e2-split-panel>
+        </e2-split-panel-container>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Vertical Split Panel</h2>
+      <p>Drag the horizontal divider to resize panels</p>
+
+      <div class="demo-container">
+        <e2-split-panel-container id="vertical-demo" orientation="vertical">
+          <e2-split-panel id="panel-3" size="40">
+            <div class="panel-content">
+              <h3>Top Panel</h3>
+              <p>40% height</p>
+            </div>
+          </e2-split-panel>
+          <e2-split-panel id="panel-4" size="60">
+            <div class="panel-content">
+              <h3>Bottom Panel</h3>
+              <p>60% height</p>
+            </div>
+          </e2-split-panel>
+        </e2-split-panel-container>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Three Panel Layout</h2>
+      <p>Multiple panels with individual constraints</p>
+
+      <div class="demo-container">
+        <e2-split-panel-container id="three-panel-demo" orientation="horizontal">
+          <e2-split-panel id="panel-5" size="25" min-size="15" max-size="40">
+            <div class="panel-content">
+              <h3>Sidebar</h3>
+              <p>25% width<br>Min: 15%, Max: 40%</p>
+            </div>
+          </e2-split-panel>
+          <e2-split-panel id="panel-6" size="50" min-size="30">
+            <div class="panel-content">
+              <h3>Main Content</h3>
+              <p>50% width<br>Min: 30%</p>
+            </div>
+          </e2-split-panel>
+          <e2-split-panel id="panel-7" size="25" min-size="15" max-size="35">
+            <div class="panel-content">
+              <h3>Inspector</h3>
+              <p>25% width<br>Min: 15%, Max: 35%</p>
+            </div>
+          </e2-split-panel>
+        </e2-split-panel-container>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Interactive Controls</h2>
+      <div class="controls">
+        <label>Container:</label>
+        <select id="container-select">
+          <option value="horizontal-demo">Horizontal Demo</option>
+          <option value="vertical-demo">Vertical Demo</option>
+          <option value="three-panel-demo">Three Panel Demo</option>
+        </select>
+
+        <button class="demo-button secondary" onclick="resetSizes()">Reset Sizes</button>
+        <button class="demo-button secondary" onclick="toggleOrientation()">Toggle Orientation</button>
+        <button class="demo-button secondary" onclick="toggleDisabled()">Toggle Disabled</button>
+        <button class="demo-button secondary" onclick="clearLog()">Clear Log</button>
+      </div>
+
+      <div class="controls">
+        <label>Panel Sizes:</label>
+        <span id="panel-sizes">Click "Get Sizes" to see current panel sizes</span>
+        <button class="demo-button secondary" onclick="getSizes()">Get Sizes</button>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Dark Theme Example</h2>
+      <p>Split panels with dark theme applied individually</p>
+      <div class="theme-demo">
+        <div class="demo-container">
+          <e2-split-panel-container id="dark-demo" orientation="horizontal" theme="dark">
+            <e2-split-panel id="dark-panel-1" size="40">
+              <div class="panel-content">
+                <h3>Dark Panel 1</h3>
+                <p>Themed for dark mode</p>
+              </div>
+            </e2-split-panel>
+            <e2-split-panel id="dark-panel-2" size="60">
+              <div class="panel-content">
+                <h3>Dark Panel 2</h3>
+                <p>Custom CSS variables</p>
+              </div>
+            </e2-split-panel>
+          </e2-split-panel-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Copy-Paste Examples</h2>
+      <p>Ready-to-use code snippets for your projects:</p>
+
+      <div class="code-example">
+        <h3>Basic Horizontal Split Panel:</h3>
+        <button class="copy-button" onclick="copyToClipboard('horizontal-html')">Copy</button>
+        <pre id="horizontal-html">&lt;!-- Load E2 Library --&gt;
+&lt;script src="path/to/e2.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Basic Horizontal Split Panel --&gt;
+&lt;e2-split-panel-container orientation="horizontal"&gt;
+  &lt;e2-split-panel size="30"&gt;
+    &lt;div&gt;Left panel content&lt;/div&gt;
+  &lt;/e2-split-panel&gt;
+  &lt;e2-split-panel size="70"&gt;
+    &lt;div&gt;Right panel content&lt;/div&gt;
+  &lt;/e2-split-panel&gt;
+&lt;/e2-split-panel-container&gt;</pre>
+      </div>
+
+      <div class="code-example">
+        <h3>Vertical Split Panel with Constraints:</h3>
+        <button class="copy-button" onclick="copyToClipboard('vertical-html')">Copy</button>
+        <pre id="vertical-html">&lt;e2-split-panel-container orientation="vertical"&gt;
+  &lt;e2-split-panel size="40" min-size="20" max-size="60"&gt;
+    &lt;div&gt;Top panel content&lt;/div&gt;
+  &lt;/e2-split-panel&gt;
+  &lt;e2-split-panel size="60" min-size="30"&gt;
+    &lt;div&gt;Bottom panel content&lt;/div&gt;
+  &lt;/e2-split-panel&gt;
+&lt;/e2-split-panel-container&gt;</pre>
+      </div>
+
+      <div class="code-example">
+        <h3>Three Panel Layout:</h3>
+        <button class="copy-button" onclick="copyToClipboard('three-panel-html')">Copy</button>
+        <pre id="three-panel-html">&lt;e2-split-panel-container orientation="horizontal"&gt;
+  &lt;e2-split-panel size="25" min-size="15" max-size="40"&gt;
+    &lt;div&gt;Sidebar content&lt;/div&gt;
+  &lt;/e2-split-panel&gt;
+  &lt;e2-split-panel size="50" min-size="30"&gt;
+    &lt;div&gt;Main content area&lt;/div&gt;
+  &lt;/e2-split-panel&gt;
+  &lt;e2-split-panel size="25" min-size="15" max-size="35"&gt;
+    &lt;div&gt;Inspector panel&lt;/div&gt;
+  &lt;/e2-split-panel&gt;
+&lt;/e2-split-panel-container&gt;</pre>
+      </div>
+
+      <div class="code-example">
+        <h3>JavaScript Event Handling:</h3>
+        <button class="copy-button" onclick="copyToClipboard('split-panel-js')">Copy</button>
+        <pre id="split-panel-js">// Listen for split panel resize events
+document.addEventListener('split-panel-resize-start', event => {
+  const { panelId, startSize } = event.detail;
+  console.log(`Resize started on panel: ${panelId}, initial size: ${startSize}%`);
+});
+
+document.addEventListener('split-panel-resize', event => {
+  const { panelId, size } = event.detail;
+  console.log(`Panel ${panelId} resized to: ${size}%`);
+});
+
+document.addEventListener('split-panel-resize-end', event => {
+  const { panelId, finalSize } = event.detail;
+  console.log(`Resize completed on panel: ${panelId}, final size: ${finalSize}%`);
+});
+
+// Programmatic control
+const container = document.querySelector('e2-split-panel-container');
+container.resetPanelSizes(); // Reset to initial sizes
+container.getPanelSizes(); // Get current sizes object
+container.disabled = true; // Disable resizing</pre>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Output</h2>
+      <p>Resize panels to see events:</p>
+      <div class="output" id="split-panel-output"></div>
+    </div>
+  </main>
+
+  <script src="../build/e2.min.js"></script>
+  <script>
+    // Output element for event logging
+    const output = document.getElementById('split-panel-output');
+
+    function addOutput(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      output.innerHTML = `[${timestamp}] ${message}<br>` + output.innerHTML;
+
+      // Keep only last 20 messages
+      const lines = output.innerHTML.split('<br>');
+      if (lines.length > 20) {
+        output.innerHTML = lines.slice(0, 20).join('<br>');
+      }
+    }
+
+    // Attach event listeners to all split panel containers
+    document.querySelectorAll('e2-split-panel-container').forEach(container => {
+      container.addEventListener('split-panel-resize-start', event => {
+        const { panelId, startSize } = event.detail;
+        addOutput(`<strong>Resize Start</strong> - Panel: ${panelId}, Start Size: ${startSize.toFixed(1)}%`);
+      });
+
+      container.addEventListener('split-panel-resize', event => {
+        const { panelId, size } = event.detail;
+        addOutput(`<strong>Resizing</strong> - Panel: ${panelId}, Size: ${size.toFixed(1)}%`);
+      });
+
+      container.addEventListener('split-panel-resize-end', event => {
+        const { panelId, finalSize } = event.detail;
+        addOutput(`<strong>Resize End</strong> - Panel: ${panelId}, Final Size: ${finalSize.toFixed(1)}%`);
+      });
+    });
+
+    // Interactive controls
+    const containerSelect = document.getElementById('container-select');
+
+    function resetSizes() {
+      const selectedContainer = document.getElementById(containerSelect.value);
+      if (selectedContainer) {
+        selectedContainer.resetPanelSizes();
+        addOutput(`<strong>Reset Sizes</strong> - Container: ${containerSelect.value}`);
+      }
+    }
+
+    function toggleOrientation() {
+      const selectedContainer = document.getElementById(containerSelect.value);
+      if (selectedContainer) {
+        const current = selectedContainer.getAttribute('orientation') || 'horizontal';
+        const newOrientation = current === 'horizontal' ? 'vertical' : 'horizontal';
+        selectedContainer.setAttribute('orientation', newOrientation);
+        addOutput(`<strong>Orientation Changed</strong> - Container: ${containerSelect.value}, New: ${newOrientation}`);
+      }
+    }
+
+    function toggleDisabled() {
+      const selectedContainer = document.getElementById(containerSelect.value);
+      if (selectedContainer) {
+        const isDisabled = selectedContainer.hasAttribute('disabled');
+        selectedContainer.toggleAttribute('disabled', !isDisabled);
+        addOutput(`<strong>Disabled Toggle</strong> - Container: ${containerSelect.value}, Disabled: ${!isDisabled}`);
+      }
+    }
+
+    function getSizes() {
+      const selectedContainer = document.getElementById(containerSelect.value);
+      if (selectedContainer) {
+        const sizes = selectedContainer.getPanelSizes();
+        const sizeText = Object.entries(sizes)
+          .map(([id, size]) => `${id}: ${size.toFixed(1)}%`)
+          .join(', ');
+        document.getElementById('panel-sizes').textContent = sizeText;
+        addOutput(`<strong>Get Sizes</strong> - ${sizeText}`);
+      }
+    }
+
+    function clearLog() {
+      output.innerHTML = '';
+      addOutput('Event log cleared');
+    }
+
+    // Copy to clipboard functionality
+    function copyToClipboard(id) {
+      const element = document.getElementById(id);
+      const text = element.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const button = element.previousElementSibling;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 2000);
+      });
+    }
+
+    // Theme control
+    let currentTheme = 'light';
+
+    function setTheme(theme) {
+      currentTheme = theme;
+      document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+      // Update theme buttons
+      document.querySelectorAll('.theme-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      // Apply theme to all split panel elements (except the dark demo which has theme="dark" explicitly)
+      document.querySelectorAll('e2-split-panel-container:not(#dark-demo)').forEach(container => {
+        container.theme = theme;
+      });
+
+      addOutput(`<strong>Theme Changed</strong> - ${theme}`);
+    }
+
+    // Initial message
+    setTimeout(() => {
+      addOutput('Ready! Start resizing panels to see events...');
+    }, 100);
+
+    console.log('E2 loaded:', typeof E2 !== 'undefined' ? E2 : 'E2 not available');
+  </script>
+</body>
+</html>

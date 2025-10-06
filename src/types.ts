@@ -171,6 +171,44 @@ export interface TabContainerChangeEvent extends EditorElementEvent {
 }
 
 // -----------------------------------------------------------------------------
+// Split Panel types & events
+// -----------------------------------------------------------------------------
+
+export type SplitPanelOrientation = 'horizontal' | 'vertical';
+
+export interface SplitPanelResizeEvent extends EditorElementEvent {
+  detail: {
+    containerId: string;
+    container: HTMLElement;
+    panelId: string;
+    panel: HTMLElement;
+    size: number;
+    minSize: number;
+    maxSize: number;
+  };
+}
+
+export interface SplitPanelResizeStartEvent extends EditorElementEvent {
+  detail: {
+    containerId: string;
+    container: HTMLElement;
+    panelId: string;
+    panel: HTMLElement;
+    startSize: number;
+  };
+}
+
+export interface SplitPanelResizeEndEvent extends EditorElementEvent {
+  detail: {
+    containerId: string;
+    container: HTMLElement;
+    panelId: string;
+    panel: HTMLElement;
+    finalSize: number;
+  };
+}
+
+// -----------------------------------------------------------------------------
 // Themes
 // -----------------------------------------------------------------------------
 

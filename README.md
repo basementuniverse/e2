@@ -58,6 +58,7 @@ For list views, tree views, JSON viewing, JSON editing etc. consider using:
 - [Toolbar Menu](docs/toolbar-menu.md)
 - [Context Menu](docs/context-menu.md)
 - [Collapsible Panel](docs/collapsible-panel.md)
+- [Split Panel](docs/split-panel.md)
 - [Tabs](docs/tabs.md)
 - [Dialog](docs/dialog.md)
 
