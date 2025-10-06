@@ -183,6 +183,33 @@ export interface NotificationContainerEvent extends EditorElementEvent {
         count: number;
     };
 }
+export interface StatusItemClickEvent extends EditorElementEvent {
+    detail: {
+        itemId: string;
+        item: HTMLElement;
+        itemType: StatusItemType;
+        value?: string | number;
+    };
+}
+export interface StatusItemUpdateEvent extends EditorElementEvent {
+    detail: {
+        itemId: string;
+        item: HTMLElement;
+        oldValue?: string | number;
+        newValue?: string | number;
+    };
+}
+export interface StatusMessageEvent extends EditorElementEvent {
+    detail: {
+        message: string;
+        type: StatusMessageType;
+        duration?: number;
+        temporary?: boolean;
+    };
+}
+export type StatusItemType = 'text' | 'progress' | 'tool' | 'message' | 'indicator';
+export type StatusMessageType = 'info' | 'success' | 'warning' | 'error';
+export type StatusSectionPosition = 'left' | 'center' | 'right';
 export type Theme = 'light' | 'dark' | 'auto';
 export interface ThemeableElement {
     theme: Theme;

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E2 - Editor Elements - Status Bar Demo</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
+    <header>
+      <h1>
+        <a href="index.html" style="text-decoration: none; color: inherit">
+          &laquo;
+        </a>
+        E2 - Status Bar Demo
+      </h1>
+      <p>
+        Interactive demonstration of the <code>&lt;e2-status-bar&gt;</code> element
+      </p>
+    </header>
+
+    <main>
+      <div class="demo-section">
+        <h2>Basic Status Bar</h2>
+        <p>A simple status bar with items in different sections:</p>
+
+        <e2-status-bar id="basic-status">
+          <e2-status-section slot="left" position="left">
+            <e2-status-item type="indicator" label="Ready" value="●"></e2-status-item>
+            <e2-status-item type="text" label="Ln" value="3"></e2-status-item>
+            <e2-status-item type="text" label="Col" value="2"></e2-status-item>
+          </e2-status-section>
+
+          <e2-status-section slot="center" position="center">
+            <e2-status-item type="message" value="File saved successfully"></e2-status-item>
+          </e2-status-section>
+
+          <e2-status-section slot="right" position="right">
+            <e2-status-item type="text" label="100%" value=""></e2-status-item>
+            <e2-status-item type="text" label="UTF-8" value=""></e2-status-item>
+          </e2-status-section>
+        </e2-status-bar>
+      </div>
+
+      <div class="demo-section">
+        <h2>Interactive Status Items</h2>
+        <p>Status bar with clickable items and progress indicators:</p>
+
+        <div class="controls">
+          <button class="demo-button" onclick="simulateProgress()">Simulate Loading</button>
+          <button class="demo-button" onclick="changeTool()">Change Tool</button>
+          <button class="demo-button" onclick="showTempMessage()">Show Message</button>
+        </div>
+
+        <e2-status-bar id="interactive-status">
+          <e2-status-section slot="left" position="left">
+            <e2-status-item
+              id="current-tool"
+              type="tool"
+              label="Tool"
+              value="Brush (10px)"
+              clickable>
+            </e2-status-item>
+            <e2-status-item type="text" label="Layer" value="Background"></e2-status-item>
+          </e2-status-section>
+
+          <e2-status-section slot="center" position="center">
+            <e2-status-item
+              id="progress-item"
+              type="progress"
+              label="Loading"
+              value="0"
+              style="display: none;">
+            </e2-status-item>
+          </e2-status-section>
+
+          <e2-status-section slot="right" position="right">
+            <e2-status-item type="text" label="Zoom" value="100%" clickable></e2-status-item>
+            <e2-status-item type="text" label="Size" value="64x64"></e2-status-item>
+          </e2-status-section>
+        </e2-status-bar>
+      </div>
+
+      <div class="demo-section">
+        <h2>Code Examples</h2>
+
+        <div class="code-example">
+          <h3>HTML Structure:</h3>
+          <button class="copy-button" onclick="copyToClipboard('status-html')">Copy</button>
+          <pre id="status-html">&lt;e2-status-bar&gt;
+  &lt;e2-status-section slot="left" position="left"&gt;
+    &lt;e2-status-item type="indicator" label="Ready" value="●"&gt;&lt;/e2-status-item&gt;
+    &lt;e2-status-item type="text" label="Ln" value="3"&gt;&lt;/e2-status-item&gt;
+    &lt;e2-status-item type="text" label="Col" value="2"&gt;&lt;/e2-status-item&gt;
+  &lt;/e2-status-section&gt;
+
+  &lt;e2-status-section slot="center" position="center"&gt;
+    &lt;e2-status-item type="progress" label="Loading" value="0.7"&gt;&lt;/e2-status-item&gt;
+  &lt;/e2-status-section&gt;
+
+  &lt;e2-status-section slot="right" position="right"&gt;
+    &lt;e2-status-item type="tool" label="Brush" value="10px" clickable&gt;&lt;/e2-status-item&gt;
+  &lt;/e2-status-section&gt;
+&lt;/e2-status-bar&gt;</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>JavaScript Event Handling:</h3>
+          <button class="copy-button" onclick="copyToClipboard('status-js')">Copy</button>
+          <pre id="status-js">// Listen for status item clicks
+document.addEventListener('status-item-click', event => {
+  const { itemId, item, itemType, value } = event.detail;
+  console.log(`Status item clicked: ${itemId}`, item);
+});
+
+// Listen for status item updates
+document.addEventListener('status-item-update', event => {
+  const { itemId, oldValue, newValue } = event.detail;
+  console.log(`Item ${itemId} updated: ${oldValue} → ${newValue}`);
+});
+
+// Listen for status messages
+document.addEventListener('status-message', event => {
+  const { message, type, duration } = event.detail;
+  console.log(`Status message: ${message} (${type})`);
+});
+
+// Programmatic control
+const statusBar = document.querySelector('e2-status-bar');
+statusBar.showMessage('Operation completed!', 'success', 3000);
+
+const progressItem = document.querySelector('#progress-item');
+progressItem.setProgress(0.75); // 75%
+
+const toolItem = document.querySelector('#current-tool');
+toolItem.value = 'Eraser (5px)';</pre>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h2>Output</h2>
+        <p>Click status items to see events:</p>
+        <div class="output" id="status-output"></div>
+      </div>
+    </main>
+
+    <!-- Load the library -->
+    <script src="../build/e2.min.js"></script>
+
+    <script>
+      let currentTheme = 'light';
+      const output = document.getElementById('status-output');
+
+      // Add event listeners for status bar events
+      document.addEventListener('status-item-click', event => {
+        const { itemId, item, itemType, value } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Status item clicked: ${itemId} (${itemType}) - ${value}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      document.addEventListener('status-item-update', event => {
+        const { itemId, oldValue, newValue } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Item updated: ${itemId} - ${oldValue} → ${newValue}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      document.addEventListener('status-message', event => {
+        const { message, type, duration } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Status message (${type}): ${message}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      // Demo functions
+      function simulateProgress() {
+        const progressItem = document.getElementById('progress-item');
+        progressItem.style.display = 'inline-flex';
+
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 0.1;
+          progressItem.setProgress(progress);
+
+          if (progress >= 1) {
+            clearInterval(interval);
+            setTimeout(() => {
+              progressItem.style.display = 'none';
+              progressItem.setProgress(0);
+            }, 1000);
+          }
+        }, 200);
+      }
+
+      function changeTool() {
+        const toolItem = document.getElementById('current-tool');
+        const tools = [
+          'Brush (10px)',
+          'Eraser (5px)',
+          'Pencil (2px)',
+          'Fill Bucket',
+          'Selection Tool'
+        ];
+
+        const currentIndex = tools.findIndex(tool => tool === toolItem.value);
+        const nextIndex = (currentIndex + 1) % tools.length;
+        toolItem.value = tools[nextIndex];
+      }
+
+      function showTempMessage() {
+        const statusBar = document.getElementById('interactive-status');
+        const messages = [
+          { text: 'File saved successfully!', type: 'success' },
+          { text: 'Warning: Unsaved changes', type: 'warning' },
+          { text: 'Processing image...', type: 'info' },
+          { text: 'Error: Could not export', type: 'error' }
+        ];
+
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        statusBar.showMessage(randomMessage.text, randomMessage.type, 3000);
+      }
+
+      function setTheme(theme) {
+        currentTheme = theme;
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all status bar elements
+        document.querySelectorAll('e2-status-bar').forEach(statusBar => {
+          statusBar.theme = theme;
+        });
+        document.querySelectorAll('e2-status-section').forEach(section => {
+          section.theme = theme;
+        });
+        document.querySelectorAll('e2-status-item').forEach(item => {
+          item.theme = theme;
+        });
+      }
+
+      function copyToClipboard(elementId) {
+        const element = document.getElementById(elementId);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          // Show a temporary message in the status bar
+          const statusBar = document.getElementById('basic-status');
+          statusBar.showMessage('Code copied to clipboard!', 'success', 2000);
+        });
+      }
+
+      // Initialize with some demo data
+      output.innerHTML = `<div>[${new Date().toLocaleTimeString()}] Status bar demo loaded</div>`;
+    </script>
+  </body>
+</html>
