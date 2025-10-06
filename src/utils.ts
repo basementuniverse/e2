@@ -107,3 +107,113 @@ export function applyTheme(
   element.classList.remove('theme-light', 'theme-dark', 'theme-auto');
   element.classList.add(`theme-${theme}`);
 }
+
+/**
+ * Create and show a toast notification programmatically
+ */
+export interface CreateToastOptions {
+  title?: string;
+  timeout?: number;
+  dismissible?: boolean;
+  persistent?: boolean;
+  container?: HTMLElement | string;
+}
+
+export function createToast(
+  type: 'info' | 'success' | 'warning' | 'error',
+  message: string,
+  options: CreateToastOptions = {}
+): Promise<void> {
+  // Create the notification element
+  const notification = document.createElement('e2-notification') as any;
+  notification.type = type;
+  notification.message = message;
+
+  if (options.title) {
+    notification.title = options.title;
+  }
+
+  if (options.timeout !== undefined) {
+    notification.timeout = options.timeout;
+  }
+
+  if (options.dismissible !== undefined) {
+    notification.dismissible = options.dismissible;
+  }
+
+  if (options.persistent !== undefined) {
+    notification.persistent = options.persistent;
+  }
+
+  // Find or create container
+  let container: HTMLElement;
+
+  if (options.container) {
+    if (typeof options.container === 'string') {
+      const found = document.querySelector(options.container);
+      if (found) {
+        container = found as HTMLElement;
+      } else {
+        container = document.body;
+      }
+    } else {
+      container = options.container;
+    }
+  } else {
+    // Look for existing notification container
+    const existingContainer = document.querySelector(
+      'e2-notification-container'
+    );
+    if (existingContainer) {
+      container = existingContainer as HTMLElement;
+    } else {
+      // Create default container
+      const defaultContainer = document.createElement(
+        'e2-notification-container'
+      ) as any;
+      defaultContainer.position = 'top-right';
+      document.body.appendChild(defaultContainer);
+      container = defaultContainer;
+    }
+  }
+
+  // Add notification to container
+  container.appendChild(notification);
+
+  // Show the notification and clean up when done
+  return notification.show().then(() => {
+    // Remove from DOM after hiding animation completes
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  });
+}
+
+/**
+ * Toast API for convenient toast creation
+ */
+export const Toast = {
+  /**
+   * Show an info toast
+   */
+  info: (message: string, options?: CreateToastOptions): Promise<void> =>
+    createToast('info', message, options),
+
+  /**
+   * Show a success toast
+   */
+  success: (message: string, options?: CreateToastOptions): Promise<void> =>
+    createToast('success', message, options),
+
+  /**
+   * Show a warning toast
+   */
+  warning: (message: string, options?: CreateToastOptions): Promise<void> =>
+    createToast('warning', message, options),
+
+  /**
+   * Show an error toast
+   */
+  error: (message: string, options?: CreateToastOptions): Promise<void> =>
+    createToast('error', message, options),
+};

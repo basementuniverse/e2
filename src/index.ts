@@ -14,6 +14,8 @@ import './elements/dialog/alert';
 import './elements/dialog/confirm';
 import './elements/dialog/dialog';
 import './elements/dialog/prompt';
+import './elements/notification/notification';
+import './elements/notification/notification-container';
 import './elements/panel/collapsible-panel';
 import './elements/panel/split-panel';
 import './elements/panel/split-panel-container';

@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "clean": "rm -rf build",
-    "build": "webpack --mode=production",
+    "build": "webpack --mode=production && cp ./build/e2.min.js ./dist/e2.min.js",
     "build:dev": "webpack --mode=development",
     "watch": "webpack --mode=development --watch",
     "serve": "webpack serve --mode=development"

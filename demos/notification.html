@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E2 Notifications Demo</title>
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      /* Demo-specific styles */
+      .notification-container-demo {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        background: #f9f9f9;
+        position: relative;
+        min-height: 100px;
+      }
+
+      .theme-dark .notification-container-demo {
+        background: #2d2d2d;
+        border-color: #555;
+      }
+
+      .position-controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+
+      .position-controls button {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        background: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .position-controls button.active {
+        background: #007acc;
+        color: white;
+        border-color: #007acc;
+      }
+
+      .theme-dark .position-controls button {
+        background: #374151;
+        color: #e5e7eb;
+        border-color: #4b5563;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .counter {
+        margin: 10px 0;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
+    <header>
+      <h1>
+        <a href="index.html">&laquo;</a>
+        E2 - Notifications Demo
+      </h1>
+      <p>
+        Interactive demonstrations of the E2 notification system components.
+      </p>
+    </header>
+
+    <main>
+      <!-- Basic Notifications -->
+      <div class="demo-section">
+        <h2>Basic Notifications (e2-notification)</h2>
+        <p>Simple notification toasts with different types and messages.</p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="showInfoNotification()">
+            Info Notification
+          </button>
+          <button class="demo-button success" onclick="showSuccessNotification()">
+            Success Notification
+          </button>
+          <button class="demo-button warning" onclick="showWarningNotification()">
+            Warning Notification
+          </button>
+          <button class="demo-button danger" onclick="showErrorNotification()">
+            Error Notification
+          </button>
+        </div>
+
+        <div class="markup-section">
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-notification
+  id="info-notification"
+  type="info"
+  title="Information"
+  message="This is an informational message."
+  timeout="5000"
+  dismissible&gt;
+&lt;/e2-notification&gt;</pre>
+        </div>
+
+        <div class="result" id="notification-result">Ready to show notifications...</div>
+      </div>
+
+      <!-- Programmatic Toast Creation -->
+      <div class="demo-section">
+        <h2>Programmatic Toast Creation</h2>
+        <p>Create toasts dynamically using JavaScript functions.</p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="createInfoToast()">
+            Create Info Toast
+          </button>
+          <button class="demo-button success" onclick="createSuccessToast()">
+            Create Success Toast
+          </button>
+          <button class="demo-button warning" onclick="createWarningToast()">
+            Create Warning Toast
+          </button>
+          <button class="demo-button danger" onclick="createErrorToast()">
+            Create Error Toast
+          </button>
+        </div>
+
+        <div class="demo-buttons">
+          <button class="demo-button secondary" onclick="createPersistentToast()">
+            Persistent Toast
+          </button>
+          <button class="demo-button secondary" onclick="createCustomToast()">
+            Custom Timeout
+          </button>
+          <button class="demo-button secondary" onclick="createNonDismissibleToast()">
+            Non-Dismissible
+          </button>
+        </div>
+
+        <div class="markup-section">
+          <h3>JavaScript Usage:</h3>
+          <pre>
+// Using createToast utility
+createToast('success', 'Operation completed!', {
+  title: 'Success',
+  timeout: 3000
+});
+
+// Using Toast API
+Toast.success('File saved successfully!');
+Toast.error('Connection failed', { persistent: true });</pre>
+        </div>
+      </div>
+
+      <!-- Notification Container -->
+      <div class="demo-section">
+        <h2>Notification Container (e2-notification-container)</h2>
+        <p>Container for managing notification positioning and lifecycle.</p>
+
+        <div class="position-controls">
+          <button onclick="setContainerPosition('top-left')" data-position="top-left">
+            Top Left
+          </button>
+          <button onclick="setContainerPosition('top-center')" data-position="top-center">
+            Top Center
+          </button>
+          <button onclick="setContainerPosition('top-right')" class="active" data-position="top-right">
+            Top Right
+          </button>
+          <button onclick="setContainerPosition('bottom-left')" data-position="bottom-left">
+            Bottom Left
+          </button>
+          <button onclick="setContainerPosition('bottom-center')" data-position="bottom-center">
+            Bottom Center
+          </button>
+          <button onclick="setContainerPosition('bottom-right')" data-position="bottom-right">
+            Bottom Right
+          </button>
+        </div>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="showMultipleToasts()">
+            Show Multiple Toasts
+          </button>
+          <button class="demo-button secondary" onclick="clearAllNotifications()">
+            Clear All
+          </button>
+          <button class="demo-button secondary" onclick="setMaxNotifications(3)">
+            Max 3 Notifications
+          </button>
+          <button class="demo-button secondary" onclick="setMaxNotifications(10)">
+            Max 10 Notifications
+          </button>
+        </div>
+
+        <div class="counter" id="notification-counter">
+          Notifications: 0
+        </div>
+
+        <div class="markup-section">
+          <h3>HTML Markup:</h3>
+          <pre>
+&lt;e2-notification-container
+  id="main-container"
+  position="top-right"
+  max-notifications="5"
+  stack-direction="down"
+  spacing="medium"&gt;
+&lt;/e2-notification-container&gt;</pre>
+        </div>
+      </div>
+
+      <!-- Advanced Features -->
+      <div class="demo-section">
+        <h2>Advanced Features</h2>
+        <p>Demonstration of advanced notification features and customization.</p>
+
+        <div class="demo-buttons">
+          <button class="demo-button" onclick="showProgressNotification()">
+            Progress Notification
+          </button>
+          <button class="demo-button secondary" onclick="showLongMessage()">
+            Long Message
+          </button>
+          <button class="demo-button secondary" onclick="showWithoutTitle()">
+            No Title
+          </button>
+          <button class="demo-button secondary" onclick="testEventHandlers()">
+            Test Events
+          </button>
+        </div>
+
+        <div class="result" id="advanced-result">Ready for advanced demos...</div>
+      </div>
+
+      <!-- Code Examples -->
+      <div class="demo-section">
+        <h2>Code Examples</h2>
+        <p>Complete code examples for common use cases.</p>
+
+        <div class="code-example">
+          <h3>Basic Usage:</h3>
+          <button class="copy-button" onclick="copyToClipboard('basic-usage')">Copy</button>
+          <pre id="basic-usage">
+// Show pre-defined notification
+const notification = document.getElementById('my-notification');
+await notification.show();
+
+// Create toast programmatically
+createToast('success', 'Operation completed!');
+
+// Using Toast API
+Toast.info('Welcome to the application!');
+Toast.error('Something went wrong!', { persistent: true });</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Container Management:</h3>
+          <button class="copy-button" onclick="copyToClipboard('container-management')">Copy</button>
+          <pre id="container-management">
+// Create container
+const container = document.createElement('e2-notification-container');
+container.position = 'bottom-right';
+container.maxNotifications = 3;
+document.body.appendChild(container);
+
+// Add notification to specific container
+createToast('info', 'Message', {
+  container: '#my-container'
+});
+
+// Clear all notifications
+container.clear();</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Event Handling:</h3>
+          <button class="copy-button" onclick="copyToClipboard('event-handling')">Copy</button>
+          <pre id="event-handling">
+// Listen to notification events
+document.addEventListener('notification-show', (e) => {
+  console.log('Notification shown:', e.detail);
+});
+
+document.addEventListener('notification-dismiss', (e) => {
+  console.log('Notification dismissed:', e.detail);
+});
+
+// Container events
+document.addEventListener('notification-container-update', (e) => {
+  console.log('Container updated:', e.detail.count);
+});</pre>
+        </div>
+      </div>
+    </main>
+
+    <!-- Notification Elements -->
+    <e2-notification
+      id="info-notification"
+      type="info"
+      title="Information"
+      message="This is an informational message."
+      timeout="5000"
+      dismissible>
+    </e2-notification>
+
+    <e2-notification
+      id="success-notification"
+      type="success"
+      title="Success"
+      message="Operation completed successfully!"
+      timeout="4000"
+      dismissible>
+    </e2-notification>
+
+    <e2-notification
+      id="warning-notification"
+      type="warning"
+      title="Warning"
+      message="Please review your settings before continuing."
+      timeout="6000"
+      dismissible>
+    </e2-notification>
+
+    <e2-notification
+      id="error-notification"
+      type="error"
+      title="Error"
+      message="An error occurred while processing your request."
+      timeout="0"
+      dismissible>
+    </e2-notification>
+
+    <!-- Main notification container -->
+    <e2-notification-container
+      id="main-container"
+      position="top-right"
+      max-notifications="5"
+      stack-direction="down"
+      spacing="medium">
+    </e2-notification-container>
+
+    <!-- Load E2 Library -->
+    <script src="../build/e2.min.js"></script>
+
+    <script>
+      let currentTheme = 'light';
+      let notificationCounter = 0;
+
+      function setTheme(theme) {
+        currentTheme = theme;
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all notifications and containers
+        document
+          .querySelectorAll('e2-notification, e2-notification-container')
+          .forEach(element => {
+            element.theme = theme;
+          });
+      }
+
+      // Basic notification functions
+      async function showInfoNotification() {
+        const notification = document.getElementById('info-notification');
+        await notification.show();
+        document.getElementById('notification-result').textContent =
+          'Info notification shown';
+      }
+
+      async function showSuccessNotification() {
+        const notification = document.getElementById('success-notification');
+        await notification.show();
+        document.getElementById('notification-result').textContent =
+          'Success notification shown';
+      }
+
+      async function showWarningNotification() {
+        const notification = document.getElementById('warning-notification');
+        await notification.show();
+        document.getElementById('notification-result').textContent =
+          'Warning notification shown';
+      }
+
+      async function showErrorNotification() {
+        const notification = document.getElementById('error-notification');
+        await notification.show();
+        document.getElementById('notification-result').textContent =
+          'Error notification shown';
+      }
+
+      // Programmatic toast functions
+      function createInfoToast() {
+        E2.createToast('info', 'This is an informational toast message.');
+      }
+
+      function createSuccessToast() {
+        E2.createToast('success', 'Operation completed successfully!', {
+          title: 'Success'
+        });
+      }
+
+      function createWarningToast() {
+        E2.createToast('warning', 'Please review your settings.', {
+          title: 'Warning',
+          timeout: 7000
+        });
+      }
+
+      function createErrorToast() {
+        E2.createToast('error', 'An error occurred while processing.', {
+          title: 'Error',
+          timeout: 0
+        });
+      }
+
+      function createPersistentToast() {
+        E2.createToast('info', 'This notification will not auto-dismiss.', {
+          title: 'Persistent',
+          persistent: true
+        });
+      }
+
+      function createCustomToast() {
+        E2.createToast('success', 'This toast will dismiss in 2 seconds.', {
+          title: 'Custom Timeout',
+          timeout: 2000
+        });
+      }
+
+      function createNonDismissibleToast() {
+        E2.createToast('warning', 'You cannot manually close this toast.', {
+          title: 'Non-Dismissible',
+          dismissible: false,
+          timeout: 8000
+        });
+      }
+
+      // Container functions
+      function setContainerPosition(position) {
+        const container = document.getElementById('main-container');
+        container.position = position;
+
+        // Update active button
+        document.querySelectorAll('[data-position]').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        document.querySelector(`[data-position="${position}"]`).classList.add('active');
+      }
+
+      function showMultipleToasts() {
+        const messages = [
+          { type: 'info', message: 'First notification' },
+          { type: 'success', message: 'Second notification' },
+          { type: 'warning', message: 'Third notification' },
+          { type: 'error', message: 'Fourth notification' },
+          { type: 'info', message: 'Fifth notification' }
+        ];
+
+        messages.forEach((msg, index) => {
+          setTimeout(() => {
+            E2.createToast(msg.type, msg.message, {
+              title: `Toast ${index + 1}`
+            });
+          }, index * 500);
+        });
+      }
+
+      function clearAllNotifications() {
+        const container = document.getElementById('main-container');
+        container.clear();
+      }
+
+      function setMaxNotifications(max) {
+        const container = document.getElementById('main-container');
+        container.maxNotifications = max;
+      }
+
+      // Advanced functions
+      function showProgressNotification() {
+        E2.createToast('info', 'This notification shows progress with the progress bar.', {
+          title: 'Progress Demo',
+          timeout: 8000
+        });
+      }
+
+      function showLongMessage() {
+        E2.createToast('warning',
+          'This is a very long notification message that demonstrates how the component handles longer text content. It should wrap properly and maintain good readability across different screen sizes.',
+          {
+            title: 'Long Message Demo',
+            timeout: 10000
+          }
+        );
+      }
+
+      function showWithoutTitle() {
+        E2.createToast('success', 'This notification has no title, just a message.');
+      }
+
+      function testEventHandlers() {
+        // Create a notification and log events
+        const notification = document.createElement('e2-notification');
+        notification.type = 'info';
+        notification.title = 'Event Test';
+        notification.message = 'Click me or wait for auto-dismiss';
+        notification.timeout = 5000;
+
+        notification.addEventListener('notification-show', (e) => {
+          console.log('Notification shown:', e.detail);
+          document.getElementById('advanced-result').textContent = 'Notification shown - check console';
+        });
+
+        notification.addEventListener('notification-click', (e) => {
+          console.log('Notification clicked:', e.detail);
+          document.getElementById('advanced-result').textContent = 'Notification clicked - check console';
+        });
+
+        notification.addEventListener('notification-dismiss', (e) => {
+          console.log('Notification dismissed:', e.detail);
+          document.getElementById('advanced-result').textContent = 'Notification dismissed - check console';
+        });
+
+        document.getElementById('main-container').appendChild(notification);
+        notification.show();
+      }
+
+      // Update counter
+      function updateNotificationCounter() {
+        const container = document.getElementById('main-container');
+        const count = container.getNotificationCount();
+        document.getElementById('notification-counter').textContent =
+          `Notifications: ${count}`;
+      }
+
+      // Listen for container updates
+      document.addEventListener('notification-container-update', (e) => {
+        updateNotificationCounter();
+      });
+
+      // Copy to clipboard function
+      function copyToClipboard(elementId) {
+        const element = document.getElementById(elementId);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          E2.createToast('success', 'Code copied to clipboard!', {
+            timeout: 2000
+          });
+        });
+      }
+
+      // Initialize counter
+      updateNotificationCounter();
+    </script>
+  </body>
+</html>

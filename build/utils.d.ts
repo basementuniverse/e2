@@ -33,4 +33,36 @@ export declare function isElementVisible(element: HTMLElement): boolean;
  * Apply theme class to an element
  */
 export declare function applyTheme(element: HTMLElement, theme: 'light' | 'dark' | 'auto'): void;
+/**
+ * Create and show a toast notification programmatically
+ */
+export interface CreateToastOptions {
+    title?: string;
+    timeout?: number;
+    dismissible?: boolean;
+    persistent?: boolean;
+    container?: HTMLElement | string;
+}
+export declare function createToast(type: 'info' | 'success' | 'warning' | 'error', message: string, options?: CreateToastOptions): Promise<void>;
+/**
+ * Toast API for convenient toast creation
+ */
+export declare const Toast: {
+    /**
+     * Show an info toast
+     */
+    info: (message: string, options?: CreateToastOptions) => Promise<void>;
+    /**
+     * Show a success toast
+     */
+    success: (message: string, options?: CreateToastOptions) => Promise<void>;
+    /**
+     * Show a warning toast
+     */
+    warning: (message: string, options?: CreateToastOptions) => Promise<void>;
+    /**
+     * Show an error toast
+     */
+    error: (message: string, options?: CreateToastOptions) => Promise<void>;
+};
 //# sourceMappingURL=utils.d.ts.map

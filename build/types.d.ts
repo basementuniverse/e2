@@ -43,6 +43,7 @@ export interface CollapsiblePanelToggleEvent extends EditorElementEvent {
     };
 }
 export type AlertType = 'info' | 'success' | 'warning' | 'error';
+export type NotificationType = 'info' | 'success' | 'warning' | 'error';
 export interface DialogEvent extends EditorElementEvent {
     detail: {
         dialogId: string;
@@ -153,6 +154,33 @@ export interface SplitPanelResizeEndEvent extends EditorElementEvent {
         panelId: string;
         panel: HTMLElement;
         finalSize: number;
+    };
+}
+export interface NotificationEvent extends EditorElementEvent {
+    detail: {
+        notificationId: string;
+        notification: HTMLElement;
+        type: NotificationType;
+    };
+}
+export interface NotificationShowEvent extends NotificationEvent {
+    detail: NotificationEvent['detail'];
+}
+export interface NotificationHideEvent extends NotificationEvent {
+    detail: NotificationEvent['detail'];
+}
+export interface NotificationDismissEvent extends NotificationEvent {
+    detail: NotificationEvent['detail'];
+}
+export interface NotificationClickEvent extends NotificationEvent {
+    detail: NotificationEvent['detail'];
+}
+export interface NotificationContainerEvent extends EditorElementEvent {
+    detail: {
+        containerId: string;
+        container: HTMLElement;
+        position: string;
+        count: number;
     };
 }
 export type Theme = 'light' | 'dark' | 'auto';
