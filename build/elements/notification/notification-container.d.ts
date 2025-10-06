@@ -8,6 +8,7 @@ export type StackDirection = 'up' | 'down';
 export declare class NotificationContainerElement extends HTMLElement implements EditorElementProperties {
     private _theme;
     private _observer;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;

@@ -9,10 +9,12 @@ export declare class SplitPanel extends HTMLElement implements EditorElementProp
     private _minSize;
     private _maxSize;
     private _resizable;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     private handleResize;
     private updateSize;

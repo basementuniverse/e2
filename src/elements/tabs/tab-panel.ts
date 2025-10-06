@@ -4,11 +4,19 @@
  */
 
 import { EditorElementProperties, Theme } from '../../types';
-import { applyTheme, generateId, getShadowRoot } from '../../utils';
+import {
+  applyEffectiveTheme,
+  applyTheme,
+  generateId,
+  getShadowRoot,
+  notifyThemeChange,
+  setupThemeInheritance,
+} from '../../utils';
 
 export class TabPanel extends HTMLElement implements EditorElementProperties {
   private _theme: Theme = 'auto';
   private _active: boolean = false;
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return ['theme', 'disabled', 'active'];
@@ -232,6 +240,8 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
     this._theme = value;
     this.setAttribute('theme', value);
     this.applyTheme(value);
+    // Notify child elements of theme change
+    notifyThemeChange(this, value);
   }
 
   public get active(): boolean {
@@ -294,6 +304,11 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
 
     switch (name) {
       case 'theme':
+        // Clean up existing theme inheritance when explicit theme is set
+        if (this._themeCleanup) {
+          this._themeCleanup();
+          this._themeCleanup = undefined;
+        }
         this._theme = (newValue as Theme) || 'auto';
         this.applyTheme(this._theme);
         break;
@@ -312,7 +327,14 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
     if (!this.id) {
       this.id = generateId('tab-panel');
     }
-    this.applyTheme(this._theme);
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
 
     // Handle pending setup from dynamic creation
     if ((this as any)._pendingSetup) {
@@ -347,6 +369,14 @@ export class TabPanel extends HTMLElement implements EditorElementProperties {
     // Set default empty message if not provided
     if (!this.hasAttribute('data-empty-message')) {
       this.emptyMessage = 'No content available';
+    }
+  }
+
+  disconnectedCallback(): void {
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
     }
   }
 }

@@ -9,10 +9,12 @@ export declare class CollapsiblePanel extends HTMLElement implements EditorEleme
     private _theme;
     private _collapsed;
     private _orientation;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     private handleToggle;
     get theme(): Theme;

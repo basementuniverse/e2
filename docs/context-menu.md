@@ -5,12 +5,15 @@ The E2 context menu system provides a flexible way to add right-click context me
 ## Components
 
 ### `<e2-context-menu>`
+
 The main container for context menu items.
 
 ### `<e2-context-menu-item>`
+
 Individual clickable items within a context menu.
 
 ### `<e2-context-menu-separator>`
+
 Visual separator lines between menu items.
 
 ## Basic Usage
@@ -21,11 +24,30 @@ Define context menus directly in your HTML:
 
 ```html
 <e2-context-menu id="my-menu" target="#my-element">
-  <e2-context-menu-item label="Cut" icon="✂️" shortcut="Ctrl+X" value="cut"></e2-context-menu-item>
-  <e2-context-menu-item label="Copy" icon="📋" shortcut="Ctrl+C" value="copy"></e2-context-menu-item>
-  <e2-context-menu-item label="Paste" icon="📄" shortcut="Ctrl+V" value="paste"></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Cut"
+    icon="✂️"
+    shortcut="Ctrl+X"
+    value="cut"
+  ></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Copy"
+    icon="📋"
+    shortcut="Ctrl+C"
+    value="copy"
+  ></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Paste"
+    icon="📄"
+    shortcut="Ctrl+V"
+    value="paste"
+  ></e2-context-menu-item>
   <e2-context-menu-separator></e2-context-menu-separator>
-  <e2-context-menu-item label="Properties" icon="⚙️" value="properties"></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Properties"
+    icon="⚙️"
+    value="properties"
+  ></e2-context-menu-item>
 </e2-context-menu>
 ```
 
@@ -49,12 +71,12 @@ menu.hide();
 
 #### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `target` | `string` | - | CSS selector for elements that should trigger this context menu on right-click |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
-| `disabled` | `boolean` | `false` | Whether the menu is disabled |
-| `visible` | `boolean` | `false` | Whether the menu is currently visible (read-only) |
+| Attribute  | Type                          | Default  | Description                                                                    |
+| ---------- | ----------------------------- | -------- | ------------------------------------------------------------------------------ |
+| `target`   | `string`                      | -        | CSS selector for elements that should trigger this context menu on right-click |
+| `theme`    | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme                                                                   |
+| `disabled` | `boolean`                     | `false`  | Whether the menu is disabled                                                   |
+| `visible`  | `boolean`                     | `false`  | Whether the menu is currently visible (read-only)                              |
 
 #### Properties
 
@@ -82,23 +104,23 @@ applyTheme(theme: Theme): void;
 
 #### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `context-menu-show` | `{ menuId, menu, x, y, trigger }` | Fired when the menu is shown |
-| `context-menu-hide` | `{ menuId, menu }` | Fired when the menu is hidden |
+| Event               | Detail                            | Description                   |
+| ------------------- | --------------------------------- | ----------------------------- |
+| `context-menu-show` | `{ menuId, menu, x, y, trigger }` | Fired when the menu is shown  |
+| `context-menu-hide` | `{ menuId, menu }`                | Fired when the menu is hidden |
 
 ### `<e2-context-menu-item>`
 
 #### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `label` | `string` | - | Text label for the item |
-| `icon` | `string` | - | Icon (emoji or text) to display before the label |
-| `value` | `string` | `label` | Value sent in click events |
-| `shortcut` | `string` | - | Keyboard shortcut text (display only) |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
-| `disabled` | `boolean` | `false` | Whether the item is disabled |
+| Attribute  | Type                          | Default  | Description                                      |
+| ---------- | ----------------------------- | -------- | ------------------------------------------------ |
+| `label`    | `string`                      | -        | Text label for the item                          |
+| `icon`     | `string`                      | -        | Icon (emoji or text) to display before the label |
+| `value`    | `string`                      | `label`  | Value sent in click events                       |
+| `shortcut` | `string`                      | -        | Keyboard shortcut text (display only)            |
+| `theme`    | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme                                     |
+| `disabled` | `boolean`                     | `false`  | Whether the item is disabled                     |
 
 #### Properties
 
@@ -128,17 +150,17 @@ applyTheme(theme: Theme): void;
 
 #### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
+| Event                     | Detail                                  | Description                    |
+| ------------------------- | --------------------------------------- | ------------------------------ |
 | `context-menu-item-click` | `{ itemId, item, menuId, menu, value }` | Fired when the item is clicked |
 
 ### `<e2-context-menu-separator>`
 
 #### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
+| Attribute | Type                          | Default  | Description  |
+| --------- | ----------------------------- | -------- | ------------ |
+| `theme`   | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
 
 #### Properties
 
@@ -157,7 +179,10 @@ Use the `target` attribute to automatically bind context menus to specific eleme
 ```html
 <!-- Menu appears when right-clicking any .toolbar element -->
 <e2-context-menu target=".toolbar">
-  <e2-context-menu-item label="Customize" value="customize"></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Customize"
+    value="customize"
+  ></e2-context-menu-item>
   <e2-context-menu-item label="Reset" value="reset"></e2-context-menu-item>
 </e2-context-menu>
 
@@ -175,13 +200,22 @@ Create multiple context menus for different parts of your application:
 ```html
 <!-- Toolbar context menu -->
 <e2-context-menu id="toolbar-menu" target="#toolbar">
-  <e2-context-menu-item label="Show/Hide Labels" value="toggle-labels"></e2-context-menu-item>
-  <e2-context-menu-item label="Customize..." value="customize"></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Show/Hide Labels"
+    value="toggle-labels"
+  ></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Customize..."
+    value="customize"
+  ></e2-context-menu-item>
 </e2-context-menu>
 
 <!-- Canvas context menu -->
 <e2-context-menu id="canvas-menu" target="#canvas">
-  <e2-context-menu-item label="Add Object" value="add-object"></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Add Object"
+    value="add-object"
+  ></e2-context-menu-item>
   <e2-context-menu-item label="Paste" value="paste"></e2-context-menu-item>
   <e2-context-menu-separator></e2-context-menu-separator>
   <e2-context-menu-item label="Clear All" value="clear"></e2-context-menu-item>
@@ -189,8 +223,14 @@ Create multiple context menus for different parts of your application:
 
 <!-- Properties panel context menu -->
 <e2-context-menu id="properties-menu" target="#properties">
-  <e2-context-menu-item label="Reset to Default" value="reset"></e2-context-menu-item>
-  <e2-context-menu-item label="Copy Properties" value="copy-props"></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Reset to Default"
+    value="reset"
+  ></e2-context-menu-item>
+  <e2-context-menu-item
+    label="Copy Properties"
+    value="copy-props"
+  ></e2-context-menu-item>
 </e2-context-menu>
 ```
 
@@ -212,7 +252,7 @@ function updateContextMenu(hasSelection, hasClipboard) {
 }
 
 // Listen for context menu show events to update state
-document.addEventListener('context-menu-show', (e) => {
+document.addEventListener('context-menu-show', e => {
   if (e.detail.menuId === 'dynamic-menu') {
     const hasSelection = getSelectionState();
     const hasClipboard = getClipboardState();
@@ -226,7 +266,7 @@ document.addEventListener('context-menu-show', (e) => {
 Listen for item click events to handle menu actions:
 
 ```javascript
-document.addEventListener('context-menu-item-click', (e) => {
+document.addEventListener('context-menu-item-click', e => {
   const { value, menuId } = e.detail;
 
   switch (menuId) {
@@ -265,7 +305,7 @@ Show menus programmatically for custom triggers:
 const customButton = document.querySelector('#custom-button');
 const menu = document.querySelector('#custom-menu');
 
-customButton.addEventListener('click', (e) => {
+customButton.addEventListener('click', e => {
   const rect = e.target.getBoundingClientRect();
   // Show menu below the button
   menu.show(rect.left, rect.bottom + 5, e.target);
@@ -273,7 +313,7 @@ customButton.addEventListener('click', (e) => {
 
 // Or show on long press
 let longPressTimer;
-customButton.addEventListener('mousedown', (e) => {
+customButton.addEventListener('mousedown', e => {
   longPressTimer = setTimeout(() => {
     menu.show(e.clientX, e.clientY, e.target);
   }, 500); // 500ms long press
@@ -333,23 +373,27 @@ Customize the appearance using CSS custom properties:
 ## Best Practices
 
 ### Menu Organization
+
 - Group related items together
 - Use separators to create logical groups
 - Place the most common actions at the top
 - Disable items that aren't applicable rather than hiding them
 
 ### Item Design
+
 - Use clear, descriptive labels
 - Include keyboard shortcuts when available
 - Use consistent iconography
 - Keep menu height reasonable (consider scrolling for very long menus)
 
 ### Event Handling
+
 - Always handle `context-menu-item-click` events
 - Update menu state before showing (in `context-menu-show` handlers)
 - Provide feedback for actions (loading states, confirmations)
 
 ### Accessibility
+
 - Ensure all functionality is available via keyboard
 - Use semantic HTML in menu items when possible
 - Test with screen readers
@@ -363,19 +407,23 @@ The context menu components include full TypeScript definitions:
 import type {
   ContextMenuShowEvent,
   ContextMenuHideEvent,
-  ContextMenuItemClickEvent
+  ContextMenuItemClickEvent,
 } from '@basementuniverse/e2';
 
 // Type-safe event handling
-document.addEventListener('context-menu-item-click', (e: ContextMenuItemClickEvent) => {
-  const { itemId, value, menuId } = e.detail;
-  // TypeScript knows the structure of e.detail
-});
+document.addEventListener(
+  'context-menu-item-click',
+  (e: ContextMenuItemClickEvent) => {
+    const { itemId, value, menuId } = e.detail;
+    // TypeScript knows the structure of e.detail
+  }
+);
 ```
 
 ## Browser Compatibility
 
 Context menus work in all modern browsers that support:
+
 - Custom Elements v1
 - Shadow DOM v1
 - ES2017+ features

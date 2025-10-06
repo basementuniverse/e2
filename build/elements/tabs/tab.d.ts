@@ -9,6 +9,7 @@ export declare class Tab extends HTMLElement implements EditorElementProperties 
     private _closable;
     private _icon;
     private _label;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
@@ -35,5 +36,6 @@ export declare class Tab extends HTMLElement implements EditorElementProperties 
     applyTheme(theme: Theme): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     connectedCallback(): void;
+    disconnectedCallback(): void;
 }
 //# sourceMappingURL=tab.d.ts.map

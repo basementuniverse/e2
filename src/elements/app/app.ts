@@ -4,7 +4,7 @@
  */
 
 import { EditorElementProperties, Theme } from '../../types';
-import { applyTheme, generateId } from '../../utils';
+import { applyTheme, generateId, notifyThemeChange } from '../../utils';
 
 export class E2App extends HTMLElement implements EditorElementProperties {
   private _theme: Theme = 'auto';
@@ -482,6 +482,12 @@ export class E2App extends HTMLElement implements EditorElementProperties {
     if (this._theme === 'auto') {
       this.setupAutoTheme();
     }
+
+    // Notify child elements about initial theme
+    // Use setTimeout to ensure child elements are connected first
+    setTimeout(() => {
+      notifyThemeChange(this, this._theme);
+    }, 0);
   }
 
   disconnectedCallback(): void {
@@ -495,6 +501,8 @@ export class E2App extends HTMLElement implements EditorElementProperties {
   private handleThemeChange = () => {
     if (this._theme === 'auto') {
       this.applyTheme('auto');
+      // Notify child elements about system theme change
+      notifyThemeChange(this, 'auto');
     }
   };
 
@@ -524,6 +532,7 @@ export class E2App extends HTMLElement implements EditorElementProperties {
   }
 
   set theme(value: Theme) {
+    const oldTheme = this._theme;
     this._theme = value;
     this.applyTheme(value);
 
@@ -532,6 +541,11 @@ export class E2App extends HTMLElement implements EditorElementProperties {
     } else if (this.mediaQueryList) {
       this.mediaQueryList.removeEventListener('change', this.handleThemeChange);
       this.mediaQueryList = undefined;
+    }
+
+    // Notify child elements about theme change
+    if (oldTheme !== value) {
+      notifyThemeChange(this, value);
     }
   }
 

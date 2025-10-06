@@ -10,10 +10,12 @@ export declare class StatusItem extends HTMLElement implements EditorElementProp
     private _value;
     private _label;
     private _clickable;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     private handleClick;
     private updateDisplay;

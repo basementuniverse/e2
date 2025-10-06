@@ -7,11 +7,13 @@ export declare class ToolbarMenu extends HTMLElement implements EditorElementPro
     private _theme;
     private _isOpen;
     private _justOpened;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
     private bindEvents;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     private updateContent;
     private updateDisabled;

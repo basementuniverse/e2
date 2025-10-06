@@ -7,45 +7,58 @@ The `<e2-toolbar-menu>` element creates a dropdown menu button for use within to
 ```html
 <e2-toolbar>
   <e2-toolbar-menu label="File">
-    <e2-context-menu-item label="New" icon="📄" value="new"></e2-context-menu-item>
-    <e2-context-menu-item label="Open" icon="📁" value="open"></e2-context-menu-item>
+    <e2-context-menu-item
+      label="New"
+      icon="📄"
+      value="new"
+    ></e2-context-menu-item>
+    <e2-context-menu-item
+      label="Open"
+      icon="📁"
+      value="open"
+    ></e2-context-menu-item>
     <e2-context-menu-separator></e2-context-menu-separator>
-    <e2-context-menu-item label="Save" icon="💾" value="save" shortcut="Ctrl+S"></e2-context-menu-item>
+    <e2-context-menu-item
+      label="Save"
+      icon="💾"
+      value="save"
+      shortcut="Ctrl+S"
+    ></e2-context-menu-item>
   </e2-toolbar-menu>
 </e2-toolbar>
 ```
 
 ## Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `label` | string | `''` | The text displayed on the menu button |
-| `icon` | string | `''` | Optional icon to display before the label |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
-| `disabled` | boolean | `false` | Whether the menu is disabled |
+| Attribute  | Type                          | Default  | Description                               |
+| ---------- | ----------------------------- | -------- | ----------------------------------------- |
+| `label`    | string                        | `''`     | The text displayed on the menu button     |
+| `icon`     | string                        | `''`     | Optional icon to display before the label |
+| `theme`    | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme                              |
+| `disabled` | boolean                       | `false`  | Whether the menu is disabled              |
 
 ## Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `label` | string | Gets/sets the menu button label |
-| `icon` | string | Gets/sets the menu button icon |
-| `theme` | Theme | Gets/sets the visual theme |
+| Property | Type    | Description                                        |
+| -------- | ------- | -------------------------------------------------- |
+| `label`  | string  | Gets/sets the menu button label                    |
+| `icon`   | string  | Gets/sets the menu button icon                     |
+| `theme`  | Theme   | Gets/sets the visual theme                         |
 | `isOpen` | boolean | Whether the dropdown is currently open (read-only) |
 
 ## Methods
 
-| Method | Description |
-|--------|-------------|
-| `open()` | Opens the dropdown menu |
-| `close()` | Closes the dropdown menu |
+| Method     | Description                           |
+| ---------- | ------------------------------------- |
+| `open()`   | Opens the dropdown menu               |
+| `close()`  | Closes the dropdown menu              |
 | `toggle()` | Toggles the dropdown menu open/closed |
 
 ## Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `toolbar-menu-show` | `{ menuId, menu }` | Fired when the dropdown opens |
+| Event               | Detail             | Description                    |
+| ------------------- | ------------------ | ------------------------------ |
+| `toolbar-menu-show` | `{ menuId, menu }` | Fired when the dropdown opens  |
 | `toolbar-menu-hide` | `{ menuId, menu }` | Fired when the dropdown closes |
 
 ## Menu Items

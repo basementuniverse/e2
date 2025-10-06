@@ -9,6 +9,7 @@ export declare class NotificationElement extends HTMLElement implements EditorEl
     private _visible;
     private _resolvePromise;
     private _rejectPromise;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;

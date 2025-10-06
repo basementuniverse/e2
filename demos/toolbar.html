@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -87,31 +87,99 @@
 
         <e2-toolbar class="demo-toolbar">
           <e2-toolbar-menu label="File" id="file-menu">
-            <e2-context-menu-item label="New File" icon="📄" value="new"></e2-context-menu-item>
-            <e2-context-menu-item label="Open File" icon="📁" value="open"></e2-context-menu-item>
-            <e2-context-menu-item label="Recent Files" icon="📋" value="recent"></e2-context-menu-item>
+            <e2-context-menu-item
+              label="New File"
+              icon="📄"
+              value="new"
+            ></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Open File"
+              icon="📁"
+              value="open"
+            ></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Recent Files"
+              icon="📋"
+              value="recent"
+            ></e2-context-menu-item>
             <e2-context-menu-separator></e2-context-menu-separator>
-            <e2-context-menu-item label="Save" icon="💾" value="save" shortcut="Ctrl+S"></e2-context-menu-item>
-            <e2-context-menu-item label="Save As..." value="save-as" shortcut="Ctrl+Shift+S"></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Save"
+              icon="💾"
+              value="save"
+              shortcut="Ctrl+S"
+            ></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Save As..."
+              value="save-as"
+              shortcut="Ctrl+Shift+S"
+            ></e2-context-menu-item>
             <e2-context-menu-separator></e2-context-menu-separator>
-            <e2-context-menu-item label="Exit" value="exit" shortcut="Alt+F4"></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Exit"
+              value="exit"
+              shortcut="Alt+F4"
+            ></e2-context-menu-item>
           </e2-toolbar-menu>
 
           <e2-toolbar-menu label="Edit" id="edit-menu">
-            <e2-context-menu-item label="Undo" icon="↶" value="undo" shortcut="Ctrl+Z"></e2-context-menu-item>
-            <e2-context-menu-item label="Redo" icon="↷" value="redo" shortcut="Ctrl+Y"></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Undo"
+              icon="↶"
+              value="undo"
+              shortcut="Ctrl+Z"
+            ></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Redo"
+              icon="↷"
+              value="redo"
+              shortcut="Ctrl+Y"
+            ></e2-context-menu-item>
             <e2-context-menu-separator></e2-context-menu-separator>
-            <e2-context-menu-item label="Cut" icon="✂️" value="cut" shortcut="Ctrl+X"></e2-context-menu-item>
-            <e2-context-menu-item label="Copy" icon="📋" value="copy" shortcut="Ctrl+C"></e2-context-menu-item>
-            <e2-context-menu-item label="Paste" icon="📌" value="paste" shortcut="Ctrl+V"></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Cut"
+              icon="✂️"
+              value="cut"
+              shortcut="Ctrl+X"
+            ></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Copy"
+              icon="📋"
+              value="copy"
+              shortcut="Ctrl+C"
+            ></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Paste"
+              icon="📌"
+              value="paste"
+              shortcut="Ctrl+V"
+            ></e2-context-menu-item>
           </e2-toolbar-menu>
 
           <e2-toolbar-menu label="View" id="view-menu">
-            <e2-context-menu-item label="Zoom In" icon="🔍" value="zoom-in" shortcut="Ctrl+="></e2-context-menu-item>
-            <e2-context-menu-item label="Zoom Out" icon="🔍" value="zoom-out" shortcut="Ctrl+-"></e2-context-menu-item>
-            <e2-context-menu-item label="Reset Zoom" value="zoom-reset" shortcut="Ctrl+0"></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Zoom In"
+              icon="🔍"
+              value="zoom-in"
+              shortcut="Ctrl+="
+            ></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Zoom Out"
+              icon="🔍"
+              value="zoom-out"
+              shortcut="Ctrl+-"
+            ></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Reset Zoom"
+              value="zoom-reset"
+              shortcut="Ctrl+0"
+            ></e2-context-menu-item>
             <e2-context-menu-separator></e2-context-menu-separator>
-            <e2-context-menu-item label="Full Screen" value="fullscreen" shortcut="F11"></e2-context-menu-item>
+            <e2-context-menu-item
+              label="Full Screen"
+              value="fullscreen"
+              shortcut="F11"
+            ></e2-context-menu-item>
           </e2-toolbar-menu>
 
           <e2-toolbar-separator></e2-toolbar-separator>
@@ -159,8 +227,11 @@
 
         <div class="code-example">
           <h3>Basic Toolbar HTML:</h3>
-          <button class="copy-button" onclick="copyToClipboard('toolbar-html')">Copy</button>
-          <pre id="toolbar-html">&lt;!-- Load E2 Library --&gt;
+          <button class="copy-button" onclick="copyToClipboard('toolbar-html')">
+            Copy
+          </button>
+          <pre id="toolbar-html">
+&lt;!-- Load E2 Library --&gt;
 &lt;script src="path/to/e2.min.js"&gt;&lt;/script&gt;
 
 &lt;!-- Basic Toolbar --&gt;
@@ -172,24 +243,32 @@
   &lt;e2-toolbar-button label="Cut" icon="✂️"&gt;&lt;/e2-toolbar-button&gt;
   &lt;e2-toolbar-button label="Copy" icon="📋"&gt;&lt;/e2-toolbar-button&gt;
   &lt;e2-toolbar-button label="Paste" icon="📌"&gt;&lt;/e2-toolbar-button&gt;
-&lt;/e2-toolbar&gt;</pre>
+&lt;/e2-toolbar&gt;</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>Dark Theme Toolbar:</h3>
-          <button class="copy-button" onclick="copyToClipboard('toolbar-dark')">Copy</button>
-          <pre id="toolbar-dark">&lt;e2-toolbar theme="dark"&gt;
+          <button class="copy-button" onclick="copyToClipboard('toolbar-dark')">
+            Copy
+          </button>
+          <pre id="toolbar-dark">
+&lt;e2-toolbar theme="dark"&gt;
   &lt;e2-toolbar-button label="Undo" icon="↶" theme="dark"&gt;&lt;/e2-toolbar-button&gt;
   &lt;e2-toolbar-button label="Redo" icon="↷" theme="dark"&gt;&lt;/e2-toolbar-button&gt;
   &lt;e2-toolbar-separator theme="dark"&gt;&lt;/e2-toolbar-separator&gt;
   &lt;e2-toolbar-button label="Zoom In" icon="🔍" theme="dark"&gt;&lt;/e2-toolbar-button&gt;
-&lt;/e2-toolbar&gt;</pre>
+&lt;/e2-toolbar&gt;</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>Toolbar Menu (Menu Bar Style):</h3>
-          <button class="copy-button" onclick="copyToClipboard('toolbar-menu')">Copy</button>
-          <pre id="toolbar-menu">&lt;e2-toolbar&gt;
+          <button class="copy-button" onclick="copyToClipboard('toolbar-menu')">
+            Copy
+          </button>
+          <pre id="toolbar-menu">
+&lt;e2-toolbar&gt;
   &lt;e2-toolbar-menu label="File"&gt;
     &lt;e2-context-menu-item label="New" icon="📄" value="new"&gt;&lt;/e2-context-menu-item&gt;
     &lt;e2-context-menu-item label="Open" icon="📁" value="open"&gt;&lt;/e2-context-menu-item&gt;
@@ -202,13 +281,17 @@
     &lt;e2-context-menu-item label="Copy" icon="📋" value="copy" shortcut="Ctrl+C"&gt;&lt;/e2-context-menu-item&gt;
     &lt;e2-context-menu-item label="Paste" icon="📌" value="paste" shortcut="Ctrl+V"&gt;&lt;/e2-context-menu-item&gt;
   &lt;/e2-toolbar-menu&gt;
-&lt;/e2-toolbar&gt;</pre>
+&lt;/e2-toolbar&gt;</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>JavaScript Event Handling:</h3>
-          <button class="copy-button" onclick="copyToClipboard('toolbar-js')">Copy</button>
-          <pre id="toolbar-js">// Listen for toolbar button clicks
+          <button class="copy-button" onclick="copyToClipboard('toolbar-js')">
+            Copy
+          </button>
+          <pre id="toolbar-js">
+// Listen for toolbar button clicks
 document.addEventListener('toolbar-button-click', event => {
   const { buttonId, button } = event.detail;
   console.log(`Button clicked: ${buttonId}`, button);
@@ -238,7 +321,8 @@ button.disabled = false;
 
 const menu = document.querySelector('e2-toolbar-menu');
 menu.open(); // Open dropdown
-menu.close(); // Close dropdown</pre>
+menu.close(); // Close dropdown</pre
+          >
         </div>
       </div>
 
@@ -263,8 +347,8 @@ menu.close(); // Close dropdown</pre>
 
         output.innerHTML += `
           <div>[${timestamp}] Button clicked: ${buttonId} (${
-          button.label || 'no label'
-        })</div>
+            button.label || 'no label'
+          })</div>
         `;
         output.scrollTop = output.scrollHeight;
       });
@@ -276,8 +360,8 @@ menu.close(); // Close dropdown</pre>
 
         output.innerHTML += `
           <div>[${timestamp}] Menu opened: ${menuId} (${
-          menu.label || 'no label'
-        })</div>
+            menu.label || 'no label'
+          })</div>
         `;
         output.scrollTop = output.scrollHeight;
       });
@@ -288,8 +372,8 @@ menu.close(); // Close dropdown</pre>
 
         output.innerHTML += `
           <div>[${timestamp}] Menu closed: ${menuId} (${
-          menu.label || 'no label'
-        })</div>
+            menu.label || 'no label'
+          })</div>
         `;
         output.scrollTop = output.scrollHeight;
       });

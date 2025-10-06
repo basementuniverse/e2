@@ -25,7 +25,7 @@ The `<e2-app>` element is a wrapper component that provides comprehensive CSS st
 
   <main>
     <!-- Your editor content here -->
-    <input type="text" placeholder="This input is automatically styled">
+    <input type="text" placeholder="This input is automatically styled" />
     <button>This button is automatically styled</button>
   </main>
 </e2-app>
@@ -42,41 +42,44 @@ app.theme = 'dark';
 
 ## Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Sets the theme for the entire application |
+| Attribute | Type                          | Default  | Description                               |
+| --------- | ----------------------------- | -------- | ----------------------------------------- |
+| `theme`   | `'light' \| 'dark' \| 'auto'` | `'auto'` | Sets the theme for the entire application |
 
 ## Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `theme` | `Theme` | Get/set the current theme |
+| Property | Type    | Description               |
+| -------- | ------- | ------------------------- |
+| `theme`  | `Theme` | Get/set the current theme |
 
 ## Methods
 
-| Method | Parameters | Description |
-|--------|------------|-------------|
-| `applyTheme(theme)` | `theme: Theme` | Apply a specific theme |
-| `setCSSVariable(property, value)` | `property: string, value: string` | Set a custom CSS property |
-| `getCSSVariable(property)` | `property: string` | Get a custom CSS property value |
+| Method                            | Parameters                        | Description                     |
+| --------------------------------- | --------------------------------- | ------------------------------- |
+| `applyTheme(theme)`               | `theme: Theme`                    | Apply a specific theme          |
+| `setCSSVariable(property, value)` | `property: string, value: string` | Set a custom CSS property       |
+| `getCSSVariable(property)`        | `property: string`                | Get a custom CSS property value |
 
 ## CSS Custom Properties
 
 The `<e2-app>` element provides extensive CSS custom properties for customization:
 
 ### Layout
+
 - `--app-width`: Application width (default: `100%`)
 - `--app-height`: Application height (default: `100vh`)
 - `--app-padding`: Application padding (default: `0`)
 - `--app-margin`: Application margin (default: `0`)
 
 ### Typography
+
 - `--font-family`: Base font family
 - `--font-size`: Base font size (default: `14px`)
 - `--line-height`: Base line height (default: `1.4`)
 - `--font-weight`: Base font weight (default: `400`)
 
 ### Colors (Light Theme)
+
 - `--bg-primary`: Primary background color
 - `--bg-secondary`: Secondary background color
 - `--bg-tertiary`: Tertiary background color
@@ -92,6 +95,7 @@ The `<e2-app>` element provides extensive CSS custom properties for customizatio
 - `--danger-color`: Danger/error color
 
 ### Form Controls
+
 - `--input-bg`: Input background color
 - `--input-border`: Input border color
 - `--input-border-focus`: Input focus border color
@@ -102,6 +106,7 @@ The `<e2-app>` element provides extensive CSS custom properties for customizatio
 - `--input-font-size`: Input font size (default: `14px`)
 
 ### Buttons
+
 - `--button-bg`: Button background color
 - `--button-bg-hover`: Button hover background color
 - `--button-border`: Button border color
@@ -110,11 +115,13 @@ The `<e2-app>` element provides extensive CSS custom properties for customizatio
 - `--button-border-radius`: Button border radius (default: `4px`)
 
 ### Shadows
+
 - `--shadow-sm`: Small shadow
 - `--shadow`: Default shadow
 - `--shadow-lg`: Large shadow
 
 ### Transitions
+
 - `--transition-fast`: Fast transition (default: `0.15s ease-in-out`)
 - `--transition-normal`: Normal transition (default: `0.3s ease-in-out`)
 
@@ -123,6 +130,7 @@ The `<e2-app>` element provides extensive CSS custom properties for customizatio
 The `<e2-app>` element automatically styles the following HTML elements:
 
 ### Typography
+
 - `h1, h2, h3, h4, h5, h6` - Headings with consistent sizing and spacing
 - `p` - Paragraphs with proper margins
 - `small` - Small text with muted color
@@ -130,6 +138,7 @@ The `<e2-app>` element automatically styles the following HTML elements:
 - `a` - Links with accent color and hover effects
 
 ### Form Controls
+
 - `input[type="text|email|password|number|search|url|tel|date|time|datetime-local"]` - Text inputs
 - `textarea` - Multi-line text areas
 - `select` - Dropdown selects
@@ -139,6 +148,7 @@ The `<e2-app>` element automatically styles the following HTML elements:
 - `button, input[type="button|submit|reset"]` - Buttons
 
 ### Form Structure
+
 - `label` - Form labels
 - `fieldset` - Field groupings
 - `legend` - Fieldset legends
@@ -148,15 +158,18 @@ The `<e2-app>` element automatically styles the following HTML elements:
 The `<e2-app>` element provides utility classes for common styling needs:
 
 ### Text Colors
+
 - `.text-primary` - Primary text color
 - `.text-secondary` - Secondary text color
 - `.text-muted` - Muted text color
 
 ### Backgrounds
+
 - `.bg-primary` - Primary background
 - `.bg-secondary` - Secondary background
 
 ### Borders and Effects
+
 - `.border` - Default border
 - `.rounded` - Rounded corners
 - `.shadow` - Default shadow
@@ -201,12 +214,15 @@ e2-app .my-custom-panel {
 ## Themes
 
 ### Light Theme
+
 The default light theme uses bright backgrounds with dark text, suitable for well-lit environments.
 
 ### Dark Theme
+
 The dark theme uses dark backgrounds with light text, reducing eye strain in low-light conditions.
 
 ### Auto Theme
+
 The auto theme automatically switches between light and dark based on the user's system preference using the `prefers-color-scheme` media query.
 
 ## Best Practices
@@ -220,6 +236,7 @@ The auto theme automatically switches between light and dark based on the user's
 ## Browser Support
 
 The `<e2-app>` element works in all modern browsers that support:
+
 - Custom Elements v1
 - CSS Custom Properties
 - CSS Grid and Flexbox

@@ -7,6 +7,7 @@ export declare class ContextMenu extends HTMLElement implements EditorElementPro
     private _theme;
     private _visible;
     private _justShown;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;

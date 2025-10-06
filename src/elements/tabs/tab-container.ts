@@ -11,10 +11,12 @@ import {
   Theme,
 } from '../../types';
 import {
+  applyEffectiveTheme,
   applyTheme,
   dispatchCustomEvent,
   generateId,
   getShadowRoot,
+  setupThemeInheritance,
 } from '../../utils';
 
 export class TabContainer
@@ -25,6 +27,7 @@ export class TabContainer
   private _activeTabId: string | null = null;
   private _tabPosition: 'top' | 'bottom' | 'left' | 'right' = 'top';
   private _closable: boolean = false;
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return ['theme', 'disabled', 'active-tab', 'tab-position', 'closable'];
@@ -584,6 +587,13 @@ export class TabContainer
   public set theme(value: Theme) {
     this._theme = value;
     this.setAttribute('theme', value);
+
+    // Clean up any existing theme inheritance
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
+
     this.applyTheme(value);
   }
 
@@ -656,8 +666,22 @@ export class TabContainer
 
     switch (name) {
       case 'theme':
-        this._theme = (newValue as Theme) || 'auto';
-        this.applyTheme(this._theme);
+        // If theme attribute is being set, use explicit theme
+        // If theme attribute is being removed, switch to inheritance
+        if (newValue) {
+          this._theme = newValue as Theme;
+          // Clean up any existing theme inheritance
+          if (this._themeCleanup) {
+            this._themeCleanup();
+            this._themeCleanup = undefined;
+          }
+          this.applyTheme(this._theme);
+        } else if (this.isConnected) {
+          // Attribute was removed, switch to inheritance
+          this._theme = 'auto';
+          applyEffectiveTheme(this);
+          this._themeCleanup = setupThemeInheritance(this);
+        }
         break;
       case 'active-tab':
         if (newValue && newValue !== this._activeTabId) {
@@ -677,7 +701,15 @@ export class TabContainer
     if (!this.id) {
       this.id = generateId('tab-container');
     }
-    this.applyTheme(this._theme);
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
+
     this.updateTabsAndPanels();
 
     // Defer initialization until the next frame to avoid conflicts with custom element initialization
@@ -695,6 +727,14 @@ export class TabContainer
     //     }
     //   });
     // });
+  }
+
+  disconnectedCallback(): void {
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 }
 

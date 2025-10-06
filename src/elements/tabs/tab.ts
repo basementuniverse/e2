@@ -5,10 +5,13 @@
 
 import { EditorElementProperties, Theme } from '../../types';
 import {
+  applyEffectiveTheme,
   applyTheme,
   dispatchCustomEvent,
   generateId,
   getShadowRoot,
+  notifyThemeChange,
+  setupThemeInheritance,
 } from '../../utils';
 
 export class Tab extends HTMLElement implements EditorElementProperties {
@@ -17,6 +20,7 @@ export class Tab extends HTMLElement implements EditorElementProperties {
   private _closable: boolean = false;
   private _icon: string = '';
   private _label: string = '';
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return [
@@ -281,6 +285,8 @@ export class Tab extends HTMLElement implements EditorElementProperties {
     this._theme = value;
     this.setAttribute('theme', value);
     this.applyTheme(value);
+    // Notify child elements of theme change
+    notifyThemeChange(this, value);
   }
 
   public get active(): boolean {
@@ -366,6 +372,11 @@ export class Tab extends HTMLElement implements EditorElementProperties {
 
     switch (name) {
       case 'theme':
+        // Clean up existing theme inheritance when explicit theme is set
+        if (this._themeCleanup) {
+          this._themeCleanup();
+          this._themeCleanup = undefined;
+        }
         this._theme = (newValue as Theme) || 'auto';
         this.applyTheme(this._theme);
         break;
@@ -390,7 +401,15 @@ export class Tab extends HTMLElement implements EditorElementProperties {
     if (!this.id) {
       this.id = generateId('tab');
     }
-    this.applyTheme(this._theme);
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
+
     this.updateContent();
 
     // Handle pending setup from dynamic creation
@@ -420,6 +439,14 @@ export class Tab extends HTMLElement implements EditorElementProperties {
 
     // Update content when connected
     this.updateContent();
+  }
+
+  disconnectedCallback(): void {
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 }
 

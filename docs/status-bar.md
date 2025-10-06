@@ -14,10 +14,10 @@ A horizontal container that displays status information across three sections (l
 
 ### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme mode for the status bar |
-| `disabled` | boolean | `false` | Disables the entire status bar and all its contents |
+| Attribute  | Type                          | Default  | Description                                         |
+| ---------- | ----------------------------- | -------- | --------------------------------------------------- |
+| `theme`    | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme mode for the status bar                       |
+| `disabled` | boolean                       | `false`  | Disables the entire status bar and all its contents |
 
 ### Events
 
@@ -81,7 +81,11 @@ interface StatusMessageEvent extends CustomEvent {
   </e2-status-section>
 
   <e2-status-section slot="center" position="center">
-    <e2-status-item type="progress" label="Loading" value="0.7"></e2-status-item>
+    <e2-status-item
+      type="progress"
+      label="Loading"
+      value="0.7"
+    ></e2-status-item>
   </e2-status-section>
 
   <e2-status-section slot="right" position="right">
@@ -119,14 +123,14 @@ A flexible status display item that can show text, progress indicators, tools, m
 
 ### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `type` | `'text' \| 'progress' \| 'tool' \| 'message' \| 'indicator'` | `'text'` | The display type of the status item |
-| `value` | string \| number | `''` | The primary value displayed by the item |
-| `label` | string | `''` | Optional label text displayed before the value |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme mode for the item |
-| `clickable` | boolean | `false` | Makes the item interactive and clickable |
-| `disabled` | boolean | `false` | Disables the item interaction |
+| Attribute   | Type                                                         | Default  | Description                                    |
+| ----------- | ------------------------------------------------------------ | -------- | ---------------------------------------------- |
+| `type`      | `'text' \| 'progress' \| 'tool' \| 'message' \| 'indicator'` | `'text'` | The display type of the status item            |
+| `value`     | string \| number                                             | `''`     | The primary value displayed by the item        |
+| `label`     | string                                                       | `''`     | Optional label text displayed before the value |
+| `theme`     | `'light' \| 'dark' \| 'auto'`                                | `'auto'` | Theme mode for the item                        |
+| `clickable` | boolean                                                      | `false`  | Makes the item interactive and clickable       |
+| `disabled`  | boolean                                                      | `false`  | Disables the item interaction                  |
 
 ### Events
 
@@ -194,6 +198,7 @@ interface StatusItemUpdateEvent extends CustomEvent {
 ### Item Types
 
 #### Text Item
+
 Basic text display with optional label.
 
 ```html
@@ -202,6 +207,7 @@ Basic text display with optional label.
 ```
 
 #### Progress Item
+
 Shows a progress bar with percentage display.
 
 ```html
@@ -209,13 +215,20 @@ Shows a progress bar with percentage display.
 ```
 
 #### Tool Item
+
 Displays current tool information with special styling.
 
 ```html
-<e2-status-item type="tool" label="Brush" value="10px" clickable></e2-status-item>
+<e2-status-item
+  type="tool"
+  label="Brush"
+  value="10px"
+  clickable
+></e2-status-item>
 ```
 
 #### Message Item
+
 Shows informational messages with italic styling.
 
 ```html
@@ -223,6 +236,7 @@ Shows informational messages with italic styling.
 ```
 
 #### Indicator Item
+
 Displays status indicators with colored dot icons.
 
 ```html
@@ -248,12 +262,17 @@ item.setProgress(0.75); // Set progress to 75%
 item.setIcon('🎨');
 
 // Listen for events
-item.addEventListener('status-item-click', (event) => {
+item.addEventListener('status-item-click', event => {
   console.log('Item clicked:', event.detail.itemId);
 });
 
-item.addEventListener('status-item-update', (event) => {
-  console.log('Value changed:', event.detail.oldValue, '→', event.detail.newValue);
+item.addEventListener('status-item-update', event => {
+  console.log(
+    'Value changed:',
+    event.detail.oldValue,
+    '→',
+    event.detail.newValue
+  );
 });
 ```
 
@@ -263,11 +282,11 @@ A container that organizes status items within specific areas of the status bar 
 
 ### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
+| Attribute  | Type                            | Default  | Description                    |
+| ---------- | ------------------------------- | -------- | ------------------------------ |
 | `position` | `'left' \| 'center' \| 'right'` | `'left'` | Position within the status bar |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme mode for the section |
-| `disabled` | boolean | `false` | Disables the entire section |
+| `theme`    | `'light' \| 'dark' \| 'auto'`   | `'auto'` | Theme mode for the section     |
+| `disabled` | boolean                         | `false`  | Disables the entire section    |
 
 ### Usage
 
@@ -279,12 +298,23 @@ A container that organizes status items within specific areas of the status bar 
   </e2-status-section>
 
   <e2-status-section slot="center" position="center">
-    <e2-status-item type="message" value="Welcome to the editor"></e2-status-item>
+    <e2-status-item
+      type="message"
+      value="Welcome to the editor"
+    ></e2-status-item>
   </e2-status-section>
 
   <e2-status-section slot="right" position="right">
-    <e2-status-item type="text" value="100%" data-priority="medium"></e2-status-item>
-    <e2-status-item type="text" value="UTF-8" data-priority="low"></e2-status-item>
+    <e2-status-item
+      type="text"
+      value="100%"
+      data-priority="medium"
+    ></e2-status-item>
+    <e2-status-item
+      type="text"
+      value="UTF-8"
+      data-priority="low"
+    ></e2-status-item>
   </e2-status-section>
 </e2-status-bar>
 ```
@@ -326,151 +356,156 @@ const lowPriorityItems = section.getItemsByPriority('low');
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Status Bar Example</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    .content {
-      flex: 1;
-      padding: 20px;
-      background: #f5f5f5;
-    }
-
-    e2-status-bar {
-      position: sticky;
-      bottom: 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="content">
-    <h1>Editor Application</h1>
-    <p>Main application content here...</p>
-
-    <button onclick="simulateProgress()">Start Operation</button>
-    <button onclick="changeTool()">Change Tool</button>
-    <button onclick="showMessage()">Show Message</button>
-  </div>
-
-  <e2-status-bar id="main-status" theme="light">
-    <e2-status-section slot="left" position="left">
-      <e2-status-item
-        id="status-indicator"
-        type="indicator"
-        label="Ready"
-        value="●">
-      </e2-status-item>
-      <e2-status-item type="text" label="Ln" value="1"></e2-status-item>
-      <e2-status-item type="text" label="Col" value="1"></e2-status-item>
-    </e2-status-section>
-
-    <e2-status-section slot="center" position="center">
-      <e2-status-item
-        id="progress"
-        type="progress"
-        label="Processing"
-        value="0"
-        style="display: none;">
-      </e2-status-item>
-    </e2-status-section>
-
-    <e2-status-section slot="right" position="right">
-      <e2-status-item
-        id="current-tool"
-        type="tool"
-        label="Tool"
-        value="Select"
-        clickable>
-      </e2-status-item>
-      <e2-status-item
-        type="text"
-        label="Zoom"
-        value="100%"
-        clickable
-        data-priority="medium">
-      </e2-status-item>
-      <e2-status-item
-        type="text"
-        value="UTF-8"
-        data-priority="low">
-      </e2-status-item>
-    </e2-status-section>
-  </e2-status-bar>
-
-  <script src="../build/e2.min.js"></script>
-  <script>
-    const statusBar = document.getElementById('main-status');
-    const progressItem = document.getElementById('progress');
-    const toolItem = document.getElementById('current-tool');
-
-    // Event listeners
-    document.addEventListener('status-item-click', (event) => {
-      const { itemId, itemType, value } = event.detail;
-      console.log(`Status item clicked: ${itemId} (${itemType}) - ${value}`);
-
-      if (itemId === 'current-tool') {
-        changeTool();
+  <head>
+    <title>Status Bar Example</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
       }
-    });
 
-    document.addEventListener('status-message', (event) => {
-      const { message, type } = event.detail;
-      console.log(`Status message (${type}): ${message}`);
-    });
+      .content {
+        flex: 1;
+        padding: 20px;
+        background: #f5f5f5;
+      }
 
-    // Demo functions
-    function simulateProgress() {
-      progressItem.style.display = 'inline-flex';
-      let progress = 0;
+      e2-status-bar {
+        position: sticky;
+        bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <h1>Editor Application</h1>
+      <p>Main application content here...</p>
 
-      const interval = setInterval(() => {
-        progress += 0.1;
-        progressItem.setProgress(progress);
+      <button onclick="simulateProgress()">Start Operation</button>
+      <button onclick="changeTool()">Change Tool</button>
+      <button onclick="showMessage()">Show Message</button>
+    </div>
 
-        if (progress >= 1) {
-          clearInterval(interval);
-          statusBar.showMessage('Operation completed!', 'success', 3000);
-          setTimeout(() => {
-            progressItem.style.display = 'none';
-            progressItem.setProgress(0);
-          }, 1000);
+    <e2-status-bar id="main-status" theme="light">
+      <e2-status-section slot="left" position="left">
+        <e2-status-item
+          id="status-indicator"
+          type="indicator"
+          label="Ready"
+          value="●"
+        >
+        </e2-status-item>
+        <e2-status-item type="text" label="Ln" value="1"></e2-status-item>
+        <e2-status-item type="text" label="Col" value="1"></e2-status-item>
+      </e2-status-section>
+
+      <e2-status-section slot="center" position="center">
+        <e2-status-item
+          id="progress"
+          type="progress"
+          label="Processing"
+          value="0"
+          style="display: none;"
+        >
+        </e2-status-item>
+      </e2-status-section>
+
+      <e2-status-section slot="right" position="right">
+        <e2-status-item
+          id="current-tool"
+          type="tool"
+          label="Tool"
+          value="Select"
+          clickable
+        >
+        </e2-status-item>
+        <e2-status-item
+          type="text"
+          label="Zoom"
+          value="100%"
+          clickable
+          data-priority="medium"
+        >
+        </e2-status-item>
+        <e2-status-item type="text" value="UTF-8" data-priority="low">
+        </e2-status-item>
+      </e2-status-section>
+    </e2-status-bar>
+
+    <script src="../build/e2.min.js"></script>
+    <script>
+      const statusBar = document.getElementById('main-status');
+      const progressItem = document.getElementById('progress');
+      const toolItem = document.getElementById('current-tool');
+
+      // Event listeners
+      document.addEventListener('status-item-click', event => {
+        const { itemId, itemType, value } = event.detail;
+        console.log(`Status item clicked: ${itemId} (${itemType}) - ${value}`);
+
+        if (itemId === 'current-tool') {
+          changeTool();
         }
-      }, 200);
-    }
+      });
 
-    function changeTool() {
-      const tools = ['Select', 'Brush', 'Eraser', 'Fill', 'Text'];
-      const current = toolItem.value;
-      const currentIndex = tools.indexOf(current);
-      const nextIndex = (currentIndex + 1) % tools.length;
+      document.addEventListener('status-message', event => {
+        const { message, type } = event.detail;
+        console.log(`Status message (${type}): ${message}`);
+      });
 
-      toolItem.value = tools[nextIndex];
-      statusBar.showMessage(`Tool changed to ${tools[nextIndex]}`, 'info', 2000);
-    }
+      // Demo functions
+      function simulateProgress() {
+        progressItem.style.display = 'inline-flex';
+        let progress = 0;
 
-    function showMessage() {
-      const messages = [
-        { text: 'File saved successfully!', type: 'success' },
-        { text: 'Warning: Unsaved changes', type: 'warning' },
-        { text: 'Processing image...', type: 'info' },
-        { text: 'Error: Operation failed', type: 'error' }
-      ];
+        const interval = setInterval(() => {
+          progress += 0.1;
+          progressItem.setProgress(progress);
 
-      const msg = messages[Math.floor(Math.random() * messages.length)];
-      statusBar.showMessage(msg.text, msg.type, 3000);
-    }
+          if (progress >= 1) {
+            clearInterval(interval);
+            statusBar.showMessage('Operation completed!', 'success', 3000);
+            setTimeout(() => {
+              progressItem.style.display = 'none';
+              progressItem.setProgress(0);
+            }, 1000);
+          }
+        }, 200);
+      }
 
-    // Initialize
-    statusBar.showMessage('Application ready', 'info', 2000);
-  </script>
-</body>
+      function changeTool() {
+        const tools = ['Select', 'Brush', 'Eraser', 'Fill', 'Text'];
+        const current = toolItem.value;
+        const currentIndex = tools.indexOf(current);
+        const nextIndex = (currentIndex + 1) % tools.length;
+
+        toolItem.value = tools[nextIndex];
+        statusBar.showMessage(
+          `Tool changed to ${tools[nextIndex]}`,
+          'info',
+          2000
+        );
+      }
+
+      function showMessage() {
+        const messages = [
+          { text: 'File saved successfully!', type: 'success' },
+          { text: 'Warning: Unsaved changes', type: 'warning' },
+          { text: 'Processing image...', type: 'info' },
+          { text: 'Error: Operation failed', type: 'error' },
+        ];
+
+        const msg = messages[Math.floor(Math.random() * messages.length)];
+        statusBar.showMessage(msg.text, msg.type, 3000);
+      }
+
+      // Initialize
+      statusBar.showMessage('Application ready', 'info', 2000);
+    </script>
+  </body>
 </html>
 ```

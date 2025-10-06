@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -186,8 +186,11 @@
 
         <div class="code-example">
           <h3>Complete Setup HTML:</h3>
-          <button class="copy-button" onclick="copyToClipboard('dialog-setup')">Copy</button>
-          <pre id="dialog-setup">&lt;!-- Load E2 Library --&gt;
+          <button class="copy-button" onclick="copyToClipboard('dialog-setup')">
+            Copy
+          </button>
+          <pre id="dialog-setup">
+&lt;!-- Load E2 Library --&gt;
 &lt;script src="path/to/e2.min.js"&gt;&lt;/script&gt;
 
 &lt;!-- Basic Dialog --&gt;
@@ -222,13 +225,17 @@
   message="Please enter a value:"
   placeholder="Type here..."
   required&gt;
-&lt;/e2-prompt&gt;</pre>
+&lt;/e2-prompt&gt;</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>JavaScript Usage Patterns:</h3>
-          <button class="copy-button" onclick="copyToClipboard('dialog-js')">Copy</button>
-          <pre id="dialog-js">// Show dialogs
+          <button class="copy-button" onclick="copyToClipboard('dialog-js')">
+            Copy
+          </button>
+          <pre id="dialog-js">
+// Show dialogs
 document.getElementById('my-dialog').show();        // Non-modal
 document.getElementById('my-dialog').showModal();   // Modal
 
@@ -252,13 +259,20 @@ prompt.required = true;
 prompt.placeholder = 'Enter email...';
 prompt.setAttribute('pattern', '[^@]+@[^@]+\\.[^@]+');
 const result = await prompt.show();
-console.log('User entered:', result);</pre>
+console.log('User entered:', result);</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>Programmatic Creation:</h3>
-          <button class="copy-button" onclick="copyToClipboard('dialog-create')">Copy</button>
-          <pre id="dialog-create">// Create and show alert programmatically
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('dialog-create')"
+          >
+            Copy
+          </button>
+          <pre id="dialog-create">
+// Create and show alert programmatically
 const alert = document.createElement('e2-alert');
 alert.type = 'error';
 alert.title = 'Error';
@@ -274,13 +288,17 @@ confirm.message = 'This action cannot be undone.';
 confirm.danger = true;
 document.body.appendChild(confirm);
 const result = await confirm.show();
-confirm.remove();</pre>
+confirm.remove();</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>Theme Support:</h3>
-          <button class="copy-button" onclick="copyToClipboard('dialog-theme')">Copy</button>
-          <pre id="dialog-theme">// Apply theme to all dialogs
+          <button class="copy-button" onclick="copyToClipboard('dialog-theme')">
+            Copy
+          </button>
+          <pre id="dialog-theme">
+// Apply theme to all dialogs
 function setTheme(theme) {
   document.querySelectorAll('e2-dialog, e2-confirm, e2-alert, e2-prompt')
     .forEach(dialog => dialog.theme = theme);
@@ -295,7 +313,8 @@ dialog.theme = 'dark';
   --e2-dialog-bg: #ffffff;
   --e2-dialog-text: #333333;
   --e2-dialog-border: #cccccc;
-}</pre>
+}</pre
+          >
         </div>
       </div>
 
@@ -331,7 +350,8 @@ async function handleDelete() {
     await document.getElementById('success-alert').show();
   }
 }
-&lt;/script&gt;</pre>
+&lt;/script&gt;</pre
+          >
         </div>
 
         <div class="markup-section">
@@ -341,7 +361,8 @@ async function handleDelete() {
 function setTheme(theme) {
   document.querySelectorAll('e2-dialog, e2-confirm, e2-alert, e2-prompt')
     .forEach(dialog => dialog.theme = theme);
-}</pre>
+}</pre
+          >
         </div>
       </div>
     </main>
@@ -419,9 +440,8 @@ function setTheme(theme) {
         confirm.danger = false;
 
         const result = await confirm.show();
-        document.getElementById(
-          'confirm-result'
-        ).textContent = `User confirmed: ${result}`;
+        document.getElementById('confirm-result').textContent =
+          `User confirmed: ${result}`;
       }
 
       async function showDangerConfirm() {
@@ -434,9 +454,8 @@ function setTheme(theme) {
         confirm.danger = true;
 
         const result = await confirm.show();
-        document.getElementById(
-          'confirm-result'
-        ).textContent = `Delete confirmed: ${result}`;
+        document.getElementById('confirm-result').textContent =
+          `Delete confirmed: ${result}`;
       }
 
       async function showCustomConfirm() {
@@ -516,9 +535,8 @@ function setTheme(theme) {
         prompt.multiline = false;
 
         const result = await prompt.show();
-        document.getElementById(
-          'prompt-result'
-        ).textContent = `Name entered: "${result || 'cancelled'}"`;
+        document.getElementById('prompt-result').textContent =
+          `Name entered: "${result || 'cancelled'}"`;
       }
 
       async function showValidatedPrompt() {
@@ -535,9 +553,8 @@ function setTheme(theme) {
         );
 
         const result = await prompt.show();
-        document.getElementById(
-          'prompt-result'
-        ).textContent = `Email entered: "${result || 'cancelled'}"`;
+        document.getElementById('prompt-result').textContent =
+          `Email entered: "${result || 'cancelled'}"`;
       }
 
       async function showMultilinePrompt() {
@@ -571,8 +588,6 @@ function setTheme(theme) {
           result || 'cancelled'
         }"`;
       }
-
-
 
       // Copy to clipboard functionality
       function copyToClipboard(id) {

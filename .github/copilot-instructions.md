@@ -7,12 +7,14 @@
 ## Project Goals & Philosophy
 
 ### Primary Goals
+
 - **Purpose-built for editors**: Specifically designed for creating level editors, sprite editors, and similar desktop-like web applications
 - **Small and portable**: Minified bundle should be small and usable directly in browsers or with build tools
 - **Easy integration**: Works with vanilla HTML/JS, TypeScript, webpack, or any framework
 - **Not highly generalized**: Focused on specific use cases rather than being a general-purpose UI library
 
 ### Design Principles
+
 - Use Web Components standard (Custom Elements)
 - Minimal dependencies (no external runtime dependencies)
 - Built-in theming support (light/dark/auto)
@@ -23,6 +25,7 @@
 ## Architecture & Structure
 
 ### Build System
+
 - **Entry point**: `src/index.ts` - imports and registers all components
 - **Output**:
   - Development: `build/e2.js`
@@ -31,6 +34,7 @@
 - **TypeScript**: Full type definitions generated in `build/`
 
 ### File Organization
+
 ```
 src/
 ├── index.ts              # Main entry point with auto-registration
@@ -45,6 +49,7 @@ src/
 ```
 
 ### Component Naming Convention
+
 - Custom elements use `e2-` prefix (e.g., `e2-toolbar`, `e2-toolbar-button`)
 - TypeScript classes use PascalCase with `Element` suffix (e.g., `ToolbarElement`)
 - File names use kebab-case matching the element name
@@ -52,7 +57,9 @@ src/
 ## Development Patterns
 
 ### Component Implementation Pattern
+
 Each component follows this structure:
+
 1. **Class definition**: Extends `HTMLElement`
 2. **Observed attributes**: Static array of attribute names to watch
 3. **Shadow DOM**: Use `getShadowRoot()` utility for consistent setup
@@ -62,18 +69,21 @@ Each component follows this structure:
 7. **Registration**: Check if element exists before defining
 
 ### Event System
+
 - Use custom events that bubble up
 - Include detailed information in `event.detail`
 - Follow naming convention: `{component}-{action}` (e.g., `toolbar-button-click`)
 - Events should be cancelable when appropriate
 
 ### Theming System
+
 - Support three modes: `light`, `dark`, `auto`
 - Use `applyTheme()` utility function
 - CSS custom properties for all colors and dimensions
 - Theme classes: `.theme-light`, `.theme-dark`, `.theme-auto`
 
 ### TypeScript Integration
+
 - Define interfaces for all events in `types.ts`
 - Export all types from main `index.ts`
 - Use proper typing for all properties and methods
@@ -114,6 +124,7 @@ npm run serve
 ## Key Implementation Notes
 
 ### Web Components Best Practices
+
 - Always check if custom element is already defined before registering
 - Use Shadow DOM for style encapsulation
 - Implement proper lifecycle callbacks
@@ -121,12 +132,14 @@ npm run serve
 - Dispatch meaningful custom events
 
 ### Bundle Size Considerations
+
 - Avoid external dependencies
 - Use tree-shaking friendly exports
 - Minimize CSS in components
 - Consider lazy loading for complex components
 
 ### API Design Principles
+
 - Properties should reflect to attributes where appropriate
 - Methods should be intuitive and chainable when possible
 - Events should provide all necessary context
@@ -135,6 +148,7 @@ npm run serve
 ## Integration Examples
 
 ### Direct HTML Usage
+
 ```html
 <script src="path/to/e2s.min.js"></script>
 <editor-toolbar>
@@ -143,6 +157,7 @@ npm run serve
 ```
 
 ### TypeScript/Webpack Usage
+
 ```typescript
 import '@basementuniverse/e2';
 import type { ToolbarButtonClickEvent } from '@basementuniverse/e2';

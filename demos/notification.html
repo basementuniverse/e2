@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -91,10 +91,16 @@
           <button class="demo-button" onclick="showInfoNotification()">
             Info Notification
           </button>
-          <button class="demo-button success" onclick="showSuccessNotification()">
+          <button
+            class="demo-button success"
+            onclick="showSuccessNotification()"
+          >
             Success Notification
           </button>
-          <button class="demo-button warning" onclick="showWarningNotification()">
+          <button
+            class="demo-button warning"
+            onclick="showWarningNotification()"
+          >
             Warning Notification
           </button>
           <button class="demo-button danger" onclick="showErrorNotification()">
@@ -112,10 +118,13 @@
   message="This is an informational message."
   timeout="5000"
   dismissible&gt;
-&lt;/e2-notification&gt;</pre>
+&lt;/e2-notification&gt;</pre
+          >
         </div>
 
-        <div class="result" id="notification-result">Ready to show notifications...</div>
+        <div class="result" id="notification-result">
+          Ready to show notifications...
+        </div>
       </div>
 
       <!-- Programmatic Toast Creation -->
@@ -139,13 +148,19 @@
         </div>
 
         <div class="demo-buttons">
-          <button class="demo-button secondary" onclick="createPersistentToast()">
+          <button
+            class="demo-button secondary"
+            onclick="createPersistentToast()"
+          >
             Persistent Toast
           </button>
           <button class="demo-button secondary" onclick="createCustomToast()">
             Custom Timeout
           </button>
-          <button class="demo-button secondary" onclick="createNonDismissibleToast()">
+          <button
+            class="demo-button secondary"
+            onclick="createNonDismissibleToast()"
+          >
             Non-Dismissible
           </button>
         </div>
@@ -161,7 +176,8 @@ createToast('success', 'Operation completed!', {
 
 // Using Toast API
 Toast.success('File saved successfully!');
-Toast.error('Connection failed', { persistent: true });</pre>
+Toast.error('Connection failed', { persistent: true });</pre
+          >
         </div>
       </div>
 
@@ -171,22 +187,41 @@ Toast.error('Connection failed', { persistent: true });</pre>
         <p>Container for managing notification positioning and lifecycle.</p>
 
         <div class="position-controls">
-          <button onclick="setContainerPosition('top-left')" data-position="top-left">
+          <button
+            onclick="setContainerPosition('top-left')"
+            data-position="top-left"
+          >
             Top Left
           </button>
-          <button onclick="setContainerPosition('top-center')" data-position="top-center">
+          <button
+            onclick="setContainerPosition('top-center')"
+            data-position="top-center"
+          >
             Top Center
           </button>
-          <button onclick="setContainerPosition('top-right')" class="active" data-position="top-right">
+          <button
+            onclick="setContainerPosition('top-right')"
+            class="active"
+            data-position="top-right"
+          >
             Top Right
           </button>
-          <button onclick="setContainerPosition('bottom-left')" data-position="bottom-left">
+          <button
+            onclick="setContainerPosition('bottom-left')"
+            data-position="bottom-left"
+          >
             Bottom Left
           </button>
-          <button onclick="setContainerPosition('bottom-center')" data-position="bottom-center">
+          <button
+            onclick="setContainerPosition('bottom-center')"
+            data-position="bottom-center"
+          >
             Bottom Center
           </button>
-          <button onclick="setContainerPosition('bottom-right')" data-position="bottom-right">
+          <button
+            onclick="setContainerPosition('bottom-right')"
+            data-position="bottom-right"
+          >
             Bottom Right
           </button>
         </div>
@@ -195,20 +230,27 @@ Toast.error('Connection failed', { persistent: true });</pre>
           <button class="demo-button" onclick="showMultipleToasts()">
             Show Multiple Toasts
           </button>
-          <button class="demo-button secondary" onclick="clearAllNotifications()">
+          <button
+            class="demo-button secondary"
+            onclick="clearAllNotifications()"
+          >
             Clear All
           </button>
-          <button class="demo-button secondary" onclick="setMaxNotifications(3)">
+          <button
+            class="demo-button secondary"
+            onclick="setMaxNotifications(3)"
+          >
             Max 3 Notifications
           </button>
-          <button class="demo-button secondary" onclick="setMaxNotifications(10)">
+          <button
+            class="demo-button secondary"
+            onclick="setMaxNotifications(10)"
+          >
             Max 10 Notifications
           </button>
         </div>
 
-        <div class="counter" id="notification-counter">
-          Notifications: 0
-        </div>
+        <div class="counter" id="notification-counter">Notifications: 0</div>
 
         <div class="markup-section">
           <h3>HTML Markup:</h3>
@@ -219,14 +261,17 @@ Toast.error('Connection failed', { persistent: true });</pre>
   max-notifications="5"
   stack-direction="down"
   spacing="medium"&gt;
-&lt;/e2-notification-container&gt;</pre>
+&lt;/e2-notification-container&gt;</pre
+          >
         </div>
       </div>
 
       <!-- Advanced Features -->
       <div class="demo-section">
         <h2>Advanced Features</h2>
-        <p>Demonstration of advanced notification features and customization.</p>
+        <p>
+          Demonstration of advanced notification features and customization.
+        </p>
 
         <div class="demo-buttons">
           <button class="demo-button" onclick="showProgressNotification()">
@@ -243,7 +288,9 @@ Toast.error('Connection failed', { persistent: true });</pre>
           </button>
         </div>
 
-        <div class="result" id="advanced-result">Ready for advanced demos...</div>
+        <div class="result" id="advanced-result">
+          Ready for advanced demos...
+        </div>
       </div>
 
       <!-- Code Examples -->
@@ -253,7 +300,9 @@ Toast.error('Connection failed', { persistent: true });</pre>
 
         <div class="code-example">
           <h3>Basic Usage:</h3>
-          <button class="copy-button" onclick="copyToClipboard('basic-usage')">Copy</button>
+          <button class="copy-button" onclick="copyToClipboard('basic-usage')">
+            Copy
+          </button>
           <pre id="basic-usage">
 // Show pre-defined notification
 const notification = document.getElementById('my-notification');
@@ -264,12 +313,18 @@ createToast('success', 'Operation completed!');
 
 // Using Toast API
 Toast.info('Welcome to the application!');
-Toast.error('Something went wrong!', { persistent: true });</pre>
+Toast.error('Something went wrong!', { persistent: true });</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>Container Management:</h3>
-          <button class="copy-button" onclick="copyToClipboard('container-management')">Copy</button>
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('container-management')"
+          >
+            Copy
+          </button>
           <pre id="container-management">
 // Create container
 const container = document.createElement('e2-notification-container');
@@ -283,12 +338,18 @@ createToast('info', 'Message', {
 });
 
 // Clear all notifications
-container.clear();</pre>
+container.clear();</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>Event Handling:</h3>
-          <button class="copy-button" onclick="copyToClipboard('event-handling')">Copy</button>
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('event-handling')"
+          >
+            Copy
+          </button>
           <pre id="event-handling">
 // Listen to notification events
 document.addEventListener('notification-show', (e) => {
@@ -302,7 +363,8 @@ document.addEventListener('notification-dismiss', (e) => {
 // Container events
 document.addEventListener('notification-container-update', (e) => {
   console.log('Container updated:', e.detail.count);
-});</pre>
+});</pre
+          >
         </div>
       </div>
     </main>
@@ -314,7 +376,8 @@ document.addEventListener('notification-container-update', (e) => {
       title="Information"
       message="This is an informational message."
       timeout="5000"
-      dismissible>
+      dismissible
+    >
     </e2-notification>
 
     <e2-notification
@@ -323,7 +386,8 @@ document.addEventListener('notification-container-update', (e) => {
       title="Success"
       message="Operation completed successfully!"
       timeout="4000"
-      dismissible>
+      dismissible
+    >
     </e2-notification>
 
     <e2-notification
@@ -332,7 +396,8 @@ document.addEventListener('notification-container-update', (e) => {
       title="Warning"
       message="Please review your settings before continuing."
       timeout="6000"
-      dismissible>
+      dismissible
+    >
     </e2-notification>
 
     <e2-notification
@@ -341,7 +406,8 @@ document.addEventListener('notification-container-update', (e) => {
       title="Error"
       message="An error occurred while processing your request."
       timeout="0"
-      dismissible>
+      dismissible
+    >
     </e2-notification>
 
     <!-- Main notification container -->
@@ -350,7 +416,8 @@ document.addEventListener('notification-container-update', (e) => {
       position="top-right"
       max-notifications="5"
       stack-direction="down"
-      spacing="medium">
+      spacing="medium"
+    >
     </e2-notification-container>
 
     <!-- Load E2 Library -->
@@ -414,35 +481,35 @@ document.addEventListener('notification-container-update', (e) => {
 
       function createSuccessToast() {
         E2.createToast('success', 'Operation completed successfully!', {
-          title: 'Success'
+          title: 'Success',
         });
       }
 
       function createWarningToast() {
         E2.createToast('warning', 'Please review your settings.', {
           title: 'Warning',
-          timeout: 7000
+          timeout: 7000,
         });
       }
 
       function createErrorToast() {
         E2.createToast('error', 'An error occurred while processing.', {
           title: 'Error',
-          timeout: 0
+          timeout: 0,
         });
       }
 
       function createPersistentToast() {
         E2.createToast('info', 'This notification will not auto-dismiss.', {
           title: 'Persistent',
-          persistent: true
+          persistent: true,
         });
       }
 
       function createCustomToast() {
         E2.createToast('success', 'This toast will dismiss in 2 seconds.', {
           title: 'Custom Timeout',
-          timeout: 2000
+          timeout: 2000,
         });
       }
 
@@ -450,7 +517,7 @@ document.addEventListener('notification-container-update', (e) => {
         E2.createToast('warning', 'You cannot manually close this toast.', {
           title: 'Non-Dismissible',
           dismissible: false,
-          timeout: 8000
+          timeout: 8000,
         });
       }
 
@@ -463,7 +530,9 @@ document.addEventListener('notification-container-update', (e) => {
         document.querySelectorAll('[data-position]').forEach(btn => {
           btn.classList.remove('active');
         });
-        document.querySelector(`[data-position="${position}"]`).classList.add('active');
+        document
+          .querySelector(`[data-position="${position}"]`)
+          .classList.add('active');
       }
 
       function showMultipleToasts() {
@@ -472,13 +541,13 @@ document.addEventListener('notification-container-update', (e) => {
           { type: 'success', message: 'Second notification' },
           { type: 'warning', message: 'Third notification' },
           { type: 'error', message: 'Fourth notification' },
-          { type: 'info', message: 'Fifth notification' }
+          { type: 'info', message: 'Fifth notification' },
         ];
 
         messages.forEach((msg, index) => {
           setTimeout(() => {
             E2.createToast(msg.type, msg.message, {
-              title: `Toast ${index + 1}`
+              title: `Toast ${index + 1}`,
             });
           }, index * 500);
         });
@@ -496,24 +565,32 @@ document.addEventListener('notification-container-update', (e) => {
 
       // Advanced functions
       function showProgressNotification() {
-        E2.createToast('info', 'This notification shows progress with the progress bar.', {
-          title: 'Progress Demo',
-          timeout: 8000
-        });
+        E2.createToast(
+          'info',
+          'This notification shows progress with the progress bar.',
+          {
+            title: 'Progress Demo',
+            timeout: 8000,
+          }
+        );
       }
 
       function showLongMessage() {
-        E2.createToast('warning',
+        E2.createToast(
+          'warning',
           'This is a very long notification message that demonstrates how the component handles longer text content. It should wrap properly and maintain good readability across different screen sizes.',
           {
             title: 'Long Message Demo',
-            timeout: 10000
+            timeout: 10000,
           }
         );
       }
 
       function showWithoutTitle() {
-        E2.createToast('success', 'This notification has no title, just a message.');
+        E2.createToast(
+          'success',
+          'This notification has no title, just a message.'
+        );
       }
 
       function testEventHandlers() {
@@ -524,19 +601,22 @@ document.addEventListener('notification-container-update', (e) => {
         notification.message = 'Click me or wait for auto-dismiss';
         notification.timeout = 5000;
 
-        notification.addEventListener('notification-show', (e) => {
+        notification.addEventListener('notification-show', e => {
           console.log('Notification shown:', e.detail);
-          document.getElementById('advanced-result').textContent = 'Notification shown - check console';
+          document.getElementById('advanced-result').textContent =
+            'Notification shown - check console';
         });
 
-        notification.addEventListener('notification-click', (e) => {
+        notification.addEventListener('notification-click', e => {
           console.log('Notification clicked:', e.detail);
-          document.getElementById('advanced-result').textContent = 'Notification clicked - check console';
+          document.getElementById('advanced-result').textContent =
+            'Notification clicked - check console';
         });
 
-        notification.addEventListener('notification-dismiss', (e) => {
+        notification.addEventListener('notification-dismiss', e => {
           console.log('Notification dismissed:', e.detail);
-          document.getElementById('advanced-result').textContent = 'Notification dismissed - check console';
+          document.getElementById('advanced-result').textContent =
+            'Notification dismissed - check console';
         });
 
         document.getElementById('main-container').appendChild(notification);
@@ -552,7 +632,7 @@ document.addEventListener('notification-container-update', (e) => {
       }
 
       // Listen for container updates
-      document.addEventListener('notification-container-update', (e) => {
+      document.addEventListener('notification-container-update', e => {
         updateNotificationCounter();
       });
 
@@ -562,7 +642,7 @@ document.addEventListener('notification-container-update', (e) => {
         const text = element.textContent;
         navigator.clipboard.writeText(text).then(() => {
           E2.createToast('success', 'Code copied to clipboard!', {
-            timeout: 2000
+            timeout: 2000,
           });
         });
       }

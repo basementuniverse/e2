@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -138,8 +138,11 @@
 
         <div class="code-example">
           <h3>Basic Vertical Panel HTML:</h3>
-          <button class="copy-button" onclick="copyToClipboard('panel-html')">Copy</button>
-          <pre id="panel-html">&lt;!-- Load E2 Library --&gt;
+          <button class="copy-button" onclick="copyToClipboard('panel-html')">
+            Copy
+          </button>
+          <pre id="panel-html">
+&lt;!-- Load E2 Library --&gt;
 &lt;script src="path/to/e2.min.js"&gt;&lt;/script&gt;
 
 &lt;!-- Basic Collapsible Panel --&gt;
@@ -155,24 +158,35 @@
       &lt;li&gt;List item 2&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/div&gt;
-&lt;/e2-collapsible-panel&gt;</pre>
+&lt;/e2-collapsible-panel&gt;</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>Horizontal Panel:</h3>
-          <button class="copy-button" onclick="copyToClipboard('panel-horizontal')">Copy</button>
-          <pre id="panel-horizontal">&lt;e2-collapsible-panel
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('panel-horizontal')"
+          >
+            Copy
+          </button>
+          <pre id="panel-horizontal">
+&lt;e2-collapsible-panel
   title="Horizontal Panel"
   orientation="horizontal"
   expanded&gt;
   &lt;div&gt;Panel content...&lt;/div&gt;
-&lt;/e2-collapsible-panel&gt;</pre>
+&lt;/e2-collapsible-panel&gt;</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>JavaScript Control:</h3>
-          <button class="copy-button" onclick="copyToClipboard('panel-js')">Copy</button>
-          <pre id="panel-js">// Get panel reference
+          <button class="copy-button" onclick="copyToClipboard('panel-js')">
+            Copy
+          </button>
+          <pre id="panel-js">
+// Get panel reference
 const panel = document.querySelector('e2-collapsible-panel');
 
 // Control programmatically
@@ -191,7 +205,8 @@ panel.addEventListener('collapse', () => {
 
 // Change properties
 panel.title = "New Title";
-panel.orientation = "horizontal";</pre>
+panel.orientation = "horizontal";</pre
+          >
         </div>
       </div>
 
@@ -240,8 +255,8 @@ panel.orientation = "horizontal";</pre>
 
         output.innerHTML += `
           <div>[${timestamp}] Panel "${panelId}" ${
-          collapsed ? 'collapsed' : 'expanded'
-        } (${orientation})</div>
+            collapsed ? 'collapsed' : 'expanded'
+          } (${orientation})</div>
         `;
         output.scrollTop = output.scrollHeight;
       });

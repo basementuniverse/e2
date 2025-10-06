@@ -4,10 +4,17 @@
  */
 
 import { EditorElementProperties, Theme } from '../../types';
-import { applyTheme, generateId, getShadowRoot } from '../../utils';
+import {
+  applyEffectiveTheme,
+  applyTheme,
+  generateId,
+  getShadowRoot,
+  setupThemeInheritance,
+} from '../../utils';
 
 export class Toolbar extends HTMLElement implements EditorElementProperties {
   private _theme: Theme = 'auto';
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return ['theme', 'disabled'];
@@ -57,7 +64,22 @@ export class Toolbar extends HTMLElement implements EditorElementProperties {
     if (!this.id) {
       this.id = generateId('toolbar');
     }
-    this.applyTheme(this._theme);
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
+  }
+
+  disconnectedCallback(): void {
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   attributeChangedCallback(
@@ -69,7 +91,15 @@ export class Toolbar extends HTMLElement implements EditorElementProperties {
 
     switch (name) {
       case 'theme':
-        this.theme = newValue as Theme;
+        // If theme attribute is being set, use explicit theme
+        // If theme attribute is being removed, switch to inheritance
+        if (newValue) {
+          this.theme = newValue as Theme;
+        } else if (this.isConnected) {
+          // Attribute was removed, switch to inheritance
+          applyEffectiveTheme(this);
+          this._themeCleanup = setupThemeInheritance(this);
+        }
         break;
     }
   }
@@ -80,6 +110,13 @@ export class Toolbar extends HTMLElement implements EditorElementProperties {
 
   set theme(value: Theme) {
     this._theme = value;
+
+    // Clean up any existing theme inheritance
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
+
     this.applyTheme(value);
   }
 

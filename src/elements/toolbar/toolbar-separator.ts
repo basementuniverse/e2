@@ -4,10 +4,17 @@
  */
 
 import { Theme } from '../../types';
-import { applyTheme, getShadowRoot } from '../../utils';
+import {
+  applyEffectiveTheme,
+  applyTheme,
+  getShadowRoot,
+  notifyThemeChange,
+  setupThemeInheritance,
+} from '../../utils';
 
 export class ToolbarSeparator extends HTMLElement {
   private _theme: Theme = 'auto';
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return ['theme'];
@@ -40,7 +47,21 @@ export class ToolbarSeparator extends HTMLElement {
   }
 
   connectedCallback(): void {
-    this.applyTheme(this._theme);
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
+  }
+
+  disconnectedCallback(): void {
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   attributeChangedCallback(
@@ -52,6 +73,11 @@ export class ToolbarSeparator extends HTMLElement {
 
     switch (name) {
       case 'theme':
+        // Clean up existing theme inheritance when explicit theme is set
+        if (this._themeCleanup) {
+          this._themeCleanup();
+          this._themeCleanup = undefined;
+        }
         this.theme = newValue as Theme;
         break;
     }
@@ -64,6 +90,8 @@ export class ToolbarSeparator extends HTMLElement {
   set theme(value: Theme) {
     this._theme = value;
     this.applyTheme(value);
+    // Notify child elements of theme change
+    notifyThemeChange(this, value);
   }
 
   applyTheme(theme: Theme): void {

@@ -59,35 +59,37 @@ Resizable split panel components that allow you to create adjustable layouts wit
 
 ### `<e2-split-panel-container>`
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout direction of panels |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
-| `disabled` | `boolean` | `false` | Disables panel resizing |
+| Attribute     | Type                          | Default        | Description                |
+| ------------- | ----------------------------- | -------------- | -------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'`  | `'horizontal'` | Layout direction of panels |
+| `theme`       | `'light' \| 'dark' \| 'auto'` | `'auto'`       | Visual theme               |
+| `disabled`    | `boolean`                     | `false`        | Disables panel resizing    |
 
 ## Panel Attributes
 
 ### `<e2-split-panel>`
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `size` | `number` | `50` | Panel size as percentage of container |
-| `min-size` | `number` | `10` | Minimum size as percentage |
-| `max-size` | `number` | `90` | Maximum size as percentage |
-| `resizable` | `boolean` | `true` | Whether panel can be resized |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
-| `disabled` | `boolean` | `false` | Disables panel interactions |
+| Attribute   | Type                          | Default  | Description                           |
+| ----------- | ----------------------------- | -------- | ------------------------------------- |
+| `size`      | `number`                      | `50`     | Panel size as percentage of container |
+| `min-size`  | `number`                      | `10`     | Minimum size as percentage            |
+| `max-size`  | `number`                      | `90`     | Maximum size as percentage            |
+| `resizable` | `boolean`                     | `true`   | Whether panel can be resized          |
+| `theme`     | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme                          |
+| `disabled`  | `boolean`                     | `false`  | Disables panel interactions           |
 
 ## Properties & Methods
 
 ### SplitPanelContainer
 
 #### Properties
+
 - `orientation: SplitPanelOrientation` - Get/set layout orientation
 - `theme: Theme` - Get/set visual theme
 - `disabled: boolean` - Get/set disabled state
 
 #### Methods
+
 - `resizePanel(panelId: string, size: number): void` - Programmatically resize a panel
 - `getPanelSizes(): { [panelId: string]: number }` - Get current sizes of all panels
 - `resetPanelSizes(): void` - Reset all panels to equal sizes
@@ -96,6 +98,7 @@ Resizable split panel components that allow you to create adjustable layouts wit
 ### SplitPanel
 
 #### Properties
+
 - `size: number` - Get/set panel size percentage
 - `minSize: number` - Get/set minimum size percentage
 - `maxSize: number` - Get/set maximum size percentage
@@ -104,6 +107,7 @@ Resizable split panel components that allow you to create adjustable layouts wit
 - `disabled: boolean` - Get/set disabled state
 
 #### Methods
+
 - `getCurrentSize(): number` - Get current computed size percentage
 - `applyTheme(theme: Theme): void` - Apply theme styling
 
@@ -112,6 +116,7 @@ Resizable split panel components that allow you to create adjustable layouts wit
 All events bubble up from the split panel container:
 
 ### `split-panel-resize-start`
+
 Fired when a resize operation begins.
 
 ```typescript
@@ -127,6 +132,7 @@ interface SplitPanelResizeStartEvent {
 ```
 
 ### `split-panel-resize`
+
 Fired continuously during resize operations.
 
 ```typescript
@@ -144,6 +150,7 @@ interface SplitPanelResizeEvent {
 ```
 
 ### `split-panel-resize-end`
+
 Fired when a resize operation completes.
 
 ```typescript
@@ -164,18 +171,18 @@ interface SplitPanelResizeEndEvent {
 const container = document.querySelector('e2-split-panel-container');
 
 // Listen for resize start
-container.addEventListener('split-panel-resize-start', (event) => {
+container.addEventListener('split-panel-resize-start', event => {
   console.log(`Started resizing panel: ${event.detail.panelId}`);
   console.log(`Initial size: ${event.detail.startSize}%`);
 });
 
 // Listen for resize updates
-container.addEventListener('split-panel-resize', (event) => {
+container.addEventListener('split-panel-resize', event => {
   console.log(`Panel ${event.detail.panelId} size: ${event.detail.size}%`);
 });
 
 // Listen for resize end
-container.addEventListener('split-panel-resize-end', (event) => {
+container.addEventListener('split-panel-resize-end', event => {
   console.log(`Finished resizing panel: ${event.detail.panelId}`);
   console.log(`Final size: ${event.detail.finalSize}%`);
 
@@ -190,6 +197,7 @@ container.addEventListener('split-panel-resize-end', (event) => {
 The split panel components use CSS custom properties for theming:
 
 ### Container Variables
+
 ```css
 e2-split-panel-container {
   --container-bg: #f5f5f5;
@@ -205,6 +213,7 @@ e2-split-panel-container {
 ```
 
 ### Panel Variables
+
 ```css
 e2-split-panel {
   --panel-bg: #ffffff;
@@ -219,6 +228,7 @@ e2-split-panel {
 ## Advanced Usage
 
 ### Nested Split Panels
+
 You can nest split panel containers for complex layouts:
 
 ```html
@@ -240,6 +250,7 @@ You can nest split panel containers for complex layouts:
 ```
 
 ### Programmatic Control
+
 ```javascript
 const container = document.querySelector('e2-split-panel-container');
 
@@ -261,6 +272,7 @@ container.theme = 'dark';
 ```
 
 ### Persistence
+
 Save and restore panel sizes:
 
 ```javascript
@@ -271,7 +283,9 @@ localStorage.setItem('splitPanelSizes', JSON.stringify(sizes));
 
 // Restore sizes
 window.addEventListener('load', () => {
-  const savedSizes = JSON.parse(localStorage.getItem('splitPanelSizes') || '{}');
+  const savedSizes = JSON.parse(
+    localStorage.getItem('splitPanelSizes') || '{}'
+  );
   Object.entries(savedSizes).forEach(([panelId, size]) => {
     container.resizePanel(panelId, size);
   });
@@ -286,6 +300,7 @@ window.addEventListener('load', () => {
 - Edge 79+
 
 Requires support for:
+
 - Custom Elements v1
 - Shadow DOM v1
 - CSS Custom Properties
@@ -293,12 +308,14 @@ Requires support for:
 ## Accessibility
 
 The split panel components include:
+
 - Proper cursor indicators (col-resize/row-resize)
 - Keyboard navigation support (Tab to focus handles)
 - Semantic HTML structure
 - ARIA attributes for screen readers
 
 ### Keyboard Controls
+
 - **Tab**: Navigate between resize handles
 - **Enter/Space**: Start keyboard resize mode
 - **Arrow Keys**: Resize panels when in keyboard mode

@@ -215,4 +215,10 @@ export interface ThemeableElement {
     theme: Theme;
     applyTheme(theme: Theme): void;
 }
+export interface AppThemeChangeEvent extends EditorElementEvent {
+    detail: {
+        theme: Theme;
+        appElement: HTMLElement;
+    };
+}
 //# sourceMappingURL=types.d.ts.map

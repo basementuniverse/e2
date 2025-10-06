@@ -7,10 +7,12 @@ import { EditorElementProperties, StatusMessageType, Theme } from '../../types';
 export declare class StatusBar extends HTMLElement implements EditorElementProperties {
     private _theme;
     private _temporaryMessageTimeout?;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     get theme(): Theme;
     set theme(value: Theme);

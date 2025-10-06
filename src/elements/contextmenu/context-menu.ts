@@ -10,10 +10,12 @@ import {
   Theme,
 } from '../../types';
 import {
+  applyEffectiveTheme,
   applyTheme,
   dispatchCustomEvent,
   generateId,
   getShadowRoot,
+  setupThemeInheritance,
 } from '../../utils';
 
 export class ContextMenu
@@ -23,6 +25,7 @@ export class ContextMenu
   private _theme: Theme = 'auto';
   private _visible: boolean = false;
   private _justShown: boolean = false;
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return ['theme', 'disabled', 'target'];
@@ -108,12 +111,26 @@ export class ContextMenu
     if (!this.id) {
       this.id = generateId('context-menu');
     }
-    this.applyTheme(this._theme);
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
+
     this.setupTargetListeners();
   }
 
   disconnectedCallback(): void {
     this.removeTargetListeners();
+
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   attributeChangedCallback(
@@ -125,8 +142,22 @@ export class ContextMenu
 
     switch (name) {
       case 'theme':
-        this._theme = (newValue as Theme) || 'auto';
-        this.applyTheme(this._theme);
+        // If theme attribute is being set, use explicit theme
+        // If theme attribute is being removed, switch to inheritance
+        if (newValue) {
+          this._theme = newValue as Theme;
+          // Clean up any existing theme inheritance
+          if (this._themeCleanup) {
+            this._themeCleanup();
+            this._themeCleanup = undefined;
+          }
+          this.applyTheme(this._theme);
+        } else if (this.isConnected) {
+          // Attribute was removed, switch to inheritance
+          this._theme = 'auto';
+          applyEffectiveTheme(this);
+          this._themeCleanup = setupThemeInheritance(this);
+        }
         break;
       case 'target':
         this.removeTargetListeners();
@@ -253,6 +284,12 @@ export class ContextMenu
   set theme(value: Theme) {
     this._theme = value;
     this.setAttribute('theme', value);
+
+    // Clean up any existing theme inheritance
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   get disabled(): boolean {

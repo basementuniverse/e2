@@ -4,7 +4,14 @@
  */
 
 import { EditorElementProperties, Theme } from '../../types';
-import { applyTheme, generateId, getShadowRoot } from '../../utils';
+import {
+  applyEffectiveTheme,
+  applyTheme,
+  generateId,
+  getShadowRoot,
+  notifyThemeChange,
+  setupThemeInheritance,
+} from '../../utils';
 
 export class SplitPanel extends HTMLElement implements EditorElementProperties {
   private _theme: Theme = 'auto';
@@ -12,6 +19,7 @@ export class SplitPanel extends HTMLElement implements EditorElementProperties {
   private _minSize: number = 10; // percentage
   private _maxSize: number = 90; // percentage
   private _resizable: boolean = true;
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return ['theme', 'disabled', 'size', 'min-size', 'max-size', 'resizable'];
@@ -73,12 +81,25 @@ export class SplitPanel extends HTMLElement implements EditorElementProperties {
   }
 
   connectedCallback(): void {
-    // Apply initial attribute values
-    this.applyTheme(this._theme);
-
     // Generate ID if not provided
     if (!this.id) {
       this.id = generateId('split-panel');
+    }
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
+  }
+
+  disconnectedCallback(): void {
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
     }
   }
 
@@ -91,6 +112,11 @@ export class SplitPanel extends HTMLElement implements EditorElementProperties {
 
     switch (name) {
       case 'theme':
+        // Clean up existing theme inheritance when explicit theme is set
+        if (this._themeCleanup) {
+          this._themeCleanup();
+          this._themeCleanup = undefined;
+        }
         this._theme = (newValue as Theme) || 'auto';
         this.applyTheme(this._theme);
         break;
@@ -130,6 +156,8 @@ export class SplitPanel extends HTMLElement implements EditorElementProperties {
 
   set theme(value: Theme) {
     this.setAttribute('theme', value);
+    // Notify child elements of theme change
+    notifyThemeChange(this, value);
   }
 
   get size(): number {

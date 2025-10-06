@@ -6,6 +6,7 @@ import { EditorElementProperties, Theme } from '../../types';
 export declare class TabPanel extends HTMLElement implements EditorElementProperties {
     private _theme;
     private _active;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
@@ -31,5 +32,6 @@ export declare class TabPanel extends HTMLElement implements EditorElementProper
     applyTheme(theme: Theme): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     connectedCallback(): void;
+    disconnectedCallback(): void;
 }
 //# sourceMappingURL=tab-panel.d.ts.map

@@ -5,10 +5,12 @@
 
 import { EditorElementProperties, NotificationType, Theme } from '../../types';
 import {
+  applyEffectiveTheme,
   applyTheme,
   dispatchCustomEvent,
   generateId,
   getShadowRoot,
+  setupThemeInheritance,
 } from '../../utils';
 
 export class NotificationElement
@@ -20,6 +22,7 @@ export class NotificationElement
   private _visible: boolean = false;
   private _resolvePromise: (() => void) | null = null;
   private _rejectPromise: ((reason?: any) => void) | null = null;
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return [
@@ -339,11 +342,24 @@ export class NotificationElement
     if (!this.id) {
       this.id = generateId('notification');
     }
-    this.applyTheme(this._theme);
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
   }
 
   disconnectedCallback(): void {
     this.clearTimeout();
+
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   attributeChangedCallback(
@@ -360,8 +376,22 @@ export class NotificationElement
         this.updateContent();
         break;
       case 'theme':
-        this._theme = (newValue as Theme) || 'auto';
-        this.applyTheme(this._theme);
+        // If theme attribute is being set, use explicit theme
+        // If theme attribute is being removed, switch to inheritance
+        if (newValue) {
+          this._theme = newValue as Theme;
+          // Clean up any existing theme inheritance
+          if (this._themeCleanup) {
+            this._themeCleanup();
+            this._themeCleanup = undefined;
+          }
+          this.applyTheme(this._theme);
+        } else if (this.isConnected) {
+          // Attribute was removed, switch to inheritance
+          this._theme = 'auto';
+          applyEffectiveTheme(this);
+          this._themeCleanup = setupThemeInheritance(this);
+        }
         break;
       case 'timeout':
       case 'persistent':
@@ -379,6 +409,12 @@ export class NotificationElement
 
   set theme(value: Theme) {
     this.setAttribute('theme', value);
+
+    // Clean up any existing theme inheritance
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   get type(): NotificationType {

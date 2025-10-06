@@ -8,6 +8,7 @@ export declare class TabContainer extends HTMLElement implements EditorElementPr
     private _activeTabId;
     private _tabPosition;
     private _closable;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
@@ -37,5 +38,6 @@ export declare class TabContainer extends HTMLElement implements EditorElementPr
     applyTheme(theme: Theme): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     connectedCallback(): void;
+    disconnectedCallback(): void;
 }
 //# sourceMappingURL=tab-container.d.ts.map

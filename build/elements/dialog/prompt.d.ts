@@ -8,10 +8,12 @@ export declare class PromptDialogElement extends HTMLElement implements EditorEl
     private _nativeDialog;
     private _resolvePromise;
     private _rejectPromise;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     private updateContent;
     private setupInputElement;

@@ -12,11 +12,14 @@ import {
   Theme,
 } from '../../types';
 import {
+  applyEffectiveTheme,
   applyTheme,
   debounce,
   dispatchCustomEvent,
   generateId,
   getShadowRoot,
+  notifyThemeChange,
+  setupThemeInheritance,
 } from '../../utils';
 
 export class SplitPanelContainer
@@ -31,6 +34,7 @@ export class SplitPanelContainer
   private _startSize: number = 0;
   private _nextPanelStartSize: number = 0;
   private _updatingPanelSizes: boolean = false;
+  private _themeCleanup?: () => void;
 
   private debouncedResize = debounce(this.handleResize.bind(this), 16);
 
@@ -135,12 +139,17 @@ export class SplitPanelContainer
   }
 
   connectedCallback(): void {
-    // Apply initial attribute values
-    this.applyTheme(this._theme);
-
     // Generate ID if not provided
     if (!this.id) {
       this.id = generateId('split-panel-container');
+    }
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
     }
 
     // Initial setup
@@ -152,6 +161,11 @@ export class SplitPanelContainer
 
   disconnectedCallback(): void {
     window.removeEventListener('resize', this.debouncedResize);
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   attributeChangedCallback(
@@ -163,6 +177,11 @@ export class SplitPanelContainer
 
     switch (name) {
       case 'theme':
+        // Clean up existing theme inheritance when explicit theme is set
+        if (this._themeCleanup) {
+          this._themeCleanup();
+          this._themeCleanup = undefined;
+        }
         this._theme = (newValue as Theme) || 'auto';
         this.applyTheme(this._theme);
         break;
@@ -501,6 +520,8 @@ export class SplitPanelContainer
 
   set theme(value: Theme) {
     this.setAttribute('theme', value);
+    // Notify child elements of theme change
+    notifyThemeChange(this, value);
   }
 
   get orientation(): SplitPanelOrientation {

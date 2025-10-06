@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -23,7 +23,8 @@
         E2 - Status Bar Demo
       </h1>
       <p>
-        Interactive demonstration of the <code>&lt;e2-status-bar&gt;</code> element
+        Interactive demonstration of the
+        <code>&lt;e2-status-bar&gt;</code> element
       </p>
     </header>
 
@@ -34,13 +35,20 @@
 
         <e2-status-bar id="basic-status">
           <e2-status-section slot="left" position="left">
-            <e2-status-item type="indicator" label="Ready" value="●"></e2-status-item>
+            <e2-status-item
+              type="indicator"
+              label="Ready"
+              value="●"
+            ></e2-status-item>
             <e2-status-item type="text" label="Ln" value="3"></e2-status-item>
             <e2-status-item type="text" label="Col" value="2"></e2-status-item>
           </e2-status-section>
 
           <e2-status-section slot="center" position="center">
-            <e2-status-item type="message" value="File saved successfully"></e2-status-item>
+            <e2-status-item
+              type="message"
+              value="File saved successfully"
+            ></e2-status-item>
           </e2-status-section>
 
           <e2-status-section slot="right" position="right">
@@ -55,9 +63,15 @@
         <p>Status bar with clickable items and progress indicators:</p>
 
         <div class="controls">
-          <button class="demo-button" onclick="simulateProgress()">Simulate Loading</button>
-          <button class="demo-button" onclick="changeTool()">Change Tool</button>
-          <button class="demo-button" onclick="showTempMessage()">Show Message</button>
+          <button class="demo-button" onclick="simulateProgress()">
+            Simulate Loading
+          </button>
+          <button class="demo-button" onclick="changeTool()">
+            Change Tool
+          </button>
+          <button class="demo-button" onclick="showTempMessage()">
+            Show Message
+          </button>
         </div>
 
         <e2-status-bar id="interactive-status">
@@ -67,9 +81,14 @@
               type="tool"
               label="Tool"
               value="Brush (10px)"
-              clickable>
+              clickable
+            >
             </e2-status-item>
-            <e2-status-item type="text" label="Layer" value="Background"></e2-status-item>
+            <e2-status-item
+              type="text"
+              label="Layer"
+              value="Background"
+            ></e2-status-item>
           </e2-status-section>
 
           <e2-status-section slot="center" position="center">
@@ -78,13 +97,23 @@
               type="progress"
               label="Loading"
               value="0"
-              style="display: none;">
+              style="display: none"
+            >
             </e2-status-item>
           </e2-status-section>
 
           <e2-status-section slot="right" position="right">
-            <e2-status-item type="text" label="Zoom" value="100%" clickable></e2-status-item>
-            <e2-status-item type="text" label="Size" value="64x64"></e2-status-item>
+            <e2-status-item
+              type="text"
+              label="Zoom"
+              value="100%"
+              clickable
+            ></e2-status-item>
+            <e2-status-item
+              type="text"
+              label="Size"
+              value="64x64"
+            ></e2-status-item>
           </e2-status-section>
         </e2-status-bar>
       </div>
@@ -94,8 +123,11 @@
 
         <div class="code-example">
           <h3>HTML Structure:</h3>
-          <button class="copy-button" onclick="copyToClipboard('status-html')">Copy</button>
-          <pre id="status-html">&lt;e2-status-bar&gt;
+          <button class="copy-button" onclick="copyToClipboard('status-html')">
+            Copy
+          </button>
+          <pre id="status-html">
+&lt;e2-status-bar&gt;
   &lt;e2-status-section slot="left" position="left"&gt;
     &lt;e2-status-item type="indicator" label="Ready" value="●"&gt;&lt;/e2-status-item&gt;
     &lt;e2-status-item type="text" label="Ln" value="3"&gt;&lt;/e2-status-item&gt;
@@ -109,13 +141,17 @@
   &lt;e2-status-section slot="right" position="right"&gt;
     &lt;e2-status-item type="tool" label="Brush" value="10px" clickable&gt;&lt;/e2-status-item&gt;
   &lt;/e2-status-section&gt;
-&lt;/e2-status-bar&gt;</pre>
+&lt;/e2-status-bar&gt;</pre
+          >
         </div>
 
         <div class="code-example">
           <h3>JavaScript Event Handling:</h3>
-          <button class="copy-button" onclick="copyToClipboard('status-js')">Copy</button>
-          <pre id="status-js">// Listen for status item clicks
+          <button class="copy-button" onclick="copyToClipboard('status-js')">
+            Copy
+          </button>
+          <pre id="status-js">
+// Listen for status item clicks
 document.addEventListener('status-item-click', event => {
   const { itemId, item, itemType, value } = event.detail;
   console.log(`Status item clicked: ${itemId}`, item);
@@ -141,7 +177,8 @@ const progressItem = document.querySelector('#progress-item');
 progressItem.setProgress(0.75); // 75%
 
 const toolItem = document.querySelector('#current-tool');
-toolItem.value = 'Eraser (5px)';</pre>
+toolItem.value = 'Eraser (5px)';</pre
+          >
         </div>
       </div>
 
@@ -217,7 +254,7 @@ toolItem.value = 'Eraser (5px)';</pre>
           'Eraser (5px)',
           'Pencil (2px)',
           'Fill Bucket',
-          'Selection Tool'
+          'Selection Tool',
         ];
 
         const currentIndex = tools.findIndex(tool => tool === toolItem.value);
@@ -231,10 +268,11 @@ toolItem.value = 'Eraser (5px)';</pre>
           { text: 'File saved successfully!', type: 'success' },
           { text: 'Warning: Unsaved changes', type: 'warning' },
           { text: 'Processing image...', type: 'info' },
-          { text: 'Error: Could not export', type: 'error' }
+          { text: 'Error: Could not export', type: 'error' },
         ];
 
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        const randomMessage =
+          messages[Math.floor(Math.random() * messages.length)];
         statusBar.showMessage(randomMessage.text, randomMessage.type, 3000);
       }
 

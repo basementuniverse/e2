@@ -31,13 +31,13 @@ The tab container manages the overall tab interface and handles tab switching lo
 
 ### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
-| `disabled` | `boolean` | `false` | Disables the entire tab interface |
-| `active-tab` | `string` | - | ID of the currently active tab |
-| `tab-position` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` | Position of tabs relative to content |
-| `closable` | `boolean` | `false` | Makes all tabs closable by default |
+| Attribute      | Type                                     | Default  | Description                          |
+| -------------- | ---------------------------------------- | -------- | ------------------------------------ |
+| `theme`        | `'light' \| 'dark' \| 'auto'`            | `'auto'` | Visual theme                         |
+| `disabled`     | `boolean`                                | `false`  | Disables the entire tab interface    |
+| `active-tab`   | `string`                                 | -        | ID of the currently active tab       |
+| `tab-position` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'`  | Position of tabs relative to content |
+| `closable`     | `boolean`                                | `false`  | Makes all tabs closable by default   |
 
 ### Properties
 
@@ -62,11 +62,11 @@ removeTabById(tabId: string): void
 
 ### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `tab-select` | `TabSelectEvent` | Fired when a tab is selected |
-| `tab-close` | `TabCloseEvent` | Fired when a tab is closed (preventable) |
-| `tab-container-change` | `TabContainerChangeEvent` | Fired when the active tab changes |
+| Event                  | Detail                    | Description                              |
+| ---------------------- | ------------------------- | ---------------------------------------- |
+| `tab-select`           | `TabSelectEvent`          | Fired when a tab is selected             |
+| `tab-close`            | `TabCloseEvent`           | Fired when a tab is closed (preventable) |
+| `tab-container-change` | `TabContainerChangeEvent` | Fired when the active tab changes        |
 
 ### Examples
 
@@ -133,15 +133,15 @@ Individual tab elements that users click to switch between content panels.
 
 ### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
-| `disabled` | `boolean` | `false` | Disables the tab |
-| `active` | `boolean` | `false` | Whether this tab is currently active |
-| `closable` | `boolean` | `false` | Shows a close button |
-| `icon` | `string` | - | Icon to display (emoji or text) |
-| `label` | `string` | - | Tab label text |
-| `panel` | `string` | - | ID of the associated panel |
+| Attribute  | Type                          | Default  | Description                          |
+| ---------- | ----------------------------- | -------- | ------------------------------------ |
+| `theme`    | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme                         |
+| `disabled` | `boolean`                     | `false`  | Disables the tab                     |
+| `active`   | `boolean`                     | `false`  | Whether this tab is currently active |
+| `closable` | `boolean`                     | `false`  | Shows a close button                 |
+| `icon`     | `string`                      | -        | Icon to display (emoji or text)      |
+| `label`    | `string`                      | -        | Tab label text                       |
+| `panel`    | `string`                      | -        | ID of the associated panel           |
 
 ### Properties
 
@@ -165,9 +165,9 @@ applyTheme(theme: Theme): void
 
 ### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `tab-click` | `{ tabId, tab, panelId }` | Fired when tab is clicked |
+| Event       | Detail                    | Description                        |
+| ----------- | ------------------------- | ---------------------------------- |
+| `tab-click` | `{ tabId, tab, panelId }` | Fired when tab is clicked          |
 | `tab-close` | `{ tabId, tab, panelId }` | Fired when close button is clicked |
 
 ### Examples
@@ -200,13 +200,13 @@ Content containers that show/hide based on the selected tab.
 
 ### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Visual theme |
-| `disabled` | `boolean` | `false` | Disables the panel |
-| `active` | `boolean` | `false` | Whether this panel is currently visible |
-| `loading` | `boolean` | `false` | Shows loading state |
-| `data-empty-message` | `string` | `'No content available'` | Message shown when panel is empty |
+| Attribute            | Type                          | Default                  | Description                             |
+| -------------------- | ----------------------------- | ------------------------ | --------------------------------------- |
+| `theme`              | `'light' \| 'dark' \| 'auto'` | `'auto'`                 | Visual theme                            |
+| `disabled`           | `boolean`                     | `false`                  | Disables the panel                      |
+| `active`             | `boolean`                     | `false`                  | Whether this panel is currently visible |
+| `loading`            | `boolean`                     | `false`                  | Shows loading state                     |
+| `data-empty-message` | `string`                      | `'No content available'` | Message shown when panel is empty       |
 
 ### Properties
 
@@ -295,13 +295,13 @@ The tab system provides several events for responding to user interactions:
 const tabContainer = document.querySelector('e2-tab-container');
 
 // Listen for tab selection
-tabContainer.addEventListener('tab-select', (event) => {
+tabContainer.addEventListener('tab-select', event => {
   console.log('Selected tab:', event.detail.tabId);
   console.log('Previous tab:', event.detail.previousTabId);
 });
 
 // Listen for tab close attempts
-tabContainer.addEventListener('tab-close', (event) => {
+tabContainer.addEventListener('tab-close', event => {
   // Prevent closing if unsaved changes
   if (hasUnsavedChanges(event.detail.tabId)) {
     event.preventDefault();
@@ -314,7 +314,7 @@ tabContainer.addEventListener('tab-close', (event) => {
 });
 
 // Listen for container changes
-tabContainer.addEventListener('tab-container-change', (event) => {
+tabContainer.addEventListener('tab-container-change', event => {
   updateUI(event.detail.activeTabId);
 });
 ```
@@ -371,23 +371,27 @@ e2-tab-container {
 ## Best Practices
 
 ### Tab Organization
+
 - Keep tab labels short and descriptive
 - Use icons to save space and improve recognition
 - Group related functionality in adjacent tabs
 - Consider the logical flow of user tasks
 
 ### Performance
+
 - Use lazy loading for tab content that isn't immediately needed
 - Consider virtual scrolling for tabs with large amounts of content
 - Limit the number of simultaneously open tabs
 
 ### Accessibility
+
 - Ensure tab labels are descriptive for screen readers
 - Use proper semantic HTML within tab panels
 - Consider keyboard navigation patterns
 - Provide alternative access methods for critical functionality
 
 ### User Experience
+
 - Preserve tab state when possible (scroll position, form data)
 - Provide clear visual feedback for active tabs
 - Consider auto-saving content in closable tabs
@@ -396,6 +400,7 @@ e2-tab-container {
 ## Browser Support
 
 The tab components work in all modern browsers that support:
+
 - Custom Elements v1
 - Shadow DOM v1
 - ES6 Classes

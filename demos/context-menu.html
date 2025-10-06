@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -56,7 +56,6 @@
     </header>
 
     <main>
-
       <!-- Basic Context Menu Demo -->
       <div class="demo-section">
         <h2>Basic Context Menu</h2>
@@ -73,7 +72,8 @@
             Copy
           </button>
           <h3>HTML Markup:</h3>
-          <pre id="basic-code">&lt;e2-context-menu id="basic-menu" target="#basic-demo"&gt;
+          <pre id="basic-code">
+&lt;e2-context-menu id="basic-menu" target="#basic-demo"&gt;
   &lt;e2-context-menu-item
     label="Cut"
     icon="✂️"
@@ -98,7 +98,8 @@
     icon="⚙️"
     value="properties"&gt;
   &lt;/e2-context-menu-item&gt;
-&lt;/e2-context-menu&gt;</pre>
+&lt;/e2-context-menu&gt;</pre
+          >
         </div>
 
         <!-- Basic Context Menu -->
@@ -155,7 +156,8 @@
             Copy
           </button>
           <h3>HTML Markup:</h3>
-          <pre id="editor-code">&lt;e2-context-menu id="editor-menu" target="#editor-area"&gt;
+          <pre id="editor-code">
+&lt;e2-context-menu id="editor-menu" target="#editor-area"&gt;
   &lt;e2-context-menu-item
     label="Insert..."
     icon="➕"
@@ -174,7 +176,8 @@
     shortcut="Shift+Alt+F"
     value="format"&gt;
   &lt;/e2-context-menu-item&gt;
-&lt;/e2-context-menu&gt;</pre>
+&lt;/e2-context-menu&gt;</pre
+          >
         </div>
 
         <!-- Editor Context Menu -->
@@ -230,7 +233,8 @@
             Copy
           </button>
           <h3>HTML Markup:</h3>
-          <pre id="disabled-code">&lt;e2-context-menu-item
+          <pre id="disabled-code">
+&lt;e2-context-menu-item
   label="Available Action"
   icon="✅"
   value="available"&gt;
@@ -240,7 +244,8 @@
   icon="❌"
   value="disabled"
   disabled&gt;
-&lt;/e2-context-menu-item&gt;</pre>
+&lt;/e2-context-menu-item&gt;</pre
+          >
         </div>
 
         <!-- Disabled Items Context Menu -->
@@ -293,13 +298,15 @@
             Copy
           </button>
           <h3>JavaScript Example:</h3>
-          <pre id="programmatic-code">// Show context menu at specific position
+          <pre id="programmatic-code">
+// Show context menu at specific position
 const menu = document.getElementById('programmatic-menu');
 const rect = button.getBoundingClientRect();
 menu.show(rect.right + 10, rect.top);
 
 // Hide context menu
-menu.hide();</pre>
+menu.hide();</pre
+          >
         </div>
 
         <!-- Programmatic Context Menu -->
@@ -357,8 +364,8 @@ menu.hide();</pre>
         const timestamp = new Date().toLocaleTimeString();
         output.innerHTML += `
           <div>[${timestamp}] ${event.type}: ${JSON.stringify(
-          event.detail
-        )}</div>
+            event.detail
+          )}</div>
         `;
         output.scrollTop = output.scrollHeight;
       }

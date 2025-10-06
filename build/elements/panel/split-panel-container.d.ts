@@ -12,6 +12,7 @@ export declare class SplitPanelContainer extends HTMLElement implements EditorEl
     private _startSize;
     private _nextPanelStartSize;
     private _updatingPanelSizes;
+    private _themeCleanup?;
     private debouncedResize;
     static get observedAttributes(): string[];
     constructor();

@@ -7,10 +7,12 @@ import { EditorElementProperties, StatusSectionPosition, Theme } from '../../typ
 export declare class StatusSection extends HTMLElement implements EditorElementProperties {
     private _theme;
     private _position;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     get theme(): Theme;
     set theme(value: Theme);

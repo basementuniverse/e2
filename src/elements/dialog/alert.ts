@@ -5,10 +5,12 @@
 
 import { AlertType, EditorElementProperties, Theme } from '../../types';
 import {
+  applyEffectiveTheme,
   applyTheme,
   dispatchCustomEvent,
   generateId,
   getShadowRoot,
+  setupThemeInheritance,
 } from '../../utils';
 
 export class AlertDialogElement
@@ -19,6 +21,7 @@ export class AlertDialogElement
   private _nativeDialog: HTMLDialogElement | null = null;
   private _resolvePromise: ((value: void) => void) | null = null;
   private _rejectPromise: ((reason?: any) => void) | null = null;
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return ['title', 'message', 'button-text', 'theme', 'type'];
@@ -241,6 +244,22 @@ export class AlertDialogElement
     if (!this.id) {
       this.id = generateId('alert-dialog');
     }
+
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
+  }
+
+  disconnectedCallback(): void {
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   attributeChangedCallback(
@@ -258,8 +277,22 @@ export class AlertDialogElement
         this.updateContent();
         break;
       case 'theme':
-        this._theme = (newValue as Theme) || 'auto';
-        this.applyTheme(this._theme);
+        // If theme attribute is being set, use explicit theme
+        // If theme attribute is being removed, switch to inheritance
+        if (newValue) {
+          this._theme = newValue as Theme;
+          // Clean up any existing theme inheritance
+          if (this._themeCleanup) {
+            this._themeCleanup();
+            this._themeCleanup = undefined;
+          }
+          this.applyTheme(this._theme);
+        } else if (this.isConnected) {
+          // Attribute was removed, switch to inheritance
+          this._theme = 'auto';
+          applyEffectiveTheme(this);
+          this._themeCleanup = setupThemeInheritance(this);
+        }
         break;
     }
   }
@@ -366,6 +399,12 @@ export class AlertDialogElement
 
   set theme(value: Theme) {
     this.setAttribute('theme', value);
+
+    // Clean up any existing theme inheritance
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   get title(): string {

@@ -12,10 +12,12 @@ import {
   Theme,
 } from '../../types';
 import {
+  applyEffectiveTheme,
   applyTheme,
   dispatchCustomEvent,
   generateId,
   getShadowRoot,
+  setupThemeInheritance,
 } from '../../utils';
 
 export class StatusItem extends HTMLElement implements EditorElementProperties {
@@ -24,6 +26,7 @@ export class StatusItem extends HTMLElement implements EditorElementProperties {
   private _value: string | number = '';
   private _label: string = '';
   private _clickable: boolean = false;
+  private _themeCleanup?: () => void;
 
   static get observedAttributes(): string[] {
     return ['theme', 'type', 'value', 'label', 'clickable', 'disabled'];
@@ -190,8 +193,23 @@ export class StatusItem extends HTMLElement implements EditorElementProperties {
       this.id = generateId('status-item');
     }
 
-    this.applyTheme(this._theme);
+    // Set up theme inheritance if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      applyEffectiveTheme(this);
+      this._themeCleanup = setupThemeInheritance(this);
+    } else {
+      this.applyTheme(this._theme);
+    }
+
     this.updateDisplay();
+  }
+
+  disconnectedCallback(): void {
+    // Clean up theme inheritance listener
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
   }
 
   attributeChangedCallback(
@@ -203,7 +221,15 @@ export class StatusItem extends HTMLElement implements EditorElementProperties {
 
     switch (name) {
       case 'theme':
-        this.theme = newValue as Theme;
+        // If theme attribute is being set, use explicit theme
+        // If theme attribute is being removed, switch to inheritance
+        if (newValue) {
+          this.theme = newValue as Theme;
+        } else if (this.isConnected) {
+          // Attribute was removed, switch to inheritance
+          applyEffectiveTheme(this);
+          this._themeCleanup = setupThemeInheritance(this);
+        }
         break;
       case 'type':
         this._type = newValue as StatusItemType;
@@ -322,6 +348,13 @@ export class StatusItem extends HTMLElement implements EditorElementProperties {
 
   set theme(value: Theme) {
     this._theme = value;
+
+    // Clean up any existing theme inheritance
+    if (this._themeCleanup) {
+      this._themeCleanup();
+      this._themeCleanup = undefined;
+    }
+
     this.applyTheme(value);
   }
 

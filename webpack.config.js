@@ -9,9 +9,7 @@ module.exports = (env, argv) => {
     devtool: isProduction ? 'source-map' : 'inline-source-map',
     watchOptions: {
       aggregateTimeout: 500,
-      ignored: [
-        '**/node_modules',
-      ],
+      ignored: ['**/node_modules'],
     },
     module: {
       rules: [
@@ -19,7 +17,7 @@ module.exports = (env, argv) => {
           test: /\.ts$/,
           use: 'ts-loader',
           exclude: /node_modules/,
-        }
+        },
       ],
     },
     resolve: {

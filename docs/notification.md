@@ -32,21 +32,20 @@ The E2 notification system provides toast-style notifications for displaying tem
   title="Success"
   message="Operation completed successfully!"
   timeout="5000"
-  dismissible>
+  dismissible
+>
 </e2-notification>
 
 <!-- Container for positioning -->
-<e2-notification-container
-  position="top-right"
-  max-notifications="5">
+<e2-notification-container position="top-right" max-notifications="5">
 </e2-notification-container>
 
 <script>
-// Show the notification
-async function showSuccess() {
-  const notification = document.getElementById('success-notification');
-  await notification.show();
-}
+  // Show the notification
+  async function showSuccess() {
+    const notification = document.getElementById('success-notification');
+    await notification.show();
+  }
 </script>
 ```
 
@@ -56,7 +55,7 @@ async function showSuccess() {
 // Using createToast utility
 createToast('success', 'File saved successfully!', {
   title: 'Success',
-  timeout: 3000
+  timeout: 3000,
 });
 
 // Using Toast API (more convenient)
@@ -72,38 +71,38 @@ Individual notification element that displays toast messages.
 
 ### Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `type` | `'info' \| 'success' \| 'warning' \| 'error'` | `'info'` | Notification type/style |
-| `title` | `string` | `''` | Optional title text |
-| `message` | `string` | `'This is a notification message.'` | Main message content |
-| `timeout` | `number` | `5000` | Auto-dismiss time in ms (0 = no auto-dismiss) |
-| `dismissible` | `boolean` | `true` | Whether user can manually close |
-| `persistent` | `boolean` | `false` | Prevents auto-dismiss (overrides timeout) |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme variant |
+| Property      | Type                                          | Default                             | Description                                   |
+| ------------- | --------------------------------------------- | ----------------------------------- | --------------------------------------------- |
+| `type`        | `'info' \| 'success' \| 'warning' \| 'error'` | `'info'`                            | Notification type/style                       |
+| `title`       | `string`                                      | `''`                                | Optional title text                           |
+| `message`     | `string`                                      | `'This is a notification message.'` | Main message content                          |
+| `timeout`     | `number`                                      | `5000`                              | Auto-dismiss time in ms (0 = no auto-dismiss) |
+| `dismissible` | `boolean`                                     | `true`                              | Whether user can manually close               |
+| `persistent`  | `boolean`                                     | `false`                             | Prevents auto-dismiss (overrides timeout)     |
+| `theme`       | `'light' \| 'dark' \| 'auto'`                 | `'auto'`                            | Theme variant                                 |
 
 ### Methods
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `show()` | `Promise<void>` | Show notification, resolves when hidden |
-| `hide()` | `void` | Hide notification with animation |
-| `dismiss()` | `void` | Dismiss notification (hide + remove event) |
+| Method      | Returns         | Description                                |
+| ----------- | --------------- | ------------------------------------------ |
+| `show()`    | `Promise<void>` | Show notification, resolves when hidden    |
+| `hide()`    | `void`          | Hide notification with animation           |
+| `dismiss()` | `void`          | Dismiss notification (hide + remove event) |
 
 ### Properties (Runtime)
 
-| Property | Type | Description |
-|----------|------|-------------|
+| Property  | Type      | Description                               |
+| --------- | --------- | ----------------------------------------- |
 | `visible` | `boolean` | Whether notification is currently visible |
 
 ### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `notification-show` | `{ notificationId, notification, type }` | Notification is shown |
-| `notification-hide` | `{ notificationId, notification, type }` | Notification is hidden |
+| Event                  | Detail                                   | Description                 |
+| ---------------------- | ---------------------------------------- | --------------------------- |
+| `notification-show`    | `{ notificationId, notification, type }` | Notification is shown       |
+| `notification-hide`    | `{ notificationId, notification, type }` | Notification is hidden      |
 | `notification-dismiss` | `{ notificationId, notification, type }` | User dismissed notification |
-| `notification-click` | `{ notificationId, notification, type }` | Notification was clicked |
+| `notification-click`   | `{ notificationId, notification, type }` | Notification was clicked    |
 
 ### Example
 
@@ -115,26 +114,27 @@ Individual notification element that displays toast messages.
   title="Warning"
   message="Please save your work before continuing."
   timeout="0"
-  dismissible>
+  dismissible
+>
 </e2-notification>
 
 <script>
-// Show the notification
-document.getElementById('my-notification').show();
+  // Show the notification
+  document.getElementById('my-notification').show();
 
-// Listen for events
-document.addEventListener('notification-dismiss', (e) => {
-  console.log('Notification dismissed:', e.detail.notificationId);
-});
+  // Listen for events
+  document.addEventListener('notification-dismiss', (e) => {
+    console.log('Notification dismissed:', e.detail.notificationId);
+  });
 
-// Create dynamically
-const notification = document.createElement('e2-notification');
-notification.type = 'success';
-notification.message = 'Dynamic notification!';
-notification.timeout = 3000;
-document.body.appendChild(notification);
-await notification.show();
-notification.remove(); // Clean up
+  // Create dynamically
+  const notification = document.createElement('e2-notification');
+  notification.type = 'success';
+  notification.message = 'Dynamic notification!';
+  notification.timeout = 3000;
+  document.body.appendChild(notification);
+  await notification.show();
+  notification.remove(); // Clean up
 </script>
 ```
 
@@ -144,27 +144,27 @@ Container that manages positioning and lifecycle of notifications.
 
 ### Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `position` | `'top-left' \| 'top-right' \| 'top-center' \| 'bottom-left' \| 'bottom-right' \| 'bottom-center'` | `'top-right'` | Container position |
-| `max-notifications` | `number` | `5` | Maximum visible notifications |
-| `stack-direction` | `'up' \| 'down'` | `'down'` | How new notifications stack |
-| `spacing` | `'small' \| 'medium' \| 'large'` | `'medium'` | Gap between notifications |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme for contained notifications |
+| Property            | Type                                                                                              | Default       | Description                       |
+| ------------------- | ------------------------------------------------------------------------------------------------- | ------------- | --------------------------------- |
+| `position`          | `'top-left' \| 'top-right' \| 'top-center' \| 'bottom-left' \| 'bottom-right' \| 'bottom-center'` | `'top-right'` | Container position                |
+| `max-notifications` | `number`                                                                                          | `5`           | Maximum visible notifications     |
+| `stack-direction`   | `'up' \| 'down'`                                                                                  | `'down'`      | How new notifications stack       |
+| `spacing`           | `'small' \| 'medium' \| 'large'`                                                                  | `'medium'`    | Gap between notifications         |
+| `theme`             | `'light' \| 'dark' \| 'auto'`                                                                     | `'auto'`      | Theme for contained notifications |
 
 ### Methods
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `addNotification(notification)` | `void` | Add notification to container |
-| `removeNotification(notification)` | `void` | Remove notification from container |
-| `clear()` | `void` | Remove all notifications |
-| `getNotificationCount()` | `number` | Get count of visible notifications |
+| Method                             | Returns  | Description                        |
+| ---------------------------------- | -------- | ---------------------------------- |
+| `addNotification(notification)`    | `void`   | Add notification to container      |
+| `removeNotification(notification)` | `void`   | Remove notification from container |
+| `clear()`                          | `void`   | Remove all notifications           |
+| `getNotificationCount()`           | `number` | Get count of visible notifications |
 
 ### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
+| Event                           | Detail                                        | Description               |
+| ------------------------------- | --------------------------------------------- | ------------------------- |
 | `notification-container-update` | `{ containerId, container, position, count }` | Container content changed |
 
 ### Example
@@ -176,26 +176,27 @@ Container that manages positioning and lifecycle of notifications.
   position="bottom-right"
   max-notifications="3"
   stack-direction="up"
-  spacing="large">
+  spacing="large"
+>
 </e2-notification-container>
 
 <script>
-const container = document.getElementById('toast-container');
+  const container = document.getElementById('toast-container');
 
-// Add notification to container
-const notification = document.createElement('e2-notification');
-notification.type = 'info';
-notification.message = 'Added to container';
-container.addNotification(notification);
-notification.show();
+  // Add notification to container
+  const notification = document.createElement('e2-notification');
+  notification.type = 'info';
+  notification.message = 'Added to container';
+  container.addNotification(notification);
+  notification.show();
 
-// Listen for container updates
-container.addEventListener('notification-container-update', (e) => {
-  console.log('Container has', e.detail.count, 'notifications');
-});
+  // Listen for container updates
+  container.addEventListener('notification-container-update', e => {
+    console.log('Container has', e.detail.count, 'notifications');
+  });
 
-// Clear all notifications
-container.clear();
+  // Clear all notifications
+  container.clear();
 </script>
 ```
 
@@ -210,7 +211,7 @@ function createToast(
   type: 'info' | 'success' | 'warning' | 'error',
   message: string,
   options?: CreateToastOptions
-): Promise<void>
+): Promise<void>;
 
 interface CreateToastOptions {
   title?: string;
@@ -222,6 +223,7 @@ interface CreateToastOptions {
 ```
 
 **Example:**
+
 ```javascript
 // Basic toast
 createToast('success', 'File saved!');
@@ -230,7 +232,7 @@ createToast('success', 'File saved!');
 createToast('error', 'Connection failed', {
   title: 'Network Error',
   persistent: true,
-  container: '#my-container'
+  container: '#my-container',
 });
 ```
 
@@ -248,12 +250,12 @@ Toast.error('Error message');
 // With options
 Toast.success('Saved successfully!', {
   title: 'Success',
-  timeout: 2000
+  timeout: 2000,
 });
 
 Toast.error('Critical error occurred', {
   persistent: true,
-  dismissible: false
+  dismissible: false,
 });
 ```
 
@@ -306,7 +308,7 @@ e2-notification {
 }
 
 /* Type-specific styling */
-e2-notification[type="success"] {
+e2-notification[type='success'] {
   --notification-bg: #f0fdf4;
   --notification-border: #22c55e;
 }
@@ -330,7 +332,7 @@ async function saveData() {
   } catch (error) {
     Toast.error(`Failed to save: ${error.message}`, {
       persistent: true,
-      title: 'Save Error'
+      title: 'Save Error',
     });
   }
 }
@@ -356,26 +358,25 @@ function showProgress() {
 
 ```html
 <!-- Different containers for different areas -->
-<e2-notification-container
-  id="main-notifications"
-  position="top-right">
+<e2-notification-container id="main-notifications" position="top-right">
 </e2-notification-container>
 
 <e2-notification-container
   id="status-notifications"
   position="bottom-center"
-  max-notifications="1">
+  max-notifications="1"
+>
 </e2-notification-container>
 
 <script>
-// Route to specific containers
-createToast('info', 'General message', {
-  container: '#main-notifications'
-});
+  // Route to specific containers
+  createToast('info', 'General message', {
+    container: '#main-notifications',
+  });
 
-createToast('success', 'Status update', {
-  container: '#status-notifications'
-});
+  createToast('success', 'Status update', {
+    container: '#status-notifications',
+  });
 </script>
 ```
 
@@ -383,7 +384,7 @@ createToast('success', 'Status update', {
 
 ```javascript
 // Complex notification workflow
-document.addEventListener('notification-click', async (e) => {
+document.addEventListener('notification-click', async e => {
   if (e.detail.type === 'error') {
     // Show error details on click
     const details = await getErrorDetails(e.detail.notificationId);
@@ -391,11 +392,11 @@ document.addEventListener('notification-click', async (e) => {
   }
 });
 
-document.addEventListener('notification-dismiss', (e) => {
+document.addEventListener('notification-dismiss', e => {
   // Log dismissal for analytics
   analytics.track('notification_dismissed', {
     type: e.detail.type,
-    id: e.detail.notificationId
+    id: e.detail.notificationId,
   });
 });
 ```
@@ -475,7 +476,8 @@ The notification system includes built-in accessibility features:
   title="Validation Error"
   message="Please correct the highlighted fields."
   role="alert"
-  aria-live="assertive">
+  aria-live="assertive"
+>
 </e2-notification>
 ```
 

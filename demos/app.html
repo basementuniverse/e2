@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -55,241 +55,245 @@
     <main>
       <!-- The E2 App wrapper -->
       <e2-app id="demo-app" theme="light">
-      <!-- Toolbar Example -->
-      <e2-toolbar>
-        <e2-toolbar-button label="New" icon="📄"></e2-toolbar-button>
-        <e2-toolbar-button label="Open" icon="📁"></e2-toolbar-button>
-        <e2-toolbar-button label="Save" icon="💾"></e2-toolbar-button>
-        <e2-toolbar-separator></e2-toolbar-separator>
-        <e2-toolbar-button label="Cut" icon="✂️"></e2-toolbar-button>
-        <e2-toolbar-button label="Copy" icon="📋"></e2-toolbar-button>
-        <e2-toolbar-button label="Paste" icon="📄"></e2-toolbar-button>
-      </e2-toolbar>
+        <!-- Toolbar Example -->
+        <e2-toolbar>
+          <e2-toolbar-button label="New" icon="📄"></e2-toolbar-button>
+          <e2-toolbar-button label="Open" icon="📁"></e2-toolbar-button>
+          <e2-toolbar-button label="Save" icon="💾"></e2-toolbar-button>
+          <e2-toolbar-separator></e2-toolbar-separator>
+          <e2-toolbar-button label="Cut" icon="✂️"></e2-toolbar-button>
+          <e2-toolbar-button label="Copy" icon="📋"></e2-toolbar-button>
+          <e2-toolbar-button label="Paste" icon="📄"></e2-toolbar-button>
+        </e2-toolbar>
 
-      <!-- Main Content Area -->
-      <div style="padding: 20px; height: calc(100vh - 60px); overflow-y: auto">
-        <h1>E2 App Element Demo</h1>
-        <p>
-          This demonstrates the <code>&lt;e2-app&gt;</code> wrapper element with
-          comprehensive styling for forms and UI elements.
-        </p>
-
-        <!-- Typography Section -->
-        <div class="content-section">
-          <h2>Typography</h2>
-          <h1>Heading 1</h1>
-          <h2>Heading 2</h2>
-          <h3>Heading 3</h3>
-          <h4>Heading 4</h4>
-          <h5>Heading 5</h5>
-          <h6>Heading 6</h6>
+        <!-- Main Content Area -->
+        <div
+          style="padding: 20px; height: calc(100vh - 60px); overflow-y: auto"
+        >
+          <h1>E2 App Element Demo</h1>
           <p>
-            This is a regular paragraph with <strong>bold text</strong> and
-            <a href="#">a link</a>.
+            This demonstrates the <code>&lt;e2-app&gt;</code> wrapper element
+            with comprehensive styling for forms and UI elements.
           </p>
-          <p>
-            <small>This is small text that provides additional context.</small>
-          </p>
-        </div>
 
-        <!-- Form Controls Section -->
-        <div class="content-section">
-          <h2>Form Controls</h2>
+          <!-- Typography Section -->
+          <div class="content-section">
+            <h2>Typography</h2>
+            <h1>Heading 1</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <h4>Heading 4</h4>
+            <h5>Heading 5</h5>
+            <h6>Heading 6</h6>
+            <p>
+              This is a regular paragraph with <strong>bold text</strong> and
+              <a href="#">a link</a>.
+            </p>
+            <p>
+              <small
+                >This is small text that provides additional context.</small
+              >
+            </p>
+          </div>
 
-          <form>
-            <div class="form-row">
+          <!-- Form Controls Section -->
+          <div class="content-section">
+            <h2>Form Controls</h2>
+
+            <form>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="text-input">Text Input:</label>
+                  <input
+                    type="text"
+                    id="text-input"
+                    placeholder="Enter some text..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="email-input">Email Input:</label>
+                  <input
+                    type="email"
+                    id="email-input"
+                    placeholder="Enter your email..."
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="password-input">Password Input:</label>
+                  <input
+                    type="password"
+                    id="password-input"
+                    placeholder="Enter password..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="number-input">Number Input:</label>
+                  <input
+                    type="number"
+                    id="number-input"
+                    placeholder="Enter a number..."
+                    min="0"
+                    max="100"
+                  />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="date-input">Date Input:</label>
+                  <input type="date" id="date-input" />
+                </div>
+                <div class="form-group">
+                  <label for="time-input">Time Input:</label>
+                  <input type="time" id="time-input" />
+                </div>
+              </div>
+
               <div class="form-group">
-                <label for="text-input">Text Input:</label>
-                <input
-                  type="text"
-                  id="text-input"
-                  placeholder="Enter some text..."
-                />
+                <label for="textarea">Textarea:</label>
+                <textarea
+                  id="textarea"
+                  placeholder="Enter multiple lines of text..."
+                  rows="4"
+                ></textarea>
               </div>
+
               <div class="form-group">
-                <label for="email-input">Email Input:</label>
-                <input
-                  type="email"
-                  id="email-input"
-                  placeholder="Enter your email..."
-                />
+                <label for="select">Select Dropdown:</label>
+                <select id="select">
+                  <option value="">Choose an option...</option>
+                  <option value="option1">Option 1</option>
+                  <option value="option2">Option 2</option>
+                  <option value="option3">Option 3</option>
+                </select>
               </div>
-            </div>
 
-            <div class="form-row">
               <div class="form-group">
-                <label for="password-input">Password Input:</label>
-                <input
-                  type="password"
-                  id="password-input"
-                  placeholder="Enter password..."
-                />
+                <label for="range">Range Slider:</label>
+                <input type="range" id="range" min="0" max="100" value="50" />
               </div>
+
               <div class="form-group">
-                <label for="number-input">Number Input:</label>
-                <input
-                  type="number"
-                  id="number-input"
-                  placeholder="Enter a number..."
-                  min="0"
-                  max="100"
-                />
+                <label for="file">File Input:</label>
+                <input type="file" id="file" accept=".txt,.jpg,.png" />
               </div>
-            </div>
 
-            <div class="form-row">
+              <fieldset>
+                <legend>Checkboxes</legend>
+                <div>
+                  <input
+                    type="checkbox"
+                    id="checkbox1"
+                    name="checkboxes"
+                    value="1"
+                  />
+                  <label for="checkbox1">Option 1</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    id="checkbox2"
+                    name="checkboxes"
+                    value="2"
+                    checked
+                  />
+                  <label for="checkbox2">Option 2 (checked)</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    id="checkbox3"
+                    name="checkboxes"
+                    value="3"
+                    disabled
+                  />
+                  <label for="checkbox3">Option 3 (disabled)</label>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Radio Buttons</legend>
+                <div>
+                  <input type="radio" id="radio1" name="radio" value="1" />
+                  <label for="radio1">Choice 1</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="radio2"
+                    name="radio"
+                    value="2"
+                    checked
+                  />
+                  <label for="radio2">Choice 2 (selected)</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="radio3"
+                    name="radio"
+                    value="3"
+                    disabled
+                  />
+                  <label for="radio3">Choice 3 (disabled)</label>
+                </div>
+              </fieldset>
+
               <div class="form-group">
-                <label for="date-input">Date Input:</label>
-                <input type="date" id="date-input" />
+                <button type="submit" class="primary">Submit Form</button>
+                <button type="button">Cancel</button>
+                <button type="button" disabled>Disabled Button</button>
+                <input type="button" value="Input Button" />
               </div>
-              <div class="form-group">
-                <label for="time-input">Time Input:</label>
-                <input type="time" id="time-input" />
-              </div>
-            </div>
+            </form>
+          </div>
 
-            <div class="form-group">
-              <label for="textarea">Textarea:</label>
-              <textarea
-                id="textarea"
-                placeholder="Enter multiple lines of text..."
-                rows="4"
-              ></textarea>
-            </div>
+          <!-- Tabs Example -->
+          <div class="content-section">
+            <h2>Tabs Component</h2>
+            <e2-tab-container id="basic-tabs" class="tab-demo">
+              <e2-tab slot="tabs" label="Overview" icon="📋">Overview</e2-tab>
+              <e2-tab slot="tabs" label="Features" icon="⭐">Features</e2-tab>
+              <e2-tab slot="tabs" label="Examples" icon="💡">Examples</e2-tab>
 
-            <div class="form-group">
-              <label for="select">Select Dropdown:</label>
-              <select id="select">
-                <option value="">Choose an option...</option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-              </select>
-            </div>
+              <e2-tab-panel slot="panels" class="sample-content">
+                <h3>Welcome to E2 Tabs</h3>
+                <p>
+                  This is a demonstration of the E2 tab system. The tab
+                  components provide a clean and intuitive way to organize
+                  content into separate, switchable sections.
+                </p>
+                <p>Key benefits include:</p>
+                <ul class="feature-list">
+                  <li>Easy content organization</li>
+                  <li>Space-efficient layout</li>
+                  <li>Intuitive navigation</li>
+                  <li>Flexible styling options</li>
+                </ul>
+              </e2-tab-panel>
 
-            <div class="form-group">
-              <label for="range">Range Slider:</label>
-              <input type="range" id="range" min="0" max="100" value="50" />
-            </div>
+              <e2-tab-panel slot="panels" class="sample-content">
+                <h3>Tab Features</h3>
+                <p>The E2 tab system includes many powerful features:</p>
+                <ul class="feature-list">
+                  <li>Multiple tab positions (top, bottom, left, right)</li>
+                  <li>Closable tabs with confirmation</li>
+                  <li>Icons and labels</li>
+                  <li>Theme support (light, dark, auto)</li>
+                  <li>Keyboard navigation</li>
+                  <li>Programmatic API</li>
+                  <li>Custom events</li>
+                  <li>Responsive design</li>
+                </ul>
+              </e2-tab-panel>
 
-            <div class="form-group">
-              <label for="file">File Input:</label>
-              <input type="file" id="file" accept=".txt,.jpg,.png" />
-            </div>
-
-            <fieldset>
-              <legend>Checkboxes</legend>
-              <div>
-                <input
-                  type="checkbox"
-                  id="checkbox1"
-                  name="checkboxes"
-                  value="1"
-                />
-                <label for="checkbox1">Option 1</label>
-              </div>
-              <div>
-                <input
-                  type="checkbox"
-                  id="checkbox2"
-                  name="checkboxes"
-                  value="2"
-                  checked
-                />
-                <label for="checkbox2">Option 2 (checked)</label>
-              </div>
-              <div>
-                <input
-                  type="checkbox"
-                  id="checkbox3"
-                  name="checkboxes"
-                  value="3"
-                  disabled
-                />
-                <label for="checkbox3">Option 3 (disabled)</label>
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>Radio Buttons</legend>
-              <div>
-                <input type="radio" id="radio1" name="radio" value="1" />
-                <label for="radio1">Choice 1</label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="radio2"
-                  name="radio"
-                  value="2"
-                  checked
-                />
-                <label for="radio2">Choice 2 (selected)</label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="radio3"
-                  name="radio"
-                  value="3"
-                  disabled
-                />
-                <label for="radio3">Choice 3 (disabled)</label>
-              </div>
-            </fieldset>
-
-            <div class="form-group">
-              <button type="submit" class="primary">Submit Form</button>
-              <button type="button">Cancel</button>
-              <button type="button" disabled>Disabled Button</button>
-              <input type="button" value="Input Button" />
-            </div>
-          </form>
-        </div>
-
-        <!-- Tabs Example -->
-        <div class="content-section">
-          <h2>Tabs Component</h2>
-          <e2-tab-container id="basic-tabs" class="tab-demo">
-            <e2-tab slot="tabs" label="Overview" icon="📋">Overview</e2-tab>
-            <e2-tab slot="tabs" label="Features" icon="⭐">Features</e2-tab>
-            <e2-tab slot="tabs" label="Examples" icon="💡">Examples</e2-tab>
-
-            <e2-tab-panel slot="panels" class="sample-content">
-              <h3>Welcome to E2 Tabs</h3>
-              <p>
-                This is a demonstration of the E2 tab system. The tab components
-                provide a clean and intuitive way to organize content into
-                separate, switchable sections.
-              </p>
-              <p>Key benefits include:</p>
-              <ul class="feature-list">
-                <li>Easy content organization</li>
-                <li>Space-efficient layout</li>
-                <li>Intuitive navigation</li>
-                <li>Flexible styling options</li>
-              </ul>
-            </e2-tab-panel>
-
-            <e2-tab-panel slot="panels" class="sample-content">
-              <h3>Tab Features</h3>
-              <p>The E2 tab system includes many powerful features:</p>
-              <ul class="feature-list">
-                <li>Multiple tab positions (top, bottom, left, right)</li>
-                <li>Closable tabs with confirmation</li>
-                <li>Icons and labels</li>
-                <li>Theme support (light, dark, auto)</li>
-                <li>Keyboard navigation</li>
-                <li>Programmatic API</li>
-                <li>Custom events</li>
-                <li>Responsive design</li>
-              </ul>
-            </e2-tab-panel>
-
-            <e2-tab-panel slot="panels" class="sample-content">
-              <h3>Usage Examples</h3>
-              <p>Here's how to create a basic tab interface:</p>
-              <pre><code>&lt;e2-tab-container&gt;
+              <e2-tab-panel slot="panels" class="sample-content">
+                <h3>Usage Examples</h3>
+                <p>Here's how to create a basic tab interface:</p>
+                <pre><code>&lt;e2-tab-container&gt;
   &lt;e2-tab slot="tabs" label="Tab 1"&gt;Tab 1&lt;/e2-tab&gt;
   &lt;e2-tab slot="tabs" label="Tab 2"&gt;Tab 2&lt;/e2-tab&gt;
 
@@ -301,139 +305,141 @@
     Content for Tab 2
   &lt;/e2-tab-panel&gt;
 &lt;/e2-tab-container&gt;</code></pre>
-            </e2-tab-panel>
-          </e2-tab-container>
-        </div>
+              </e2-tab-panel>
+            </e2-tab-container>
+          </div>
 
-        <!-- Split Panel Example -->
-        <div class="content-section">
-          <h2>Split Panel Component</h2>
-          <e2-split-panel-container style="height: 300px">
-            <e2-split-panel size="30%">
-              <h3>Left Panel</h3>
-              <p>This panel contains styled form elements:</p>
-              <div class="form-group">
-                <input type="search" placeholder="Search..." />
-              </div>
-              <div class="form-group">
-                <label> <input type="checkbox" /> Show hidden items </label>
-              </div>
-            </e2-split-panel>
-            <e2-split-panel>
-              <h3>Main Content</h3>
-              <p>
-                This is the main content area with properly styled text and
-                controls.
-              </p>
-              <div class="form-group">
-                <textarea
-                  placeholder="Enter your content here..."
-                  rows="6"
-                ></textarea>
-              </div>
-            </e2-split-panel>
-          </e2-split-panel-container>
-        </div>
+          <!-- Split Panel Example -->
+          <div class="content-section">
+            <h2>Split Panel Component</h2>
+            <e2-split-panel-container style="height: 300px">
+              <e2-split-panel size="30%">
+                <h3>Left Panel</h3>
+                <p>This panel contains styled form elements:</p>
+                <div class="form-group">
+                  <input type="search" placeholder="Search..." />
+                </div>
+                <div class="form-group">
+                  <label> <input type="checkbox" /> Show hidden items </label>
+                </div>
+              </e2-split-panel>
+              <e2-split-panel>
+                <h3>Main Content</h3>
+                <p>
+                  This is the main content area with properly styled text and
+                  controls.
+                </p>
+                <div class="form-group">
+                  <textarea
+                    placeholder="Enter your content here..."
+                    rows="6"
+                  ></textarea>
+                </div>
+              </e2-split-panel>
+            </e2-split-panel-container>
+          </div>
 
-        <!-- Collapsible Panel Example -->
-        <div class="content-section">
-          <h2>Collapsible Panel Component</h2>
-          <e2-collapsible-panel id="vertical-panel-1" orientation="vertical">
-            <span slot="title">Properties Panel</span>
-            <div class="sample-content">
-              <h4>Object Properties</h4>
-              <p>Position: (100, 50)</p>
-              <p>Size: 200x150</p>
-              <p>Rotation: 45°</p>
-              <ul>
-                <li>Visible: Yes</li>
-                <li>Locked: No</li>
-                <li>Layer: Foreground</li>
-              </ul>
-            </div>
-          </e2-collapsible-panel>
-        </div>
+          <!-- Collapsible Panel Example -->
+          <div class="content-section">
+            <h2>Collapsible Panel Component</h2>
+            <e2-collapsible-panel id="vertical-panel-1" orientation="vertical">
+              <span slot="title">Properties Panel</span>
+              <div class="sample-content">
+                <h4>Object Properties</h4>
+                <p>Position: (100, 50)</p>
+                <p>Size: 200x150</p>
+                <p>Rotation: 45°</p>
+                <ul>
+                  <li>Visible: Yes</li>
+                  <li>Locked: No</li>
+                  <li>Layer: Foreground</li>
+                </ul>
+              </div>
+            </e2-collapsible-panel>
+          </div>
 
-        <!-- Utility Classes Demo -->
-        <div class="content-section">
-          <h2>Utility Classes</h2>
-          <p class="text-muted">This text uses the text-muted utility class.</p>
-          <p class="text-secondary">
-            This text uses the text-secondary utility class.
-          </p>
-          <div
-            class="bg-secondary rounded border shadow-sm"
-            style="padding: 16px; margin: 16px 0"
-          >
-            <p>
-              This div uses bg-secondary, rounded, border, and shadow-sm utility
-              classes.
+          <!-- Utility Classes Demo -->
+          <div class="content-section">
+            <h2>Utility Classes</h2>
+            <p class="text-muted">
+              This text uses the text-muted utility class.
             </p>
+            <p class="text-secondary">
+              This text uses the text-secondary utility class.
+            </p>
+            <div
+              class="bg-secondary rounded border shadow-sm"
+              style="padding: 16px; margin: 16px 0"
+            >
+              <p>
+                This div uses bg-secondary, rounded, border, and shadow-sm
+                utility classes.
+              </p>
+            </div>
           </div>
-        </div>
 
-        <!-- Color Variables Demo -->
-        <div class="content-section">
-          <h2>CSS Custom Properties</h2>
-          <p>
-            The E2 App element provides many CSS custom properties for
-            customization:
-          </p>
-          <div
-            style="
-              display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-              gap: 16px;
-              margin: 16px 0;
-            "
-          >
+          <!-- Color Variables Demo -->
+          <div class="content-section">
+            <h2>CSS Custom Properties</h2>
+            <p>
+              The E2 App element provides many CSS custom properties for
+              customization:
+            </p>
             <div
               style="
-                padding: 16px;
-                background: var(--bg-primary);
-                border: 1px solid var(--border-color);
-                border-radius: var(--input-border-radius);
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 16px;
+                margin: 16px 0;
               "
             >
-              <strong>Primary Background</strong><br />
-              <code>--bg-primary</code>
-            </div>
-            <div
-              style="
-                padding: 16px;
-                background: var(--bg-secondary);
-                border: 1px solid var(--border-color);
-                border-radius: var(--input-border-radius);
-              "
-            >
-              <strong>Secondary Background</strong><br />
-              <code>--bg-secondary</code>
-            </div>
-            <div
-              style="
-                padding: 16px;
-                background: var(--bg-tertiary);
-                border: 1px solid var(--border-color);
-                border-radius: var(--input-border-radius);
-              "
-            >
-              <strong>Tertiary Background</strong><br />
-              <code>--bg-tertiary</code>
-            </div>
-            <div
-              style="
-                padding: 16px;
-                background: var(--accent-color);
-                color: white;
-                border-radius: var(--input-border-radius);
-              "
-            >
-              <strong>Accent Color</strong><br />
-              <code>--accent-color</code>
+              <div
+                style="
+                  padding: 16px;
+                  background: var(--bg-primary);
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--input-border-radius);
+                "
+              >
+                <strong>Primary Background</strong><br />
+                <code>--bg-primary</code>
+              </div>
+              <div
+                style="
+                  padding: 16px;
+                  background: var(--bg-secondary);
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--input-border-radius);
+                "
+              >
+                <strong>Secondary Background</strong><br />
+                <code>--bg-secondary</code>
+              </div>
+              <div
+                style="
+                  padding: 16px;
+                  background: var(--bg-tertiary);
+                  border: 1px solid var(--border-color);
+                  border-radius: var(--input-border-radius);
+                "
+              >
+                <strong>Tertiary Background</strong><br />
+                <code>--bg-tertiary</code>
+              </div>
+              <div
+                style="
+                  padding: 16px;
+                  background: var(--accent-color);
+                  color: white;
+                  border-radius: var(--input-border-radius);
+                "
+              >
+                <strong>Accent Color</strong><br />
+                <code>--accent-color</code>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </e2-app>
     </main>
 
@@ -441,22 +447,24 @@
       const app = document.getElementById('demo-app');
 
       function setTheme(theme) {
-          app.theme = theme;
+        app.theme = theme;
 
-          // Update active button
-          document.querySelectorAll('.theme-button').forEach(btn => btn.classList.remove('active'));
-          event.target.classList.add('active');
+        // Update active button
+        document
+          .querySelectorAll('.theme-button')
+          .forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
 
-          console.log('Theme set to:', theme);
+        console.log('Theme set to:', theme);
       }
 
       // Demo event handling
-      document.addEventListener('toolbar-button-click', (e) => {
-          console.log('Toolbar button clicked:', e.detail);
+      document.addEventListener('toolbar-button-click', e => {
+        console.log('Toolbar button clicked:', e.detail);
       });
 
-      document.addEventListener('tab-change', (e) => {
-          console.log('Tab changed:', e.detail);
+      document.addEventListener('tab-change', e => {
+        console.log('Tab changed:', e.detail);
       });
 
       // Add some custom CSS variables as an example
@@ -464,7 +472,9 @@
 
       console.log('E2 App Demo loaded');
       console.log('Current theme:', app.theme);
-      console.log('Available CSS custom properties can be customized using setCSSVariable()');
+      console.log(
+        'Available CSS custom properties can be customized using setCSSVariable()'
+      );
     </script>
   </body>
 </html>

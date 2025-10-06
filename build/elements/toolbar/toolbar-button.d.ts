@@ -5,10 +5,12 @@
 import { EditorElementProperties, Theme } from '../../types';
 export declare class ToolbarButton extends HTMLElement implements EditorElementProperties {
     private _theme;
+    private _themeCleanup?;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     private updateContent;
     private updateDisabled;

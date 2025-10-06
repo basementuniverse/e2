@@ -30,9 +30,51 @@ export declare function debounce<T extends (...args: any[]) => any>(func: T, wai
  */
 export declare function isElementVisible(element: HTMLElement): boolean;
 /**
+ * Find the closest parent e2-app element
+ */
+export declare function findParentApp(element: HTMLElement): HTMLElement | null;
+/**
+ * Get the effective theme for an element
+ * If the element has an explicit theme attribute, use that
+ * Otherwise, inherit from the parent e2-app if available
+ * Falls back to 'auto' if no parent app found
+ */
+export declare function getEffectiveTheme(element: HTMLElement): 'light' | 'dark' | 'auto';
+/**
  * Apply theme class to an element
  */
 export declare function applyTheme(element: HTMLElement, theme: 'light' | 'dark' | 'auto'): void;
+/**
+ * Apply effective theme to an element (with inheritance support)
+ */
+export declare function applyEffectiveTheme(element: HTMLElement): void;
+/**
+ * Setup theme inheritance for an element
+ * This should be called in the element's connectedCallback
+ */
+export declare function setupThemeInheritance(element: HTMLElement, onThemeChange?: (theme: 'light' | 'dark' | 'auto') => void): () => void;
+/**
+ * Notify all child elements about theme change
+ */
+export declare function notifyThemeChange(appElement: HTMLElement, theme: 'light' | 'dark' | 'auto'): void;
+/**
+ * Initialize theme inheritance for a component
+ * This is a helper function that standardizes the theme inheritance pattern
+ * Call this in your component's connectedCallback
+ */
+export declare function initializeThemeInheritance(element: HTMLElement & {
+    applyTheme: (theme: 'light' | 'dark' | 'auto') => void;
+}, currentTheme: 'light' | 'dark' | 'auto'): (() => void) | undefined;
+/**
+ * Handle theme changes for a component
+ * This is a helper function that standardizes theme change handling
+ * Call this in your component's theme setter and attributeChangedCallback
+ */
+export declare function handleThemeChange(element: HTMLElement & {
+    applyTheme: (theme: 'light' | 'dark' | 'auto') => void;
+}, newTheme: 'light' | 'dark' | 'auto' | null, themeCleanupRef: {
+    current?: () => void;
+}): void;
 /**
  * Create and show a toast notification programmatically
  */

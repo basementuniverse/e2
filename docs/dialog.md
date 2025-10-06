@@ -23,15 +23,15 @@ The E2 dialog system provides a set of components built on the native HTML `<dia
 
 All dialog components share these common properties:
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme mode |
-| `id` | `string` | auto-generated | Unique identifier |
+| Property | Type                          | Default        | Description       |
+| -------- | ----------------------------- | -------------- | ----------------- |
+| `theme`  | `'light' \| 'dark' \| 'auto'` | `'auto'`       | Theme mode        |
+| `id`     | `string`                      | auto-generated | Unique identifier |
 
 ## Common Methods
 
-| Method | Description |
-|--------|-------------|
+| Method              | Description                 |
+| ------------------- | --------------------------- |
 | `applyTheme(theme)` | Apply a theme to the dialog |
 
 ## e2-dialog
@@ -40,29 +40,29 @@ Basic dialog component that wraps the native `<dialog>` element with theming and
 
 ### Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `title` | `string` | `''` | Dialog title |
-| `modal` | `boolean` | `false` | Whether dialog is modal |
-| `closable` | `boolean` | `true` | Whether close button is shown |
-| `width` | `string` | `auto` | Dialog width (CSS value) |
-| `height` | `string` | `auto` | Dialog height (CSS value) |
+| Property   | Type      | Default | Description                   |
+| ---------- | --------- | ------- | ----------------------------- |
+| `title`    | `string`  | `''`    | Dialog title                  |
+| `modal`    | `boolean` | `false` | Whether dialog is modal       |
+| `closable` | `boolean` | `true`  | Whether close button is shown |
+| `width`    | `string`  | `auto`  | Dialog width (CSS value)      |
+| `height`   | `string`  | `auto`  | Dialog height (CSS value)     |
 
 ### Methods
 
-| Method | Description |
-|--------|-------------|
-| `show()` | Show dialog (non-modal) |
-| `showModal()` | Show dialog (modal) |
+| Method                | Description                             |
+| --------------------- | --------------------------------------- |
+| `show()`              | Show dialog (non-modal)                 |
+| `showModal()`         | Show dialog (modal)                     |
 | `close(returnValue?)` | Close dialog with optional return value |
 
 ### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `dialog-show` | `{ dialogId, dialog, modal? }` | Dialog is shown |
-| `dialog-close` | `{ dialogId, dialog, returnValue? }` | Dialog is closed |
-| `dialog-cancel` | `{ dialogId, dialog }` | Dialog cancelled (ESC key) |
+| Event           | Detail                               | Description                |
+| --------------- | ------------------------------------ | -------------------------- |
+| `dialog-show`   | `{ dialogId, dialog, modal? }`       | Dialog is shown            |
+| `dialog-close`  | `{ dialogId, dialog, returnValue? }` | Dialog is closed           |
+| `dialog-cancel` | `{ dialogId, dialog }`               | Dialog cancelled (ESC key) |
 
 ### Example
 
@@ -71,13 +71,15 @@ Basic dialog component that wraps the native `<dialog>` element with theming and
   <p>Dialog content goes here.</p>
 
   <div slot="footer">
-    <button onclick="document.getElementById('my-dialog').close()">Close</button>
+    <button onclick="document.getElementById('my-dialog').close()">
+      Close
+    </button>
   </div>
 </e2-dialog>
 
 <script>
-const dialog = document.getElementById('my-dialog');
-dialog.showModal();
+  const dialog = document.getElementById('my-dialog');
+  dialog.showModal();
 </script>
 ```
 
@@ -87,28 +89,28 @@ Confirmation dialog with promise-based API for yes/no decisions.
 
 ### Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `title` | `string` | `'Confirm'` | Dialog title |
-| `message` | `string` | `'Are you sure?'` | Confirmation message |
-| `confirm-text` | `string` | `'OK'` | Confirm button text |
-| `cancel-text` | `string` | `'Cancel'` | Cancel button text |
-| `danger` | `boolean` | `false` | Use danger styling |
+| Property       | Type      | Default           | Description          |
+| -------------- | --------- | ----------------- | -------------------- |
+| `title`        | `string`  | `'Confirm'`       | Dialog title         |
+| `message`      | `string`  | `'Are you sure?'` | Confirmation message |
+| `confirm-text` | `string`  | `'OK'`            | Confirm button text  |
+| `cancel-text`  | `string`  | `'Cancel'`        | Cancel button text   |
+| `danger`       | `boolean` | `false`           | Use danger styling   |
 
 ### Methods
 
-| Method | Returns | Description |
-|--------|---------|-------------|
+| Method   | Returns            | Description                            |
+| -------- | ------------------ | -------------------------------------- |
 | `show()` | `Promise<boolean>` | Show dialog, returns true if confirmed |
 
 ### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `confirm-dialog-show` | `{ dialogId, dialog }` | Dialog is shown |
-| `confirm-dialog-confirm` | `{ dialogId, dialog, confirmed: true }` | User confirmed |
-| `confirm-dialog-cancel` | `{ dialogId, dialog, confirmed: false }` | User cancelled |
-| `confirm-dialog-close` | `{ dialogId, dialog, confirmed }` | Dialog closed |
+| Event                    | Detail                                   | Description     |
+| ------------------------ | ---------------------------------------- | --------------- |
+| `confirm-dialog-show`    | `{ dialogId, dialog }`                   | Dialog is shown |
+| `confirm-dialog-confirm` | `{ dialogId, dialog, confirmed: true }`  | User confirmed  |
+| `confirm-dialog-cancel`  | `{ dialogId, dialog, confirmed: false }` | User cancelled  |
+| `confirm-dialog-close`   | `{ dialogId, dialog, confirmed }`        | Dialog closed   |
 
 ### Example
 
@@ -119,34 +121,35 @@ Confirmation dialog with promise-based API for yes/no decisions.
   message="Are you sure you want to delete this file? This action cannot be undone."
   confirm-text="Delete"
   cancel-text="Cancel"
-  danger>
+  danger
+>
 </e2-confirm>
 
 <script>
-async function deleteFile() {
-  const confirm = document.getElementById('delete-confirm');
-  const shouldDelete = await confirm.show();
+  async function deleteFile() {
+    const confirm = document.getElementById('delete-confirm');
+    const shouldDelete = await confirm.show();
 
-  if (shouldDelete) {
-    console.log('File deleted');
-  } else {
-    console.log('Delete cancelled');
+    if (shouldDelete) {
+      console.log('File deleted');
+    } else {
+      console.log('Delete cancelled');
+    }
   }
-}
 
-// Or create dynamically
-async function quickConfirm() {
-  const confirm = document.createElement('e2-confirm');
-  confirm.title = 'Save Changes?';
-  confirm.message = 'You have unsaved changes. Save before closing?';
-  confirm.confirmText = 'Save';
-  confirm.cancelText = 'Discard';
-  document.body.appendChild(confirm);
+  // Or create dynamically
+  async function quickConfirm() {
+    const confirm = document.createElement('e2-confirm');
+    confirm.title = 'Save Changes?';
+    confirm.message = 'You have unsaved changes. Save before closing?';
+    confirm.confirmText = 'Save';
+    confirm.cancelText = 'Discard';
+    document.body.appendChild(confirm);
 
-  const result = await confirm.show();
-  document.body.removeChild(confirm);
-  return result;
-}
+    const result = await confirm.show();
+    document.body.removeChild(confirm);
+    return result;
+  }
 </script>
 ```
 
@@ -156,26 +159,26 @@ Alert dialog for displaying messages and notifications.
 
 ### Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `title` | `string` | auto (based on type) | Dialog title |
-| `message` | `string` | `'This is an alert message.'` | Alert message |
-| `button-text` | `string` | `'OK'` | Button text |
-| `type` | `'info' \| 'success' \| 'warning' \| 'error'` | `'info'` | Alert type |
+| Property      | Type                                          | Default                       | Description   |
+| ------------- | --------------------------------------------- | ----------------------------- | ------------- |
+| `title`       | `string`                                      | auto (based on type)          | Dialog title  |
+| `message`     | `string`                                      | `'This is an alert message.'` | Alert message |
+| `button-text` | `string`                                      | `'OK'`                        | Button text   |
+| `type`        | `'info' \| 'success' \| 'warning' \| 'error'` | `'info'`                      | Alert type    |
 
 ### Methods
 
-| Method | Returns | Description |
-|--------|---------|-------------|
+| Method   | Returns         | Description                          |
+| -------- | --------------- | ------------------------------------ |
 | `show()` | `Promise<void>` | Show dialog, resolves when dismissed |
 
 ### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `alert-dialog-show` | `{ dialogId, dialog }` | Dialog is shown |
+| Event                  | Detail                 | Description           |
+| ---------------------- | ---------------------- | --------------------- |
+| `alert-dialog-show`    | `{ dialogId, dialog }` | Dialog is shown       |
 | `alert-dialog-dismiss` | `{ dialogId, dialog }` | User dismissed dialog |
-| `alert-dialog-close` | `{ dialogId, dialog }` | Dialog closed |
+| `alert-dialog-close`   | `{ dialogId, dialog }` | Dialog closed         |
 
 ### Example
 
@@ -185,28 +188,29 @@ Alert dialog for displaying messages and notifications.
   type="error"
   title="Error Occurred"
   message="Something went wrong while processing your request."
-  button-text="OK">
+  button-text="OK"
+>
 </e2-alert>
 
 <script>
-async function showError() {
-  const alert = document.getElementById('error-alert');
-  await alert.show();
-  console.log('Error alert dismissed');
-}
+  async function showError() {
+    const alert = document.getElementById('error-alert');
+    await alert.show();
+    console.log('Error alert dismissed');
+  }
 
-// Different alert types
-async function showSuccess() {
-  const alert = document.createElement('e2-alert');
-  alert.type = 'success';
-  alert.title = 'Success!';
-  alert.message = 'Your changes have been saved.';
-  alert.buttonText = 'Great!';
-  document.body.appendChild(alert);
+  // Different alert types
+  async function showSuccess() {
+    const alert = document.createElement('e2-alert');
+    alert.type = 'success';
+    alert.title = 'Success!';
+    alert.message = 'Your changes have been saved.';
+    alert.buttonText = 'Great!';
+    document.body.appendChild(alert);
 
-  await alert.show();
-  document.body.removeChild(alert);
-}
+    await alert.show();
+    document.body.removeChild(alert);
+  }
 </script>
 ```
 
@@ -216,40 +220,40 @@ Input dialog with validation for collecting user input.
 
 ### Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `title` | `string` | `'Input Required'` | Dialog title |
-| `message` | `string` | `''` | Prompt message |
-| `placeholder` | `string` | `''` | Input placeholder |
-| `default-value` | `string` | `''` | Default input value |
-| `confirm-text` | `string` | `'OK'` | Confirm button text |
-| `cancel-text` | `string` | `'Cancel'` | Cancel button text |
-| `required` | `boolean` | `false` | Input is required |
-| `multiline` | `boolean` | `false` | Use textarea instead of input |
-| `pattern` | `string` | `''` | Validation pattern (regex) |
-| `min-length` | `number` | `0` | Minimum input length |
-| `max-length` | `number` | `''` | Maximum input length |
+| Property        | Type      | Default            | Description                   |
+| --------------- | --------- | ------------------ | ----------------------------- |
+| `title`         | `string`  | `'Input Required'` | Dialog title                  |
+| `message`       | `string`  | `''`               | Prompt message                |
+| `placeholder`   | `string`  | `''`               | Input placeholder             |
+| `default-value` | `string`  | `''`               | Default input value           |
+| `confirm-text`  | `string`  | `'OK'`             | Confirm button text           |
+| `cancel-text`   | `string`  | `'Cancel'`         | Cancel button text            |
+| `required`      | `boolean` | `false`            | Input is required             |
+| `multiline`     | `boolean` | `false`            | Use textarea instead of input |
+| `pattern`       | `string`  | `''`               | Validation pattern (regex)    |
+| `min-length`    | `number`  | `0`                | Minimum input length          |
+| `max-length`    | `number`  | `''`               | Maximum input length          |
 
 ### Methods
 
-| Method | Returns | Description |
-|--------|---------|-------------|
+| Method   | Returns                   | Description                                           |
+| -------- | ------------------------- | ----------------------------------------------------- |
 | `show()` | `Promise<string \| null>` | Show dialog, returns input value or null if cancelled |
 
 ### Properties (Runtime)
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `value` | `string` | Current input value |
+| Property | Type     | Description         |
+| -------- | -------- | ------------------- |
+| `value`  | `string` | Current input value |
 
 ### Events
 
-| Event | Detail | Description |
-|-------|--------|-------------|
-| `prompt-dialog-show` | `{ dialogId, dialog }` | Dialog is shown |
-| `prompt-dialog-confirm` | `{ dialogId, dialog, value }` | User confirmed with input |
-| `prompt-dialog-cancel` | `{ dialogId, dialog, value: null }` | User cancelled |
-| `prompt-dialog-close` | `{ dialogId, dialog, value }` | Dialog closed |
+| Event                   | Detail                              | Description               |
+| ----------------------- | ----------------------------------- | ------------------------- |
+| `prompt-dialog-show`    | `{ dialogId, dialog }`              | Dialog is shown           |
+| `prompt-dialog-confirm` | `{ dialogId, dialog, value }`       | User confirmed with input |
+| `prompt-dialog-cancel`  | `{ dialogId, dialog, value: null }` | User cancelled            |
+| `prompt-dialog-close`   | `{ dialogId, dialog, value }`       | Dialog closed             |
 
 ### Example
 
@@ -261,49 +265,53 @@ Input dialog with validation for collecting user input.
   placeholder="Your name here..."
   required
   min-length="2"
-  max-length="50">
+  max-length="50"
+>
 </e2-prompt>
 
 <script>
-async function getName() {
-  const prompt = document.getElementById('name-prompt');
-  const name = await prompt.show();
+  async function getName() {
+    const prompt = document.getElementById('name-prompt');
+    const name = await prompt.show();
 
-  if (name) {
-    console.log(`Hello, ${name}!`);
-  } else {
-    console.log('No name provided');
+    if (name) {
+      console.log(`Hello, ${name}!`);
+    } else {
+      console.log('No name provided');
+    }
   }
-}
 
-// Email validation example
-async function getEmail() {
-  const prompt = document.createElement('e2-prompt');
-  prompt.title = 'Enter Email';
-  prompt.message = 'Please provide your email address:';
-  prompt.placeholder = 'user@example.com';
-  prompt.required = true;
-  prompt.setAttribute('pattern', '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
-  document.body.appendChild(prompt);
+  // Email validation example
+  async function getEmail() {
+    const prompt = document.createElement('e2-prompt');
+    prompt.title = 'Enter Email';
+    prompt.message = 'Please provide your email address:';
+    prompt.placeholder = 'user@example.com';
+    prompt.required = true;
+    prompt.setAttribute(
+      'pattern',
+      '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}'
+    );
+    document.body.appendChild(prompt);
 
-  const email = await prompt.show();
-  document.body.removeChild(prompt);
-  return email;
-}
+    const email = await prompt.show();
+    document.body.removeChild(prompt);
+    return email;
+  }
 
-// Multiline comment example
-async function getComment() {
-  const prompt = document.createElement('e2-prompt');
-  prompt.title = 'Leave a Comment';
-  prompt.message = 'Please share your thoughts:';
-  prompt.multiline = true;
-  prompt.setAttribute('max-length', '500');
-  document.body.appendChild(prompt);
+  // Multiline comment example
+  async function getComment() {
+    const prompt = document.createElement('e2-prompt');
+    prompt.title = 'Leave a Comment';
+    prompt.message = 'Please share your thoughts:';
+    prompt.multiline = true;
+    prompt.setAttribute('max-length', '500');
+    document.body.appendChild(prompt);
 
-  const comment = await prompt.show();
-  document.body.removeChild(prompt);
-  return comment;
-}
+    const comment = await prompt.show();
+    document.body.removeChild(prompt);
+    return comment;
+  }
 </script>
 ```
 
@@ -390,11 +398,11 @@ Use events for complex workflows:
 ```javascript
 const dialog = document.getElementById('my-dialog');
 
-dialog.addEventListener('dialog-show', (e) => {
+dialog.addEventListener('dialog-show', e => {
   console.log('Dialog opened');
 });
 
-dialog.addEventListener('dialog-close', (e) => {
+dialog.addEventListener('dialog-close', e => {
   console.log('Dialog closed with:', e.detail.returnValue);
 });
 ```
@@ -424,6 +432,7 @@ The dialogs handle accessibility automatically, but you can enhance it:
 ## Browser Support
 
 Dialog components require browsers that support:
+
 - Custom Elements v1
 - Native `<dialog>` element
 - CSS Custom Properties

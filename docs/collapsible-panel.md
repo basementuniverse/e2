@@ -8,12 +8,12 @@ A panel that can be collapsed to save space while maintaining access to expand i
 
 ### Attributes
 
-| Attribute | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme mode for the panel |
-| `disabled` | boolean | `false` | Disables panel interaction |
-| `collapsed` | boolean | `false` | Controls whether the panel is collapsed |
-| `orientation` | `'horizontal' \| 'vertical'` | `'vertical'` | Panel orientation and collapse direction |
+| Attribute     | Type                          | Default      | Description                              |
+| ------------- | ----------------------------- | ------------ | ---------------------------------------- |
+| `theme`       | `'light' \| 'dark' \| 'auto'` | `'auto'`     | Theme mode for the panel                 |
+| `disabled`    | boolean                       | `false`      | Disables panel interaction               |
+| `collapsed`   | boolean                       | `false`      | Controls whether the panel is collapsed  |
+| `orientation` | `'horizontal' \| 'vertical'`  | `'vertical'` | Panel orientation and collapse direction |
 
 ### Events
 
@@ -73,9 +73,9 @@ The collapsible panel supports two content slots:
 <e2-collapsible-panel>
   <span slot="title">Properties</span>
   <div>
-    <label>Width: <input type="number" value="100"></label>
-    <label>Height: <input type="number" value="100"></label>
-    <label>Color: <input type="color" value="#ff0000"></label>
+    <label>Width: <input type="number" value="100" /></label>
+    <label>Height: <input type="number" value="100" /></label>
+    <label>Color: <input type="color" value="#ff0000" /></label>
   </div>
 </e2-collapsible-panel>
 ```
@@ -119,9 +119,11 @@ The collapsible panel supports two content slots:
   <div style="position: absolute; bottom: 0; left: 0; right: 0;">
     <e2-collapsible-panel orientation="vertical" collapsed>
       <span slot="title">Console</span>
-      <div style="height: 150px; background: #1e1e1e; color: #fff; padding: 10px; font-family: monospace;">
-        > Ready<br>
-        > Loading assets...<br>
+      <div
+        style="height: 150px; background: #1e1e1e; color: #fff; padding: 10px; font-family: monospace;"
+      >
+        > Ready<br />
+        > Loading assets...<br />
         > Game initialized
       </div>
     </e2-collapsible-panel>
@@ -133,13 +135,15 @@ The collapsible panel supports two content slots:
 
 ```typescript
 // Access the panel element
-const panel = document.querySelector('e2-collapsible-panel') as CollapsiblePanel;
+const panel = document.querySelector(
+  'e2-collapsible-panel'
+) as CollapsiblePanel;
 
 // Control panel state programmatically
-panel.collapsed = true;  // Collapse the panel
-panel.expand();          // Expand the panel
-panel.collapse();        // Collapse the panel
-panel.toggle();          // Toggle between collapsed/expanded
+panel.collapsed = true; // Collapse the panel
+panel.expand(); // Expand the panel
+panel.collapse(); // Collapse the panel
+panel.toggle(); // Toggle between collapsed/expanded
 
 // Change orientation
 panel.orientation = 'horizontal';
@@ -148,9 +152,11 @@ panel.orientation = 'horizontal';
 panel.theme = 'dark';
 
 // Listen for toggle events
-panel.addEventListener('collapsible-panel-toggle', (event) => {
+panel.addEventListener('collapsible-panel-toggle', event => {
   const { panelId, collapsed, orientation } = event.detail;
-  console.log(`Panel ${panelId} is now ${collapsed ? 'collapsed' : 'expanded'}`);
+  console.log(
+    `Panel ${panelId} is now ${collapsed ? 'collapsed' : 'expanded'}`
+  );
 
   // Save panel state to localStorage
   localStorage.setItem(`panel-${panelId}-collapsed`, collapsed.toString());
@@ -192,7 +198,9 @@ e2-collapsible-panel.theme-dark {
 
 ```css
 e2-collapsible-panel {
-  transition: width 0.3s ease, height 0.3s ease;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease;
 }
 ```
 
@@ -201,181 +209,188 @@ e2-collapsible-panel {
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Collapsible Panel Example</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  <head>
+    <title>Collapsible Panel Example</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .editor-layout {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
+      .editor-layout {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
 
-    .sidebar {
-      flex-shrink: 0;
-      border-right: 1px solid #ccc;
-    }
+      .sidebar {
+        flex-shrink: 0;
+        border-right: 1px solid #ccc;
+      }
 
-    .main-content {
-      flex: 1;
-      padding: 20px;
-      background: #f9f9f9;
-      overflow: auto;
-    }
+      .main-content {
+        flex: 1;
+        padding: 20px;
+        background: #f9f9f9;
+        overflow: auto;
+      }
 
-    .bottom-panel {
-      border-top: 1px solid #ccc;
-    }
+      .bottom-panel {
+        border-top: 1px solid #ccc;
+      }
 
-    /* Panel content styling */
-    .properties-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding: 15px;
-    }
+      /* Panel content styling */
+      .properties-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 15px;
+      }
 
-    .properties-grid label {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
+      .properties-grid label {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
 
-    .tool-list {
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+      .tool-list {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
 
-    .tool-list button {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      background: white;
-      cursor: pointer;
-      border-radius: 4px;
-    }
+      .tool-list button {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        background: white;
+        cursor: pointer;
+        border-radius: 4px;
+      }
 
-    .tool-list button:hover {
-      background: #f0f0f0;
-    }
+      .tool-list button:hover {
+        background: #f0f0f0;
+      }
 
-    .console-output {
-      height: 120px;
-      background: #1e1e1e;
-      color: #00ff00;
-      padding: 10px;
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      overflow-y: auto;
-    }
-  </style>
-</head>
-<body>
-  <div class="editor-layout">
-    <!-- Left Sidebar -->
-    <e2-collapsible-panel class="sidebar" orientation="horizontal">
-      <span slot="title">🔧 Tools</span>
-      <div class="tool-list">
-        <button onclick="selectTool('brush')">🖌️ Brush</button>
-        <button onclick="selectTool('eraser')">🧽 Eraser</button>
-        <button onclick="selectTool('fill')">🪣 Fill</button>
-        <button onclick="selectTool('select')">⚪ Select</button>
-      </div>
-    </e2-collapsible-panel>
+      .console-output {
+        height: 120px;
+        background: #1e1e1e;
+        color: #00ff00;
+        padding: 10px;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="editor-layout">
+      <!-- Left Sidebar -->
+      <e2-collapsible-panel class="sidebar" orientation="horizontal">
+        <span slot="title">🔧 Tools</span>
+        <div class="tool-list">
+          <button onclick="selectTool('brush')">🖌️ Brush</button>
+          <button onclick="selectTool('eraser')">🧽 Eraser</button>
+          <button onclick="selectTool('fill')">🪣 Fill</button>
+          <button onclick="selectTool('select')">⚪ Select</button>
+        </div>
+      </e2-collapsible-panel>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <h1>Level Editor</h1>
-      <p>This is the main editing area. The panels around it can be collapsed to save space.</p>
+      <!-- Main Content -->
+      <div class="main-content">
+        <h1>Level Editor</h1>
+        <p>
+          This is the main editing area. The panels around it can be collapsed
+          to save space.
+        </p>
 
-      <div style="width: 400px; height: 300px; background: white; border: 2px solid #ccc; margin: 20px 0;">
-        <div style="padding: 20px; text-align: center; color: #666;">
-          Canvas Area<br>
-          <small>Click tools in the sidebar to select them</small>
+        <div
+          style="width: 400px; height: 300px; background: white; border: 2px solid #ccc; margin: 20px 0;"
+        >
+          <div style="padding: 20px; text-align: center; color: #666;">
+            Canvas Area<br />
+            <small>Click tools in the sidebar to select them</small>
+          </div>
         </div>
       </div>
+
+      <!-- Right Properties Panel -->
+      <e2-collapsible-panel orientation="horizontal" style="width: 280px;">
+        <span slot="title">⚙️ Properties</span>
+        <div class="properties-grid">
+          <label>
+            Width:
+            <input type="number" value="32" min="1" />
+          </label>
+          <label>
+            Height:
+            <input type="number" value="32" min="1" />
+          </label>
+          <label>
+            X Position:
+            <input type="number" value="0" />
+          </label>
+          <label>
+            Y Position:
+            <input type="number" value="0" />
+          </label>
+          <label>
+            Color:
+            <input type="color" value="#ff0000" />
+          </label>
+          <label>
+            Opacity:
+            <input type="range" min="0" max="100" value="100" />
+          </label>
+        </div>
+      </e2-collapsible-panel>
     </div>
 
-    <!-- Right Properties Panel -->
-    <e2-collapsible-panel orientation="horizontal" style="width: 280px;">
-      <span slot="title">⚙️ Properties</span>
-      <div class="properties-grid">
-        <label>
-          Width:
-          <input type="number" value="32" min="1">
-        </label>
-        <label>
-          Height:
-          <input type="number" value="32" min="1">
-        </label>
-        <label>
-          X Position:
-          <input type="number" value="0">
-        </label>
-        <label>
-          Y Position:
-          <input type="number" value="0">
-        </label>
-        <label>
-          Color:
-          <input type="color" value="#ff0000">
-        </label>
-        <label>
-          Opacity:
-          <input type="range" min="0" max="100" value="100">
-        </label>
+    <!-- Bottom Console Panel -->
+    <e2-collapsible-panel class="bottom-panel" orientation="vertical" collapsed>
+      <span slot="title">💻 Console</span>
+      <div class="console-output" id="console">
+        > Editor initialized<br />
+        > Ready for input<br />
       </div>
     </e2-collapsible-panel>
-  </div>
 
-  <!-- Bottom Console Panel -->
-  <e2-collapsible-panel class="bottom-panel" orientation="vertical" collapsed>
-    <span slot="title">💻 Console</span>
-    <div class="console-output" id="console">
-      > Editor initialized<br>
-      > Ready for input<br>
-    </div>
-  </e2-collapsible-panel>
+    <script src="../build/e2.min.js"></script>
+    <script>
+      let selectedTool = 'brush';
 
-  <script src="../build/e2.min.js"></script>
-  <script>
-    let selectedTool = 'brush';
+      function selectTool(tool) {
+        selectedTool = tool;
+        log(`Selected tool: ${tool}`);
 
-    function selectTool(tool) {
-      selectedTool = tool;
-      log(`Selected tool: ${tool}`);
+        // Update UI to show selected tool
+        document.querySelectorAll('.tool-list button').forEach(btn => {
+          btn.style.background = btn.textContent.includes(tool)
+            ? '#e3f2fd'
+            : 'white';
+        });
+      }
 
-      // Update UI to show selected tool
-      document.querySelectorAll('.tool-list button').forEach(btn => {
-        btn.style.background = btn.textContent.includes(tool) ? '#e3f2fd' : 'white';
+      function log(message) {
+        const console = document.getElementById('console');
+        console.innerHTML += `> ${message}<br>`;
+        console.scrollTop = console.scrollHeight;
+      }
+
+      // Listen for panel toggle events
+      document.addEventListener('collapsible-panel-toggle', event => {
+        const { panelId, collapsed } = event.detail;
+        log(`Panel ${collapsed ? 'collapsed' : 'expanded'}`);
       });
-    }
 
-    function log(message) {
-      const console = document.getElementById('console');
-      console.innerHTML += `> ${message}<br>`;
-      console.scrollTop = console.scrollHeight;
-    }
-
-    // Listen for panel toggle events
-    document.addEventListener('collapsible-panel-toggle', (event) => {
-      const { panelId, collapsed } = event.detail;
-      log(`Panel ${collapsed ? 'collapsed' : 'expanded'}`);
-    });
-
-    // Initialize with some console messages
-    setTimeout(() => log('Canvas ready'), 1000);
-    setTimeout(() => log('All systems operational'), 2000);
-  </script>
-</body>
+      // Initialize with some console messages
+      setTimeout(() => log('Canvas ready'), 1000);
+      setTimeout(() => log('All systems operational'), 2000);
+    </script>
+  </body>
 </html>
 ```
