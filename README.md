@@ -49,6 +49,7 @@ import '@basementuniverse/e2';
 - [Notifications](docs/notification.md)
 - [Status Bar](docs/status-bar.md)
 - [List View](docs/list-view.md)
+- [Tree View](docs/tree-view.md)
 
 ## Notes
 
