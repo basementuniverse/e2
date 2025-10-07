@@ -12,6 +12,7 @@ import './elements/dialog/alert';
 import './elements/dialog/confirm';
 import './elements/dialog/dialog';
 import './elements/dialog/prompt';
+import './elements/listview/list-view';
 import './elements/notification/notification';
 import './elements/notification/notification-container';
 import './elements/panel/collapsible-panel';

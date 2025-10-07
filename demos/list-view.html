@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E2 - Editor Elements - ListView Demo</title>
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      .demo-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 20px;
+        min-height: 600px;
+        margin: 20px 0;
+      }
+
+      .demo-section.listview-demo {
+        display: flex;
+        flex-direction: column;
+        min-height: 300px;
+        margin: 0; /* Override main.css margin for nested demo sections */
+      }
+
+      .demo-section.listview-demo e2-list-view {
+        flex: 1;
+        min-height: 200px;
+      }
+
+      .listview-controls {
+        margin: 10px 0;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .status {
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        font-size: 12px;
+        font-family: monospace;
+      }
+
+      body.theme-dark .status {
+        background: #404040;
+        color: #fff;
+        border-color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
+    <header>
+      <h1>
+        <a href="index.html" style="text-decoration: none; color: inherit">
+          &laquo;
+        </a>
+        E2 - ListView Demo
+      </h1>
+      <p>
+        Interactive demonstration of the <code>&lt;e2-list-view&gt;</code> element
+      </p>
+    </header>
+
+    <main>
+
+      <div class="demo-section">
+        <h2>ListView Components</h2>
+        <p>ListView with multiple view modes and selection capabilities:</p>
+
+        <div class="demo-container">
+          <!-- List View -->
+          <div class="demo-section listview-demo">
+            <h3>List View (Multi-select)</h3>
+            <div class="listview-controls">
+              <button class="demo-button" onclick="addRandomItem('list-demo')">Add Item</button>
+              <button class="demo-button secondary" onclick="removeSelectedItems('list-demo')">Remove Selected</button>
+              <button class="demo-button" onclick="selectAll('list-demo')">Select All</button>
+              <button class="demo-button" onclick="deselectAll('list-demo')">Deselect All</button>
+            </div>
+            <e2-list-view id="list-demo" view-mode="list" multi-select></e2-list-view>
+            <div class="status" id="list-status">No selection</div>
+          </div>
+
+          <!-- Details View -->
+          <div class="demo-section listview-demo">
+            <h3>Details View</h3>
+            <div class="listview-controls">
+              <button class="demo-button" onclick="addRandomItem('details-demo')">Add Item</button>
+              <button class="demo-button secondary" onclick="removeSelectedItems('details-demo')">Remove Selected</button>
+              <button class="demo-button" onclick="selectAll('details-demo')">Select All</button>
+              <button class="demo-button" onclick="deselectAll('details-demo')">Deselect All</button>
+            </div>
+            <e2-list-view id="details-demo" view-mode="details" multi-select></e2-list-view>
+            <div class="status" id="details-status">No selection</div>
+          </div>
+
+          <!-- Icons View -->
+          <div class="demo-section listview-demo">
+            <h3>Icons View</h3>
+            <div class="listview-controls">
+              <button class="demo-button" onclick="addRandomItem('icons-demo')">Add Item</button>
+              <button class="demo-button secondary" onclick="removeSelectedItems('icons-demo')">Remove Selected</button>
+              <button class="demo-button" onclick="selectAll('icons-demo')">Select All</button>
+              <button class="demo-button" onclick="deselectAll('icons-demo')">Deselect All</button>
+            </div>
+            <e2-list-view id="icons-demo" view-mode="icons" multi-select></e2-list-view>
+            <div class="status" id="icons-status">No selection</div>
+          </div>
+
+          <!-- Single Select Demo -->
+          <div class="demo-section listview-demo">
+            <h3>Single Select</h3>
+            <div class="listview-controls">
+              <button class="demo-button" onclick="addRandomItem('single-demo')">Add Item</button>
+              <button class="demo-button secondary" onclick="removeSelectedItems('single-demo')">Remove Selected</button>
+            </div>
+            <e2-list-view id="single-demo" view-mode="list"></e2-list-view>
+            <div class="status" id="single-status">No selection</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h2>Output</h2>
+        <p>Click items to see events:</p>
+        <div class="output" id="listview-output"></div>
+      </div>
+    </main>
+
+    <!-- Load the library -->
+    <script src="../build/e2.min.js"></script>
+
+    <script>
+      // Sample data
+      const sampleFiles = [
+        { name: 'level1.json', type: 'Level', size: '2.4 KB', modified: '2024-01-15' },
+        { name: 'player.sprite', type: 'Sprite', size: '15.8 KB', modified: '2024-01-14' },
+        { name: 'tileset.png', type: 'Image', size: '256.7 KB', modified: '2024-01-13' },
+        { name: 'sounds.ogg', type: 'Audio', size: '1.2 MB', modified: '2024-01-12' },
+        { name: 'config.json', type: 'Config', size: '0.8 KB', modified: '2024-01-11' },
+      ];
+
+      const icons = ['📄', '🎮', '🖼️', '🔊', '⚙️', '📁', '📊', '🎨', '🔨', '🌟'];
+      const fileTypes = ['Document', 'Game', 'Image', 'Audio', 'Config', 'Folder', 'Data', 'Asset', 'Tool', 'Misc'];
+
+      let itemCounter = 1;
+
+      // Add event listeners to demonstrate functionality
+      const output = document.getElementById('listview-output');
+
+      function updateStatus(listViewId, selectedItems) {
+        const status = document.getElementById(listViewId.replace('-demo', '-status'));
+        if (selectedItems.length === 0) {
+          status.textContent = 'No selection';
+        } else if (selectedItems.length === 1) {
+          status.textContent = `Selected: ${selectedItems[0].label}`;
+        } else {
+          status.textContent = `Selected: ${selectedItems.length} items`;
+        }
+      }
+
+      function generateRandomItem() {
+        const icon = icons[Math.floor(Math.random() * icons.length)];
+        const type = fileTypes[Math.floor(Math.random() * fileTypes.length)];
+        const name = `item${itemCounter++}`;
+        const size = `${Math.floor(Math.random() * 1000) + 1} KB`;
+        const date = new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString();
+
+        return {
+          id: `item-${itemCounter}`,
+          label: `${name}.${type.toLowerCase()}`,
+          icon: icon,
+          data: {
+            type: type,
+            size: size,
+            modified: date
+          }
+        };
+      }
+
+      function addRandomItem(listViewId) {
+        const listView = document.getElementById(listViewId);
+        const newItem = generateRandomItem();
+        listView.addItem(newItem);
+
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `
+          <div>[${timestamp}] Added item: ${newItem.label}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      function removeSelectedItems(listViewId) {
+        const listView = document.getElementById(listViewId);
+        const selectedIds = listView.selectedIds;
+        const timestamp = new Date().toLocaleTimeString();
+
+        selectedIds.forEach(id => {
+          const item = listView.getItem(id);
+          listView.removeItem(id);
+          output.innerHTML += `
+            <div>[${timestamp}] Removed item: ${item ? item.label : id}</div>
+          `;
+        });
+
+        if (selectedIds.length > 0) {
+          output.scrollTop = output.scrollHeight;
+        }
+      }
+
+      function selectAll(listViewId) {
+        const listView = document.getElementById(listViewId);
+        listView.selectAll();
+
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `
+          <div>[${timestamp}] Selected all items in ${listViewId}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      function deselectAll(listViewId) {
+        const listView = document.getElementById(listViewId);
+        listView.deselectAll();
+
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `
+          <div>[${timestamp}] Deselected all items in ${listViewId}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      // Listen for ListView events
+      document.addEventListener('listview-item-click', event => {
+        const { item, ctrlKey, shiftKey, listViewId } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        let modifiers = [];
+        if (ctrlKey) modifiers.push('Ctrl');
+        if (shiftKey) modifiers.push('Shift');
+        const modifierText = modifiers.length > 0 ? ` (${modifiers.join('+')})` : '';
+
+        output.innerHTML += `
+          <div>[${timestamp}] Item clicked: ${item.label}${modifierText} in ${listViewId}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      document.addEventListener('listview-item-double-click', event => {
+        const { item, listViewId } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        output.innerHTML += `
+          <div>[${timestamp}] Item double-clicked: ${item.label} in ${listViewId}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      });
+
+      document.addEventListener('listview-selection-change', event => {
+        const { selectedItems, addedItems, removedItems, listViewId } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+
+        if (addedItems.length > 0) {
+          output.innerHTML += `
+            <div>[${timestamp}] Added to selection: ${addedItems.map(i => i.label).join(', ')} in ${listViewId}</div>
+          `;
+        }
+        if (removedItems.length > 0) {
+          output.innerHTML += `
+            <div>[${timestamp}] Removed from selection: ${removedItems.map(i => i.label).join(', ')} in ${listViewId}</div>
+          `;
+        }
+
+        updateStatus(listViewId, selectedItems);
+        output.scrollTop = output.scrollHeight;
+      });
+
+      // Theme controls
+      function setTheme(theme) {
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update button states
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all listviews
+        document.querySelectorAll('e2-list-view').forEach(listView => {
+          listView.theme = theme;
+        });
+
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `
+          <div>[${timestamp}] Theme changed to: ${theme}</div>
+        `;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      // Initialize ListView components
+      document.addEventListener('DOMContentLoaded', () => {
+        // Setup columns for details view
+        const columns = [
+          { id: 'label', label: 'Name', width: '40%' },
+          { id: 'type', label: 'Type', width: '20%' },
+          { id: 'size', label: 'Size', width: '20%' },
+          { id: 'modified', label: 'Modified', width: '20%' }
+        ];
+
+        // Initialize each ListView
+        ['list-demo', 'details-demo', 'icons-demo', 'single-demo'].forEach(id => {
+          const listView = document.getElementById(id);
+
+          // Set columns for details view
+          if (id === 'details-demo') {
+            listView.columns = columns;
+          }
+
+          // Add sample items
+          const items = sampleFiles.map((file, index) => ({
+            id: `${id}-item-${index}`,
+            label: file.name,
+            icon: icons[index % icons.length],
+            data: {
+              type: file.type,
+              size: file.size,
+              modified: file.modified
+            }
+          }));
+
+          listView.items = items;
+        });
+
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `
+          <div>[${timestamp}] ListView demo initialized</div>
+        `;
+      });
+    </script>
+</body>
+</html>

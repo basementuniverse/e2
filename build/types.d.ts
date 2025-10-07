@@ -221,4 +221,49 @@ export interface AppThemeChangeEvent extends EditorElementEvent {
         appElement: HTMLElement;
     };
 }
+export type ListViewMode = 'list' | 'details' | 'icons';
+export interface ListViewItem {
+    id: string;
+    label: string;
+    icon?: string;
+    data?: Record<string, any>;
+    selected?: boolean;
+    disabled?: boolean;
+}
+export interface ListViewColumn {
+    id: string;
+    label: string;
+    width?: string | number;
+    sortable?: boolean;
+    renderer?: (item: ListViewItem, value: any) => string;
+}
+export interface ListViewSelectionChangeEvent extends EditorElementEvent {
+    detail: {
+        listViewId: string;
+        listView: HTMLElement;
+        selectedItems: ListViewItem[];
+        selectedIds: string[];
+        addedItems: ListViewItem[];
+        removedItems: ListViewItem[];
+    };
+}
+export interface ListViewItemClickEvent extends EditorElementEvent {
+    detail: {
+        listViewId: string;
+        listView: HTMLElement;
+        item: ListViewItem;
+        itemId: string;
+        ctrlKey: boolean;
+        shiftKey: boolean;
+        altKey: boolean;
+    };
+}
+export interface ListViewItemDoubleClickEvent extends EditorElementEvent {
+    detail: {
+        listViewId: string;
+        listView: HTMLElement;
+        item: ListViewItem;
+        itemId: string;
+    };
+}
 //# sourceMappingURL=types.d.ts.map

@@ -48,10 +48,11 @@ import '@basementuniverse/e2';
 - [Dialog](docs/dialog.md)
 - [Notifications](docs/notification.md)
 - [Status Bar](docs/status-bar.md)
+- [List View](docs/list-view.md)
 
 ## Notes
 
-For list views, tree views, JSON viewing, JSON editing etc. consider using:
+Some useful additional libraries for building web-based editors:
 
 - [native-json-editor](https://www.npmjs.com/package/native-json-editor)
 - [jsoneditor](https://www.npmjs.com/package/jsoneditor)
