@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E2 - Editor Elements - TreeView Demo</title>
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      .demo-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        min-height: 400px;
+        margin: 20px 0;
+      }
+
+      .demo-section.treeview-demo {
+        display: flex;
+        flex-direction: column;
+        min-height: 300px;
+        margin: 0;
+      }
+
+      .demo-section.treeview-demo e2-tree-view {
+        flex: 1;
+        min-height: 200px;
+      }
+
+      .treeview-controls {
+        margin: 10px 0;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .control-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-right: 16px;
+      }
+
+      .event-output {
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        font-size: 12px;
+        font-family: monospace;
+        max-height: 100px;
+        overflow-y: auto;
+      }
+
+      body.theme-dark .event-output {
+        background: #404040;
+        color: #fff;
+        border-color: #666;
+      }
+    </style>
+    <script src="../build/e2.min.js"></script>
+  </head>
+  <body>
+    <div class="theme-controls">
+      <button class="theme-button active" onclick="setTheme('light')">
+        Light
+      </button>
+      <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+    </div>
+
+    <header>
+      <h1>
+        <a href="index.html" style="text-decoration: none; color: inherit">
+          &laquo;
+        </a>
+        E2 - TreeView Demo
+      </h1>
+      <p>
+        Interactive demonstration of the <code>&lt;e2-tree-view&gt;</code> element
+      </p>
+    </header>
+
+    <main>
+      <div class="demo-section">
+        <h2>Basic TreeView</h2>
+        <p>Simple hierarchical tree with expand/collapse functionality:</p>
+
+        <e2-tree-view id="basic-treeview"></e2-tree-view>
+
+        <div class="demo-controls">
+          <button onclick="expandAll('basic')">Expand All</button>
+          <button onclick="collapseAll('basic')">Collapse All</button>
+          <button onclick="clearSelection('basic')">Clear Selection</button>
+        </div>
+
+        <div class="event-output" id="basic-output">
+          <div>Events will appear here...</div>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h2>Multi-Select TreeView</h2>
+        <p>TreeView with multi-selection enabled (use Ctrl+click):</p>
+
+        <e2-tree-view id="multi-treeview" multi-select></e2-tree-view>
+
+        <div class="demo-controls">
+          <button onclick="expandAll('multi')">Expand All</button>
+          <button onclick="collapseAll('multi')">Collapse All</button>
+          <button onclick="clearSelection('multi')">Clear Selection</button>
+          <button onclick="selectMultiple('multi')">Select Multiple</button>
+          <button onclick="addMoreItems('multi')">Add Items</button>
+        </div>
+
+        <div class="event-output" id="multi-output">
+          <div>Events will appear here...</div>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h2>Dark Theme TreeView</h2>
+        <p>TreeView with explicit dark theme:</p>
+
+        <e2-tree-view id="dark-treeview" theme="dark"></e2-tree-view>
+
+        <div class="demo-controls">
+          <button onclick="expandAll('dark')">Expand All</button>
+          <button onclick="collapseAll('dark')">Collapse All</button>
+          <button onclick="clearSelection('dark')">Clear Selection</button>
+        </div>
+
+        <div class="event-output" id="dark-output">
+          <div>Events will appear here...</div>
+        </div>
+      </div>
+
+      <div class="demo-section">
+        <h2>Code Examples</h2>
+
+        <div class="code-example">
+          <h3>Basic TreeView:</h3>
+          <button class="copy-button" onclick="copyToClipboard('basic-html')">
+            Copy
+          </button>
+          <pre id="basic-html">
+&lt;e2-tree-view&gt;&lt;/e2-tree-view&gt;
+
+&lt;script&gt;
+const treeView = document.querySelector('e2-tree-view');
+treeView.items = [
+  {
+    id: 'folder1',
+    label: 'Documents',
+    icon: '📁',
+    children: [
+      {
+        id: 'file1',
+        label: 'report.pdf',
+        icon: '📄'
+      },
+      {
+        id: 'subfolder1',
+        label: 'Archive',
+        icon: '📁',
+        children: [
+          {
+            id: 'file2',
+            label: 'old-document.docx',
+            icon: '📄'
+          }
+        ]
+      }
+    ]
+  }
+];
+&lt;/script&gt;</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Multi-Select TreeView:</h3>
+          <button class="copy-button" onclick="copyToClipboard('multiselect-html')">
+            Copy
+          </button>
+          <pre id="multiselect-html">
+&lt;e2-tree-view multi-select&gt;&lt;/e2-tree-view&gt;
+
+&lt;script&gt;
+const treeView = document.querySelector('e2-tree-view');
+
+// Enable multi-selection programmatically
+treeView.multiSelect = true;
+
+// Select multiple items
+treeView.selectItem('item1');
+treeView.selectItem('item2');
+
+// Get selected items
+console.log(treeView.selectedItems);
+console.log(treeView.selectedIds);
+&lt;/script&gt;</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Event Handling:</h3>
+          <button class="copy-button" onclick="copyToClipboard('events-js')">
+            Copy
+          </button>
+          <pre id="events-js">
+// Listen for expansion events
+document.addEventListener('tree-expand', event => {
+  const { item, itemId } = event.detail;
+  console.log(`Expanded: ${item.label}`);
+});
+
+// Listen for collapse events
+document.addEventListener('tree-collapse', event => {
+  const { item, itemId } = event.detail;
+  console.log(`Collapsed: ${item.label}`);
+});
+
+// Listen for selection changes
+document.addEventListener('tree-selection-change', event => {
+  const { selectedItems, addedItems, removedItems } = event.detail;
+  console.log('Selection changed:', selectedItems);
+});
+
+// Listen for item clicks
+document.addEventListener('tree-item-click', event => {
+  const { item, ctrlKey, shiftKey } = event.detail;
+  console.log(`Clicked: ${item.label}`, { ctrlKey, shiftKey });
+});
+
+// Listen for double-clicks
+document.addEventListener('tree-item-dblclick', event => {
+  const { item } = event.detail;
+  console.log(`Double-clicked: ${item.label}`);
+});</pre>
+        </div>
+
+        <div class="code-example">
+          <h3>Programmatic Control:</h3>
+          <button class="copy-button" onclick="copyToClipboard('control-js')">
+            Copy
+          </button>
+          <pre id="control-js">
+const treeView = document.querySelector('e2-tree-view');
+
+// Expand/collapse operations
+treeView.expandAll();
+treeView.collapseAll();
+treeView.expandItem('folder1');
+treeView.collapseItem('folder1');
+
+// Selection operations
+treeView.selectItem('item1');
+treeView.deselectItem('item1');
+treeView.clearSelection();
+
+// Access properties
+console.log(treeView.items);
+console.log(treeView.selectedItems);
+console.log(treeView.selectedIds);
+console.log(treeView.multiSelect);</pre>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Sample data for tree views
+      const basicTreeData = [
+        {
+          id: 'folder1',
+          label: 'Documents',
+          icon: '📁',
+          children: [
+            {
+              id: 'file1',
+              label: 'report.pdf',
+              icon: '📄'
+            },
+            {
+              id: 'file2',
+              label: 'presentation.pptx',
+              icon: '📊'
+            },
+            {
+              id: 'subfolder1',
+              label: 'Archive',
+              icon: '📁',
+              children: [
+                {
+                  id: 'file3',
+                  label: 'old-document.docx',
+                  icon: '📄'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'folder2',
+          label: 'Images',
+          icon: '📁',
+          expanded: true,
+          children: [
+            {
+              id: 'img1',
+              label: 'vacation.jpg',
+              icon: '🖼️'
+            },
+            {
+              id: 'img2',
+              label: 'screenshot.png',
+              icon: '🖼️'
+            }
+          ]
+        },
+        {
+          id: 'folder3',
+          label: 'Music',
+          icon: '📁',
+          children: [
+            {
+              id: 'song1',
+              label: 'song1.mp3',
+              icon: '🎵'
+            },
+            {
+              id: 'song2',
+              label: 'song2.mp3',
+              icon: '🎵'
+            }
+          ]
+        }
+      ];
+
+      const multiTreeData = [
+        {
+          id: 'project1',
+          label: 'Project Alpha',
+          icon: '🚀',
+          expanded: true,
+          children: [
+            {
+              id: 'src1',
+              label: 'src',
+              icon: '📁',
+              children: [
+                {
+                  id: 'main1',
+                  label: 'main.ts',
+                  icon: '📄',
+                  selected: true
+                },
+                {
+                  id: 'utils1',
+                  label: 'utils.ts',
+                  icon: '📄'
+                }
+              ]
+            },
+            {
+              id: 'tests1',
+              label: 'tests',
+              icon: '📁',
+              children: [
+                {
+                  id: 'test1',
+                  label: 'main.test.ts',
+                  icon: '🧪'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'project2',
+          label: 'Project Beta',
+          icon: '🚀',
+          children: [
+            {
+              id: 'readme',
+              label: 'README.md',
+              icon: '📝'
+            },
+            {
+              id: 'config',
+              label: 'config.json',
+              icon: '⚙️'
+            }
+          ]
+        }
+      ];
+
+      const darkTreeData = [...basicTreeData]; // Same data for dark theme demo
+
+      // Initialize tree views when DOM is loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        const basicTreeView = document.getElementById('basic-treeview');
+        const multiTreeView = document.getElementById('multi-treeview');
+        const darkTreeView = document.getElementById('dark-treeview');
+
+        // Set up tree data
+        basicTreeView.items = basicTreeData;
+        multiTreeView.items = multiTreeData;
+        darkTreeView.items = darkTreeData;
+
+        // Set up event outputs
+        const basicOutput = document.getElementById('basic-output');
+        const multiOutput = document.getElementById('multi-output');
+        const darkOutput = document.getElementById('dark-output');
+
+        // Setup event listeners for all tree views
+        setupTreeViewEvents(basicTreeView, basicOutput);
+        setupTreeViewEvents(multiTreeView, multiOutput);
+        setupTreeViewEvents(darkTreeView, darkOutput);
+      });
+
+      function setupTreeViewEvents(treeView, output) {
+        treeView.addEventListener('tree-expand', (event) => {
+          const { item } = event.detail;
+          const timestamp = new Date().toLocaleTimeString();
+          output.innerHTML += `<div>[${timestamp}] Expanded: ${item.label}</div>`;
+          output.scrollTop = output.scrollHeight;
+        });
+
+        treeView.addEventListener('tree-collapse', (event) => {
+          const { item } = event.detail;
+          const timestamp = new Date().toLocaleTimeString();
+          output.innerHTML += `<div>[${timestamp}] Collapsed: ${item.label}</div>`;
+          output.scrollTop = output.scrollHeight;
+        });
+
+        treeView.addEventListener('tree-selection-change', (event) => {
+          const { selectedItems } = event.detail;
+          const timestamp = new Date().toLocaleTimeString();
+          const labels = selectedItems.map(item => item.label).join(', ');
+          output.innerHTML += `<div>[${timestamp}] Selection: ${selectedItems.length} items${labels ? ` (${labels})` : ''}</div>`;
+          output.scrollTop = output.scrollHeight;
+        });
+
+        treeView.addEventListener('tree-item-click', (event) => {
+          const { item, ctrlKey, shiftKey, altKey } = event.detail;
+          const timestamp = new Date().toLocaleTimeString();
+          const modifiers = [];
+          if (ctrlKey) modifiers.push('Ctrl');
+          if (shiftKey) modifiers.push('Shift');
+          if (altKey) modifiers.push('Alt');
+          const modifierText = modifiers.length > 0 ? ` (${modifiers.join('+')})` : '';
+          output.innerHTML += `<div>[${timestamp}] Clicked: ${item.label}${modifierText}</div>`;
+          output.scrollTop = output.scrollHeight;
+        });
+
+        treeView.addEventListener('tree-item-dblclick', (event) => {
+          const { item } = event.detail;
+          const timestamp = new Date().toLocaleTimeString();
+          output.innerHTML += `<div>[${timestamp}] Double-clicked: ${item.label}</div>`;
+          output.scrollTop = output.scrollHeight;
+        });
+      }
+
+      // Control functions
+      function expandAll(prefix) {
+        const treeView = document.getElementById(`${prefix}-treeview`);
+        treeView.expandAll();
+      }
+
+      function collapseAll(prefix) {
+        const treeView = document.getElementById(`${prefix}-treeview`);
+        treeView.collapseAll();
+      }
+
+      function clearSelection(prefix) {
+        const treeView = document.getElementById(`${prefix}-treeview`);
+        treeView.clearSelection();
+      }
+
+      function selectMultiple(prefix) {
+        const treeView = document.getElementById(`${prefix}-treeview`);
+        treeView.selectItem('main1');
+        treeView.selectItem('utils1');
+        treeView.selectItem('readme');
+      }
+
+      function addMoreItems(prefix) {
+        const treeView = document.getElementById(`${prefix}-treeview`);
+        const currentItems = treeView.items;
+
+        const newItem = {
+          id: `new-${Date.now()}`,
+          label: `New Item ${Math.floor(Math.random() * 100)}`,
+          icon: '✨',
+          children: [
+            {
+              id: `child-${Date.now()}`,
+              label: 'Child Item',
+              icon: '📄'
+            }
+          ]
+        };
+
+        treeView.items = [...currentItems, newItem];
+      }
+
+      // Copy to clipboard functionality
+      function copyToClipboard(id) {
+        const element = document.getElementById(id);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const button = element.previousElementSibling;
+          const originalText = button.textContent;
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        });
+      }
+
+      // Theme control
+      let currentTheme = 'light';
+
+      function setTheme(theme) {
+        currentTheme = theme;
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all tree view elements
+        document.querySelectorAll('e2-tree-view').forEach(treeView => {
+          if (treeView.id !== 'dark-treeview') { // Don't override explicit dark theme
+            treeView.theme = theme;
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

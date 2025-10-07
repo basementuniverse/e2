@@ -266,4 +266,59 @@ export interface ListViewItemDoubleClickEvent extends EditorElementEvent {
         itemId: string;
     };
 }
+export interface TreeViewItem {
+    id: string;
+    label: string;
+    icon?: string;
+    data?: Record<string, any>;
+    children?: TreeViewItem[];
+    expanded?: boolean;
+    selected?: boolean;
+    disabled?: boolean;
+}
+export interface TreeViewExpandEvent extends EditorElementEvent {
+    detail: {
+        treeViewId: string;
+        treeView: HTMLElement;
+        item: TreeViewItem;
+        itemId: string;
+    };
+}
+export interface TreeViewCollapseEvent extends EditorElementEvent {
+    detail: {
+        treeViewId: string;
+        treeView: HTMLElement;
+        item: TreeViewItem;
+        itemId: string;
+    };
+}
+export interface TreeViewSelectionChangeEvent extends EditorElementEvent {
+    detail: {
+        treeViewId: string;
+        treeView: HTMLElement;
+        selectedItems: TreeViewItem[];
+        selectedIds: string[];
+        addedItems: TreeViewItem[];
+        removedItems: TreeViewItem[];
+    };
+}
+export interface TreeViewItemClickEvent extends EditorElementEvent {
+    detail: {
+        treeViewId: string;
+        treeView: HTMLElement;
+        item: TreeViewItem;
+        itemId: string;
+        ctrlKey: boolean;
+        shiftKey: boolean;
+        altKey: boolean;
+    };
+}
+export interface TreeViewItemDoubleClickEvent extends EditorElementEvent {
+    detail: {
+        treeViewId: string;
+        treeView: HTMLElement;
+        item: TreeViewItem;
+        itemId: string;
+    };
+}
 //# sourceMappingURL=types.d.ts.map

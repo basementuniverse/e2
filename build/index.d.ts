@@ -28,6 +28,7 @@ import './elements/toolbar/toolbar';
 import './elements/toolbar/toolbar-button';
 import './elements/toolbar/toolbar-menu';
 import './elements/toolbar/toolbar-separator';
+import './elements/treeview/tree-view';
 export * from './types';
 export * from './utils';
 export declare const VERSION = "1.0.0";

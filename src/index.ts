@@ -30,6 +30,7 @@ import './elements/toolbar/toolbar';
 import './elements/toolbar/toolbar-button';
 import './elements/toolbar/toolbar-menu';
 import './elements/toolbar/toolbar-separator';
+import './elements/treeview/tree-view';
 
 // Export types and interfaces for TypeScript users
 export * from './types';
