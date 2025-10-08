@@ -104,6 +104,9 @@ interface CollapsiblePanelResizeEndEvent extends CustomEvent {
   --panel-header-hover-bg: #e8e8e8;
   --panel-header-hover-bg-dark: #404040;
 
+  /* Panel content */
+  --panel-padding: 12px;
+
   /* Resize handles */
   --resize-handle-color: #999;
   --resize-handle-color-dark: #666;

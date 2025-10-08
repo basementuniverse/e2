@@ -210,7 +210,7 @@ export class CollapsiblePanel
         }
 
         .panel-content {
-          padding: 12px;
+          padding: var(--panel-padding, 12px);
           overflow: auto;
           box-sizing: border-box;
           height: calc(100% - 32px); /* Account for header height */
