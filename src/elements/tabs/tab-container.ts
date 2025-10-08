@@ -15,6 +15,7 @@ import {
   applyTheme,
   dispatchCustomEvent,
   generateId,
+  getEffectiveTheme,
   getShadowRoot,
   setupThemeInheritance,
 } from '../../utils';
@@ -262,6 +263,9 @@ export class TabContainer
     }
 
     const previousTabId = this._activeTabId;
+    const effectiveTheme = this.hasAttribute('theme')
+      ? this._theme
+      : getEffectiveTheme(this);
 
     // Deactivate all tabs and panels
     this.querySelectorAll('e2-tab').forEach(tab => {
@@ -270,6 +274,10 @@ export class TabContainer
       } else {
         tab.removeAttribute('active');
       }
+      // Preserve theme after state change
+      if ((tab as any).applyTheme && !tab.hasAttribute('theme')) {
+        (tab as any).applyTheme(effectiveTheme);
+      }
     });
     this.querySelectorAll('e2-tab-panel').forEach(panel => {
       if ((panel as any).active !== undefined) {
@@ -277,6 +285,10 @@ export class TabContainer
       } else {
         panel.removeAttribute('active');
         (panel as HTMLElement).style.display = 'none';
+      }
+      // Preserve theme after state change
+      if ((panel as any).applyTheme && !panel.hasAttribute('theme')) {
+        (panel as any).applyTheme(effectiveTheme);
       }
     });
 
@@ -292,6 +304,17 @@ export class TabContainer
     } else {
       panelElement.setAttribute('active', '');
       panelElement.style.display = 'flex';
+    }
+
+    // Ensure theme is preserved on the newly active elements
+    if ((tabElement as any).applyTheme && !tabElement.hasAttribute('theme')) {
+      (tabElement as any).applyTheme(effectiveTheme);
+    }
+    if (
+      (panelElement as any).applyTheme &&
+      !panelElement.hasAttribute('theme')
+    ) {
+      (panelElement as any).applyTheme(effectiveTheme);
     }
 
     this._activeTabId = tabId;
@@ -347,12 +370,20 @@ export class TabContainer
         this.removeAttribute('active-tab');
       }
     }
+
+    // Refresh theme inheritance after removing tab
+    this.refreshThemes();
   }
 
   private updateTabsAndPanels(): void {
     // Auto-assign panels to tabs and vice versa
     const tabs = this.querySelectorAll('e2-tab');
     const panels = this.querySelectorAll('e2-tab-panel');
+
+    // Get the effective theme for proper inheritance
+    const effectiveTheme = this.hasAttribute('theme')
+      ? this._theme
+      : getEffectiveTheme(this);
 
     tabs.forEach((tab, index) => {
       const tabElement = tab as HTMLElement;
@@ -378,10 +409,10 @@ export class TabContainer
         }
       }
 
-      // Apply current theme
-      if ((tabElement as any).applyTheme) {
+      // Apply effective theme only if tab doesn't have its own theme attribute
+      if ((tabElement as any).applyTheme && !tabElement.hasAttribute('theme')) {
         try {
-          (tabElement as any).applyTheme(this._theme);
+          (tabElement as any).applyTheme(effectiveTheme);
         } catch (e) {
           console.warn('Failed to apply theme to tab:', e);
         }
@@ -453,10 +484,13 @@ export class TabContainer
         }
       }
 
-      // Apply current theme
-      if ((panelElement as any).applyTheme) {
+      // Apply effective theme only if panel doesn't have its own theme attribute
+      if (
+        (panelElement as any).applyTheme &&
+        !panelElement.hasAttribute('theme')
+      ) {
         try {
-          (panelElement as any).applyTheme(this._theme);
+          (panelElement as any).applyTheme(effectiveTheme);
         } catch (e) {
           console.warn('Failed to apply theme to panel:', e);
         }
@@ -520,6 +554,28 @@ export class TabContainer
     }
   }
 
+  /**
+   * Refresh theme inheritance for all child tabs and panels
+   * This can be called after dynamic operations to ensure theme is maintained
+   */
+  public refreshThemes(): void {
+    const effectiveTheme = this.hasAttribute('theme')
+      ? this._theme
+      : getEffectiveTheme(this);
+
+    this.querySelectorAll('e2-tab').forEach((tab: any) => {
+      if (tab.applyTheme && !tab.hasAttribute('theme')) {
+        tab.applyTheme(effectiveTheme);
+      }
+    });
+
+    this.querySelectorAll('e2-tab-panel').forEach((panel: any) => {
+      if (panel.applyTheme && !panel.hasAttribute('theme')) {
+        panel.applyTheme(effectiveTheme);
+      }
+    });
+  }
+
   public addTab(
     label: string,
     content: string = '',
@@ -541,19 +597,24 @@ export class TabContainer
     const panel = new TabPanelConstructor();
     panel.id = finalPanelId;
 
+    // Get effective theme for proper inheritance
+    const effectiveTheme = this.hasAttribute('theme')
+      ? this._theme
+      : getEffectiveTheme(this);
+
     // Set up initial data that will be applied in connectedCallback
     (tab as any)._pendingSetup = {
       slot: 'tabs',
       panel: finalPanelId,
       label: label,
       closable: this._closable,
-      theme: this._theme,
+      theme: effectiveTheme,
     };
 
     (panel as any)._pendingSetup = {
       slot: 'panels',
       content: content,
-      theme: this._theme,
+      theme: effectiveTheme,
     };
 
     // Add to DOM - this will trigger connectedCallback
@@ -643,15 +704,15 @@ export class TabContainer
   public applyTheme(theme: Theme): void {
     applyTheme(this, theme);
 
-    // Also apply theme to all child tabs and panels
+    // Also apply theme to all child tabs and panels that don't have explicit theme
     this.querySelectorAll('e2-tab').forEach((tab: any) => {
-      if (tab.applyTheme) {
+      if (tab.applyTheme && !tab.hasAttribute('theme')) {
         tab.applyTheme(theme);
       }
     });
 
     this.querySelectorAll('e2-tab-panel').forEach((panel: any) => {
-      if (panel.applyTheme) {
+      if (panel.applyTheme && !panel.hasAttribute('theme')) {
         panel.applyTheme(theme);
       }
     });

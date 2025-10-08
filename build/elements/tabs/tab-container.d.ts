@@ -19,6 +19,11 @@ export declare class TabContainer extends HTMLElement implements EditorElementPr
     private removeTab;
     private updateTabsAndPanels;
     selectTabById(tabId: string): void;
+    /**
+     * Refresh theme inheritance for all child tabs and panels
+     * This can be called after dynamic operations to ensure theme is maintained
+     */
+    refreshThemes(): void;
     addTab(label: string, content?: string, tabId?: string, panelId?: string): {
         tabId: string;
         panelId: string;
