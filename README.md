@@ -50,6 +50,7 @@ import '@basementuniverse/e2';
 - [Status Bar](docs/status-bar.md)
 - [List View](docs/list-view.md)
 - [Tree View](docs/tree-view.md)
+- [KeyValue Editor](docs/keyvalue-editor.md)
 
 ## Notes
 

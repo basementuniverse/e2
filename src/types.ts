@@ -423,3 +423,54 @@ export interface TreeViewItemDoubleClickEvent extends EditorElementEvent {
     itemId: string;
   };
 }
+
+// -----------------------------------------------------------------------------
+// KeyValue Editor types & events
+// -----------------------------------------------------------------------------
+
+export interface KeyValueSchema {
+  type: 'object';
+  properties: {
+    [key: string]: {
+      type: 'string' | 'number' | 'integer' | 'boolean' | 'object';
+      title?: string; // Display label
+      description?: string; // Tooltip/help text
+      default?: any; // Default value
+      minimum?: number; // For numbers
+      maximum?: number; // For numbers
+      pattern?: string; // For strings
+      enum?: any[]; // For dropdowns
+      properties?: any; // For nested objects
+      required?: string[]; // Required fields
+    };
+  };
+  required?: string[];
+}
+
+export interface KeyValueValidationError {
+  key: string;
+  path: string[];
+  message: string;
+}
+
+export interface KeyValueValidationResult {
+  isValid: boolean;
+  errors: KeyValueValidationError[];
+}
+
+export interface KeyValueChangeEvent extends EditorElementEvent {
+  detail: {
+    key: string; // Which key was changed
+    oldValue: any; // Previous value
+    newValue: any; // New value
+    path: string[]; // Path for nested objects
+    isValid: boolean; // Validation status
+  };
+}
+
+export interface KeyValueValidationEvent extends EditorElementEvent {
+  detail: {
+    isValid: boolean;
+    errors: KeyValueValidationError[];
+  };
+}

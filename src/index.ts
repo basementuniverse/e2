@@ -14,6 +14,7 @@ import './elements/dialog/alert';
 import './elements/dialog/confirm';
 import './elements/dialog/dialog';
 import './elements/dialog/prompt';
+import './elements/keyvalue/keyvalue-editor';
 import './elements/listview/list-view';
 import './elements/notification/notification';
 import './elements/notification/notification-container';

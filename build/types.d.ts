@@ -321,4 +321,46 @@ export interface TreeViewItemDoubleClickEvent extends EditorElementEvent {
         itemId: string;
     };
 }
+export interface KeyValueSchema {
+    type: 'object';
+    properties: {
+        [key: string]: {
+            type: 'string' | 'number' | 'integer' | 'boolean' | 'object';
+            title?: string;
+            description?: string;
+            default?: any;
+            minimum?: number;
+            maximum?: number;
+            pattern?: string;
+            enum?: any[];
+            properties?: any;
+            required?: string[];
+        };
+    };
+    required?: string[];
+}
+export interface KeyValueValidationError {
+    key: string;
+    path: string[];
+    message: string;
+}
+export interface KeyValueValidationResult {
+    isValid: boolean;
+    errors: KeyValueValidationError[];
+}
+export interface KeyValueChangeEvent extends EditorElementEvent {
+    detail: {
+        key: string;
+        oldValue: any;
+        newValue: any;
+        path: string[];
+        isValid: boolean;
+    };
+}
+export interface KeyValueValidationEvent extends EditorElementEvent {
+    detail: {
+        isValid: boolean;
+        errors: KeyValueValidationError[];
+    };
+}
 //# sourceMappingURL=types.d.ts.map
