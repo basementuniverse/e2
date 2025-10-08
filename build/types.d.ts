@@ -42,6 +42,33 @@ export interface CollapsiblePanelToggleEvent extends EditorElementEvent {
         orientation: 'horizontal' | 'vertical';
     };
 }
+export interface CollapsiblePanelResizeEvent extends EditorElementEvent {
+    detail: {
+        panelId: string;
+        panel: HTMLElement;
+        width?: number;
+        height?: number;
+        edge: 'left' | 'right' | 'top' | 'bottom';
+    };
+}
+export interface CollapsiblePanelResizeStartEvent extends EditorElementEvent {
+    detail: {
+        panelId: string;
+        panel: HTMLElement;
+        startWidth: number;
+        startHeight: number;
+        edge: 'left' | 'right' | 'top' | 'bottom';
+    };
+}
+export interface CollapsiblePanelResizeEndEvent extends EditorElementEvent {
+    detail: {
+        panelId: string;
+        panel: HTMLElement;
+        finalWidth: number;
+        finalHeight: number;
+        edge: 'left' | 'right' | 'top' | 'bottom';
+    };
+}
 export type AlertType = 'info' | 'success' | 'warning' | 'error';
 export type NotificationType = 'info' | 'success' | 'warning' | 'error';
 export interface DialogEvent extends EditorElementEvent {

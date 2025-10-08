@@ -10,6 +10,19 @@ export declare class CollapsiblePanel extends HTMLElement implements EditorEleme
     private _collapsed;
     private _orientation;
     private _themeCleanup?;
+    private _resizeLeft;
+    private _resizeRight;
+    private _resizeTop;
+    private _resizeBottom;
+    private _minWidth;
+    private _maxWidth;
+    private _minHeight;
+    private _maxHeight;
+    private _resizing;
+    private _resizeEdge;
+    private _startPosition;
+    private _startSize;
+    private _storedSize;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
@@ -17,6 +30,16 @@ export declare class CollapsiblePanel extends HTMLElement implements EditorEleme
     disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     private handleToggle;
+    private handleCollapsedChange;
+    private handleMouseDown;
+    private handleMouseMove;
+    private handleMouseUp;
+    private handleMouseLeave;
+    private handleDocumentMouseMove;
+    private handleDocumentMouseUp;
+    private endResize;
+    private getResizeEdge;
+    private getCursorForEdge;
     get theme(): Theme;
     set theme(value: Theme);
     get collapsed(): boolean;
@@ -27,5 +50,21 @@ export declare class CollapsiblePanel extends HTMLElement implements EditorEleme
     expand(): void;
     collapse(): void;
     applyTheme(theme: Theme): void;
+    get resizeLeft(): boolean;
+    set resizeLeft(value: boolean);
+    get resizeRight(): boolean;
+    set resizeRight(value: boolean);
+    get resizeTop(): boolean;
+    set resizeTop(value: boolean);
+    get resizeBottom(): boolean;
+    set resizeBottom(value: boolean);
+    get minWidth(): number;
+    set minWidth(value: number);
+    get maxWidth(): number;
+    set maxWidth(value: number);
+    get minHeight(): number;
+    set minHeight(value: number);
+    get maxHeight(): number;
+    set maxHeight(value: number);
 }
 //# sourceMappingURL=collapsible-panel.d.ts.map

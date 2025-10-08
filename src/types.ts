@@ -62,6 +62,36 @@ export interface CollapsiblePanelToggleEvent extends EditorElementEvent {
   };
 }
 
+export interface CollapsiblePanelResizeEvent extends EditorElementEvent {
+  detail: {
+    panelId: string;
+    panel: HTMLElement;
+    width?: number;
+    height?: number;
+    edge: 'left' | 'right' | 'top' | 'bottom';
+  };
+}
+
+export interface CollapsiblePanelResizeStartEvent extends EditorElementEvent {
+  detail: {
+    panelId: string;
+    panel: HTMLElement;
+    startWidth: number;
+    startHeight: number;
+    edge: 'left' | 'right' | 'top' | 'bottom';
+  };
+}
+
+export interface CollapsiblePanelResizeEndEvent extends EditorElementEvent {
+  detail: {
+    panelId: string;
+    panel: HTMLElement;
+    finalWidth: number;
+    finalHeight: number;
+    edge: 'left' | 'right' | 'top' | 'bottom';
+  };
+}
+
 // -----------------------------------------------------------------------------
 // Dialog types & events
 // -----------------------------------------------------------------------------

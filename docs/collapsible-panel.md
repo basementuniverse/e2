@@ -8,12 +8,20 @@ A panel that can be collapsed to save space while maintaining access to expand i
 
 ### Attributes
 
-| Attribute     | Type                          | Default      | Description                              |
-| ------------- | ----------------------------- | ------------ | ---------------------------------------- |
-| `theme`       | `'light' \| 'dark' \| 'auto'` | `'auto'`     | Theme mode for the panel                 |
-| `disabled`    | boolean                       | `false`      | Disables panel interaction               |
-| `collapsed`   | boolean                       | `false`      | Controls whether the panel is collapsed  |
-| `orientation` | `'horizontal' \| 'vertical'`  | `'vertical'` | Panel orientation and collapse direction |
+| Attribute       | Type                          | Default      | Description                                                      |
+| --------------- | ----------------------------- | ------------ | ---------------------------------------------------------------- |
+| `theme`         | `'light' \| 'dark' \| 'auto'` | `'auto'`     | Theme mode for the panel                                         |
+| `disabled`      | boolean                       | `false`      | Disables panel interaction                                       |
+| `collapsed`     | boolean                       | `false`      | Controls whether the panel is collapsed                          |
+| `orientation`   | `'horizontal' \| 'vertical'`  | `'vertical'` | Panel orientation and collapse direction                         |
+| `resize-left`   | boolean                       | `false`      | Enables resizing from the left edge (horizontal panels only)     |
+| `resize-right`  | boolean                       | `false`      | Enables resizing from the right edge (horizontal panels only)    |
+| `resize-top`    | boolean                       | `false`      | Enables resizing from the top edge (vertical panels only)       |
+| `resize-bottom` | boolean                       | `false`      | Enables resizing from the bottom edge (vertical panels only)    |
+| `min-width`     | number                        | `100`        | Minimum width constraint for horizontal resizing (px)           |
+| `max-width`     | number                        | `800`        | Maximum width constraint for horizontal resizing (px)           |
+| `min-height`    | number                        | `100`        | Minimum height constraint for vertical resizing (px)            |
+| `max-height`    | number                        | `600`        | Maximum height constraint for vertical resizing (px)            |
 
 ### Events
 
@@ -28,6 +36,54 @@ interface CollapsiblePanelToggleEvent extends CustomEvent {
     panel: HTMLElement;
     collapsed: boolean;
     orientation: 'horizontal' | 'vertical';
+  };
+}
+```
+
+#### `collapsible-panel-resize-start`
+
+Fired when a resize operation begins.
+
+```typescript
+interface CollapsiblePanelResizeStartEvent extends CustomEvent {
+  detail: {
+    panelId: string;
+    panel: HTMLElement;
+    startWidth: number;
+    startHeight: number;
+    edge: 'left' | 'right' | 'top' | 'bottom';
+  };
+}
+```
+
+#### `collapsible-panel-resize`
+
+Fired during resize operations (real-time updates).
+
+```typescript
+interface CollapsiblePanelResizeEvent extends CustomEvent {
+  detail: {
+    panelId: string;
+    panel: HTMLElement;
+    width?: number;
+    height?: number;
+    edge: 'left' | 'right' | 'top' | 'bottom';
+  };
+}
+```
+
+#### `collapsible-panel-resize-end`
+
+Fired when a resize operation completes.
+
+```typescript
+interface CollapsiblePanelResizeEndEvent extends CustomEvent {
+  detail: {
+    panelId: string;
+    panel: HTMLElement;
+    finalWidth: number;
+    finalHeight: number;
+    edge: 'left' | 'right' | 'top' | 'bottom';
   };
 }
 ```
@@ -47,6 +103,10 @@ interface CollapsiblePanelToggleEvent extends CustomEvent {
   --panel-header-bg-dark: #3a3a3a;
   --panel-header-hover-bg: #e8e8e8;
   --panel-header-hover-bg-dark: #404040;
+
+  /* Resize handles */
+  --resize-handle-color: #999;
+  --resize-handle-color-dark: #666;
 
   /* Text colors */
   --text-color: #333;
@@ -89,6 +149,56 @@ The collapsible panel supports two content slots:
     <button>Brush</button>
     <button>Eraser</button>
     <button>Fill</button>
+  </div>
+</e2-collapsible-panel>
+```
+
+#### Resizable Panels
+
+Panels can be made resizable by enabling specific edges. The resize constraints depend on the panel orientation:
+
+- **Vertical panels**: Can only be resized vertically (top/bottom edges)
+- **Horizontal panels**: Can only be resized horizontally (left/right edges)
+
+```html
+<!-- Resizable vertical panel -->
+<e2-collapsible-panel
+  orientation="vertical"
+  resize-bottom
+  min-height="150"
+  max-height="400"
+  style="width: 300px; height: 250px;">
+  <span slot="title">Resizable Properties Panel</span>
+  <div>
+    <p>Drag the thick bottom border to resize vertically.</p>
+    <p>Size will be remembered when collapsed/expanded.</p>
+  </div>
+</e2-collapsible-panel>
+
+<!-- Resizable horizontal panel -->
+<e2-collapsible-panel
+  orientation="horizontal"
+  resize-right
+  min-width="200"
+  max-width="500"
+  style="width: 300px; height: 200px;">
+  <span slot="title">Resizable Tools Panel</span>
+  <div>
+    <p>Drag the thick right border to resize horizontally.</p>
+  </div>
+</e2-collapsible-panel>
+
+<!-- Multi-edge resizable panel -->
+<e2-collapsible-panel
+  orientation="vertical"
+  resize-top
+  resize-bottom
+  min-height="100"
+  max-height="600"
+  style="width: 250px; height: 300px;">
+  <span slot="title">Multi-Edge Resizable</span>
+  <div>
+    <p>This panel can be resized from both top and bottom edges.</p>
   </div>
 </e2-collapsible-panel>
 ```
@@ -148,6 +258,14 @@ panel.toggle(); // Toggle between collapsed/expanded
 // Change orientation
 panel.orientation = 'horizontal';
 
+// Configure resizing
+panel.resizeRight = true; // Enable right edge resizing
+panel.resizeBottom = true; // Enable bottom edge resizing
+panel.minWidth = 200; // Set minimum width
+panel.maxWidth = 600; // Set maximum width
+panel.minHeight = 150; // Set minimum height
+panel.maxHeight = 400; // Set maximum height
+
 // Set theme
 panel.theme = 'dark';
 
@@ -161,6 +279,26 @@ panel.addEventListener('collapsible-panel-toggle', event => {
   // Save panel state to localStorage
   localStorage.setItem(`panel-${panelId}-collapsed`, collapsed.toString());
 });
+
+// Listen for resize events
+panel.addEventListener('collapsible-panel-resize-start', event => {
+  const { panelId, startWidth, startHeight, edge } = event.detail;
+  console.log(`Started resizing panel ${panelId} on ${edge} edge`);
+});
+
+panel.addEventListener('collapsible-panel-resize', event => {
+  const { panelId, width, height, edge } = event.detail;
+  console.log(`Resizing panel ${panelId}: ${width}x${height}`);
+});
+
+panel.addEventListener('collapsible-panel-resize-end', event => {
+  const { panelId, finalWidth, finalHeight, edge } = event.detail;
+  console.log(`Finished resizing panel ${panelId}: ${finalWidth}x${finalHeight}`);
+
+  // Save final size to localStorage
+  localStorage.setItem(`panel-${panelId}-width`, finalWidth.toString());
+  localStorage.setItem(`panel-${panelId}-height`, finalHeight.toString());
+});
 ```
 
 ### CSS Styling Examples
@@ -172,12 +310,38 @@ e2-collapsible-panel {
   --panel-bg: #fafafa;
   --panel-border: #e0e0e0;
   --panel-header-bg: #f5f5f5;
+  --resize-handle-color: #bbb;
 }
 
 e2-collapsible-panel.theme-dark {
   --panel-bg-dark: #1a1a1a;
   --panel-border-dark: #404040;
   --panel-header-bg-dark: #252525;
+  --resize-handle-color-dark: #777;
+}
+```
+
+#### Resize Handle Styling
+
+```css
+/* Custom resize handle colors */
+.custom-resize-panel {
+  --resize-handle-color: #007acc;
+  --resize-handle-color-dark: #4fc3f7;
+}
+
+/* Make resize handles more prominent */
+.prominent-resize {
+  --resize-handle-color: #ff6b35;
+}
+
+/* Hide resize handles until hover */
+.subtle-resize {
+  --resize-handle-color: transparent;
+}
+
+.subtle-resize:hover {
+  --resize-handle-color: #999;
 }
 ```
 
@@ -290,7 +454,13 @@ e2-collapsible-panel {
   <body>
     <div class="editor-layout">
       <!-- Left Sidebar -->
-      <e2-collapsible-panel class="sidebar" orientation="horizontal">
+      <e2-collapsible-panel
+        class="sidebar"
+        orientation="horizontal"
+        resize-right
+        min-width="150"
+        max-width="400"
+        style="width: 200px;">
         <span slot="title">🔧 Tools</span>
         <div class="tool-list">
           <button onclick="selectTool('brush')">🖌️ Brush</button>
@@ -319,7 +489,12 @@ e2-collapsible-panel {
       </div>
 
       <!-- Right Properties Panel -->
-      <e2-collapsible-panel orientation="horizontal" style="width: 280px;">
+      <e2-collapsible-panel
+        orientation="horizontal"
+        resize-left
+        min-width="200"
+        max-width="400"
+        style="width: 280px;">
         <span slot="title">⚙️ Properties</span>
         <div class="properties-grid">
           <label>
@@ -351,7 +526,14 @@ e2-collapsible-panel {
     </div>
 
     <!-- Bottom Console Panel -->
-    <e2-collapsible-panel class="bottom-panel" orientation="vertical" collapsed>
+    <e2-collapsible-panel
+      class="bottom-panel"
+      orientation="vertical"
+      resize-top
+      min-height="100"
+      max-height="300"
+      collapsed
+      style="height: 150px;">
       <span slot="title">💻 Console</span>
       <div class="console-output" id="console">
         > Editor initialized<br />
@@ -385,6 +567,12 @@ e2-collapsible-panel {
       document.addEventListener('collapsible-panel-toggle', event => {
         const { panelId, collapsed } = event.detail;
         log(`Panel ${collapsed ? 'collapsed' : 'expanded'}`);
+      });
+
+      // Listen for panel resize events
+      document.addEventListener('collapsible-panel-resize-end', event => {
+        const { panelId, finalWidth, finalHeight, edge } = event.detail;
+        log(`Panel resized: ${finalWidth}x${finalHeight} (${edge} edge)`);
       });
 
       // Initialize with some console messages
