@@ -91,6 +91,7 @@ export class ToolbarButton
 
         .label {
           white-space: nowrap;
+          margin-left: 4px;
         }
       </style>
       <button>
