@@ -12,6 +12,7 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     private _schema;
     private _readonly;
     private _compact;
+    private _headerTitle;
     private _validationErrors;
     private _validator;
     static get observedAttributes(): string[];
@@ -54,5 +55,7 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     set value(value: Record<string, any>);
     get schema(): KeyValueSchema | null;
     set schema(value: KeyValueSchema | null);
+    get headerTitle(): string | null;
+    set headerTitle(value: string | null);
 }
 //# sourceMappingURL=keyvalue-editor.d.ts.map

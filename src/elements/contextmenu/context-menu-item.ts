@@ -168,10 +168,6 @@ export class ContextMenuItem
     button.addEventListener('keydown', (event: Event) =>
       this.handleKeyDown(event as KeyboardEvent)
     );
-
-    // Make the element focusable
-    this.tabIndex = 0;
-    this.addEventListener('focus', this.handleFocus.bind(this));
   }
 
   connectedCallback(): void {
@@ -186,6 +182,10 @@ export class ContextMenuItem
     } else {
       this.applyTheme(this._theme);
     }
+
+    // Make the element focusable
+    this.tabIndex = 0;
+    this.addEventListener('focus', this.handleFocus.bind(this));
 
     this.updateContent();
   }

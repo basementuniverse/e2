@@ -49,6 +49,40 @@
       </div>
 
       <div class="demo-section">
+        <h2>Header Title Configuration</h2>
+        <p>Demonstration of configurable header titles:</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div>
+            <h3>No Header (default)</h3>
+            <e2-keyvalue-editor id="no-header-editor"></e2-keyvalue-editor>
+          </div>
+          <div>
+            <h3>Custom Header Title</h3>
+            <e2-keyvalue-editor id="custom-header-editor" header-title="Game Settings"></e2-keyvalue-editor>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div>
+            <h3>Default "Properties" Header</h3>
+            <e2-keyvalue-editor id="default-header-editor" header-title=""></e2-keyvalue-editor>
+          </div>
+          <div>
+            <h3>Dynamic Header</h3>
+            <e2-keyvalue-editor id="dynamic-header-editor" header-title="Configuration"></e2-keyvalue-editor>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button onclick="setHeaderSampleData()">Set Sample Data</button>
+          <button onclick="toggleDynamicHeader()">Toggle Dynamic Header</button>
+          <button onclick="changeDynamicHeaderTitle()">Change Dynamic Title</button>
+          <button onclick="clearHeaderEditors()">Clear All</button>
+        </div>
+      </div>
+
+      <div class="demo-section">
         <h2>Advanced Input Types</h2>
         <p>Showcase of all supported input types with schema constraints:</p>
 
@@ -303,6 +337,49 @@ console.log('Is valid:', result.isValid);</pre>
 
         function updateBasicOutput() {
             basicOutput.textContent = JSON.stringify(basicEditor.value, null, 2);
+        }
+
+        // Header title demo functionality
+        const noHeaderEditor = document.getElementById('no-header-editor');
+        const customHeaderEditor = document.getElementById('custom-header-editor');
+        const defaultHeaderEditor = document.getElementById('default-header-editor');
+        const dynamicHeaderEditor = document.getElementById('dynamic-header-editor');
+
+        function setHeaderSampleData() {
+            const sampleData = {
+                username: 'player1',
+                difficulty: 'normal',
+                soundEnabled: true,
+                volume: 75
+            };
+            noHeaderEditor.value = sampleData;
+            customHeaderEditor.value = sampleData;
+            defaultHeaderEditor.value = sampleData;
+            dynamicHeaderEditor.value = sampleData;
+        }
+
+        let headerVisible = true;
+        function toggleDynamicHeader() {
+            headerVisible = !headerVisible;
+            if (headerVisible) {
+                dynamicHeaderEditor.headerTitle = 'Configuration';
+            } else {
+                dynamicHeaderEditor.headerTitle = null;
+            }
+        }
+
+        let titleIndex = 0;
+        const titleOptions = ['Configuration', 'Settings', 'Options', 'Parameters', 'Properties'];
+        function changeDynamicHeaderTitle() {
+            titleIndex = (titleIndex + 1) % titleOptions.length;
+            dynamicHeaderEditor.headerTitle = titleOptions[titleIndex];
+        }
+
+        function clearHeaderEditors() {
+            noHeaderEditor.value = {};
+            customHeaderEditor.value = {};
+            defaultHeaderEditor.value = {};
+            dynamicHeaderEditor.value = {};
         }
 
         // Advanced types editor functionality

@@ -32,16 +32,19 @@ export class KeyValueEditorElement
   private _schema: KeyValueSchema | null = null;
   private _readonly: boolean = false;
   private _compact: boolean = false;
+  private _headerTitle: string | null = null;
   private _validationErrors: KeyValueValidationError[] = [];
   private _validator: Validator = new Validator();
 
   static get observedAttributes(): string[] {
-    return ['theme', 'disabled', 'readonly', 'compact'];
+    return ['theme', 'disabled', 'readonly', 'compact', 'header-title'];
   }
 
   constructor() {
     super();
     this.setupElement();
+    // Initialize header title from attribute
+    this._headerTitle = this.getAttribute('header-title');
   }
 
   private setupElement(): void {
@@ -201,6 +204,14 @@ export class KeyValueEditorElement
         .input-control[type="range"] {
           height: auto;
           padding: 0;
+        }
+
+        .input-control[type="checkbox"] {
+          width: 1em;
+          height: 1em;
+          padding: 0;
+          margin: 0;
+          cursor: pointer;
         }
 
         .range-container {
@@ -388,6 +399,10 @@ export class KeyValueEditorElement
       case 'compact':
         this._compact = newValue !== null;
         break;
+      case 'header-title':
+        this._headerTitle = newValue;
+        this.render();
+        break;
     }
   }
 
@@ -397,7 +412,21 @@ export class KeyValueEditorElement
 
   private render(): void {
     const shadowRoot = this.shadowRoot!;
+    const container = shadowRoot.querySelector('.keyvalue-container')!;
     const content = shadowRoot.querySelector('.keyvalue-content')!;
+
+    // Update header visibility and content
+    const header = shadowRoot.querySelector('.keyvalue-header') as HTMLElement;
+    if (this._headerTitle !== null) {
+      // Show header with title (use "Properties" as default if empty string)
+      const headerText =
+        this._headerTitle === '' ? 'Properties' : this._headerTitle;
+      header.textContent = headerText;
+      header.style.display = 'block';
+    } else {
+      // Hide header
+      header.style.display = 'none';
+    }
 
     if (Object.keys(this._value).length === 0) {
       content.innerHTML =
@@ -1026,6 +1055,19 @@ export class KeyValueEditorElement
     } else {
       this._schema = null;
       this.render();
+    }
+  }
+
+  get headerTitle(): string | null {
+    return this._headerTitle;
+  }
+
+  set headerTitle(value: string | null) {
+    this._headerTitle = value;
+    if (value !== null) {
+      this.setAttribute('header-title', value);
+    } else {
+      this.removeAttribute('header-title');
     }
   }
 }
