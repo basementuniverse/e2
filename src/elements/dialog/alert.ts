@@ -234,10 +234,6 @@ export class AlertDialogElement
     if (button) {
       button.addEventListener('click', () => this.close());
     }
-
-    // Apply initial theme
-    this.applyTheme(this._theme);
-    this.updateContent();
   }
 
   connectedCallback(): void {
@@ -252,6 +248,10 @@ export class AlertDialogElement
     } else {
       this.applyTheme(this._theme);
     }
+
+    // Apply initial theme
+    this.applyTheme(this._theme);
+    this.updateContent();
   }
 
   disconnectedCallback(): void {

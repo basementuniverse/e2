@@ -245,10 +245,6 @@ export class ConfirmDialogElement
     if (cancelButton) {
       cancelButton.addEventListener('click', () => this.cancel());
     }
-
-    // Apply initial theme
-    this.applyTheme(this._theme);
-    this.updateContent();
   }
 
   connectedCallback(): void {
@@ -263,6 +259,10 @@ export class ConfirmDialogElement
     } else {
       this.applyTheme(this._theme);
     }
+
+    // Apply initial theme
+    this.applyTheme(this._theme);
+    this.updateContent();
   }
 
   disconnectedCallback(): void {

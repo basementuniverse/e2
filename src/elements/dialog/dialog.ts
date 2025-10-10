@@ -198,9 +198,6 @@ export class DialogElement
     if (closeButton) {
       closeButton.addEventListener('click', () => this.close());
     }
-
-    // Apply initial theme
-    this.applyTheme(this._theme);
   }
 
   connectedCallback(): void {
@@ -215,6 +212,9 @@ export class DialogElement
     } else {
       this.applyTheme(this._theme);
     }
+
+    // Apply initial theme
+    this.applyTheme(this._theme);
   }
 
   disconnectedCallback(): void {

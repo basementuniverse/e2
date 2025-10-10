@@ -304,10 +304,6 @@ export class PromptDialogElement
       input.addEventListener('input', this.handleInput.bind(this));
       input.addEventListener('keydown', this.handleKeydown.bind(this));
     }
-
-    // Apply initial theme
-    this.applyTheme(this._theme);
-    this.updateContent();
   }
 
   connectedCallback(): void {
@@ -322,6 +318,10 @@ export class PromptDialogElement
     } else {
       this.applyTheme(this._theme);
     }
+
+    // Apply initial theme
+    this.applyTheme(this._theme);
+    this.updateContent();
   }
 
   disconnectedCallback(): void {
