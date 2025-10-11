@@ -55,6 +55,8 @@ export class ListView extends HTMLElement implements EditorElementProperties {
           font-size: var(--font-size, 14px);
           overflow: hidden;
           min-height: 100px;
+          container-type: style;
+          --header-visible: yes;
         }
 
         :host(.theme-dark) {
@@ -78,6 +80,20 @@ export class ListView extends HTMLElement implements EditorElementProperties {
           font-weight: bold;
           padding: 0;
           flex-shrink: 0;
+        }
+
+        /* Show header when in details mode and header is visible */
+        @container style(--header-visible: yes) {
+          :host([view-mode="details"]) .listview-header {
+            display: block;
+          }
+        }
+
+        /* Hide header when explicitly set to no */
+        @container style(--header-visible: no) {
+          .listview-header {
+            display: none !important;
+          }
         }
 
         .listview-header-row {
@@ -198,10 +214,6 @@ export class ListView extends HTMLElement implements EditorElementProperties {
 
         :host([view-mode="details"]) .listview-content {
           min-height: 0;
-        }
-
-        :host([view-mode="details"]) .listview-header {
-          display: block;
         }
 
         :host([view-mode="details"]) .listview-item {
