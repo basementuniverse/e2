@@ -107,6 +107,10 @@ interface CollapsiblePanelResizeEndEvent extends CustomEvent {
   /* Panel content */
   --panel-padding: 12px;
 
+  /* Panel icons */
+  --panel-collapsed-icon: "☰";
+  --panel-expanded-icon: "✕";
+
   /* Resize handles */
   --resize-handle-color: #999;
   --resize-handle-color-dark: #666;
@@ -153,6 +157,34 @@ The collapsible panel supports two content slots:
     <button>Eraser</button>
     <button>Fill</button>
   </div>
+</e2-collapsible-panel>
+```
+
+#### Custom Icons
+
+```html
+<style>
+  .arrow-panel {
+    --panel-collapsed-icon: "▶";
+    --panel-expanded-icon: "▼";
+  }
+
+  .folder-panel {
+    --panel-collapsed-icon: "📁";
+    --panel-expanded-icon: "📂";
+  }
+</style>
+
+<!-- Panel with arrow icons -->
+<e2-collapsible-panel class="arrow-panel">
+  <span slot="title">Arrow Panel</span>
+  <div>This panel uses arrow icons for collapse/expand.</div>
+</e2-collapsible-panel>
+
+<!-- Panel with folder icons -->
+<e2-collapsible-panel class="folder-panel">
+  <span slot="title">Files</span>
+  <div>This panel uses folder icons to represent open/closed state.</div>
 </e2-collapsible-panel>
 ```
 
@@ -321,6 +353,36 @@ e2-collapsible-panel.theme-dark {
   --panel-border-dark: #404040;
   --panel-header-bg-dark: #252525;
   --resize-handle-color-dark: #777;
+}
+```
+
+#### Custom Panel Icons
+
+You can customize the collapse/expand icons using CSS custom properties:
+
+```css
+/* Use arrow icons instead of burger/close */
+.arrow-icons {
+  --panel-collapsed-icon: "▶";
+  --panel-expanded-icon: "▼";
+}
+
+/* Use plus/minus icons */
+.plus-minus-icons {
+  --panel-collapsed-icon: "+";
+  --panel-expanded-icon: "−";
+}
+
+/* Use chevron icons */
+.chevron-icons {
+  --panel-collapsed-icon: "›";
+  --panel-expanded-icon: "‹";
+}
+
+/* Use custom emoji icons */
+.emoji-icons {
+  --panel-collapsed-icon: "📁";
+  --panel-expanded-icon: "📂";
 }
 ```
 

@@ -157,6 +157,14 @@ export class CollapsiblePanel
           flex-shrink: 0;
         }
 
+        .burger-icon::before {
+          content: var(--panel-collapsed-icon, "☰");
+        }
+
+        .close-icon::before {
+          content: var(--panel-expanded-icon, "✕");
+        }
+
         /* Vertical orientation icons */
         :host([orientation="vertical"]) .toggle-button .burger-icon {
           display: none;
@@ -278,8 +286,8 @@ export class CollapsiblePanel
 
       <div class="panel-header">
         <div class="toggle-button">
-          <span class="burger-icon">☰</span>
-          <span class="close-icon">✕</span>
+          <span class="burger-icon"></span>
+          <span class="close-icon"></span>
         </div>
         <div class="panel-title">
           <slot name="title">Panel</slot>
