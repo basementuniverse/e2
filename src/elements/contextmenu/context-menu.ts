@@ -4,6 +4,7 @@
  */
 
 import {
+  ComponentContext,
   ContextMenuHideEvent,
   ContextMenuShowEvent,
   EditorElementProperties,
@@ -201,7 +202,16 @@ export class ContextMenu
     mouseEvent.stopPropagation();
 
     const trigger = mouseEvent.currentTarget as HTMLElement;
-    this.show(mouseEvent.clientX, mouseEvent.clientY, trigger);
+    const componentContext = (mouseEvent as any).componentContext as
+      | ComponentContext
+      | undefined;
+
+    this.show(
+      mouseEvent.clientX,
+      mouseEvent.clientY,
+      trigger,
+      componentContext
+    );
   }
 
   private handleDocumentClick(event: MouseEvent): void {
@@ -320,7 +330,12 @@ export class ContextMenu
     }
   }
 
-  show(x: number, y: number, trigger?: HTMLElement): void {
+  show(
+    x: number,
+    y: number,
+    trigger?: HTMLElement,
+    componentContext?: ComponentContext
+  ): void {
     if (this.disabled) return;
 
     this._visible = true;
@@ -353,16 +368,22 @@ export class ContextMenu
     });
 
     // Dispatch show event
+    const eventDetail: ContextMenuShowEvent['detail'] = {
+      menuId: this.id,
+      menu: this,
+      x,
+      y,
+      trigger: trigger || this,
+    };
+
+    if (componentContext) {
+      eventDetail.componentContext = componentContext;
+    }
+
     dispatchCustomEvent<ContextMenuShowEvent['detail']>(
       this,
       'context-menu-show',
-      {
-        menuId: this.id,
-        menu: this,
-        x,
-        y,
-        trigger: trigger || this,
-      }
+      eventDetail
     );
   }
 

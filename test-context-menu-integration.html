@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Menu Integration Test</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+        }
+        .event-log {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        e2-tree-view {
+            height: 300px;
+            margin: 20px 0;
+        }
+        e2-context-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        e2-context-menu-item:hover {
+            background: #f0f0f0;
+        }
+        e2-context-menu-item:last-child {
+            border-bottom: none;
+        }
+        .clear-log {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .clear-log:hover {
+            background: #005a9e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Context Menu Integration Test</h1>
+        <p>This test demonstrates the TreeView component's integration with the ContextMenu.</p>
+
+        <div class="test-section">
+            <h2>TreeView with Context Menu</h2>
+            <p>Right-click on different parts of the tree to see component context information.</p>
+
+            <e2-tree-view id="test-tree"></e2-tree-view>
+
+            <e2-context-menu target="#test-tree">
+                <e2-context-menu-item value="expand">Expand Item</e2-context-menu-item>
+                <e2-context-menu-item value="collapse">Collapse Item</e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item value="rename">Rename</e2-context-menu-item>
+                <e2-context-menu-item value="delete">Delete</e2-context-menu-item>
+            </e2-context-menu>
+        </div>
+
+        <div class="test-section">
+            <h2>Event Log</h2>
+            <button class="clear-log" onclick="clearLog()">Clear Log</button>
+            <div id="event-log" class="event-log"></div>
+        </div>
+    </div>
+
+    <!-- Load the E2 library -->
+    <script src="build/e2.min.js"></script>
+
+    <script>
+        // Wait for components to be defined
+        async function waitForComponents() {
+            const componentsToWait = [
+                'e2-tree-view',
+                'e2-context-menu',
+                'e2-context-menu-item',
+                'e2-context-menu-separator'
+            ];
+
+            await Promise.all(
+                componentsToWait.map(tag => customElements.whenDefined(tag))
+            );
+        }
+    </script>
+
+    <script>
+        // Initialize the tree view with sample data after components are ready
+        async function initializeTree() {
+            await waitForComponents();
+
+            const treeView = document.getElementById('test-tree');
+
+        const sampleData = [
+            {
+                id: 'root1',
+                label: 'Root Item 1',
+                icon: '📁',
+                expanded: true,
+                children: [
+                    {
+                        id: 'child1-1',
+                        label: 'Child 1.1',
+                        icon: '📄',
+                        data: { type: 'file', size: '1.2 KB' }
+                    },
+                    {
+                        id: 'child1-2',
+                        label: 'Child 1.2',
+                        icon: '📁',
+                        expanded: false,
+                        children: [
+                            {
+                                id: 'grandchild1-2-1',
+                                label: 'Grandchild 1.2.1',
+                                icon: '📄',
+                                data: { type: 'file', size: '856 B' }
+                            },
+                            {
+                                id: 'grandchild1-2-2',
+                                label: 'Grandchild 1.2.2',
+                                icon: '📄',
+                                data: { type: 'file', size: '2.3 KB' }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'root2',
+                label: 'Root Item 2',
+                icon: '📁',
+                expanded: false,
+                children: [
+                    {
+                        id: 'child2-1',
+                        label: 'Child 2.1',
+                        icon: '📄',
+                        data: { type: 'file', size: '4.7 KB' }
+                    }
+                ]
+            },
+            {
+                id: 'root3',
+                label: 'Root Item 3 (no children)',
+                icon: '📄',
+                data: { type: 'file', size: '128 B' }
+            }
+        ];
+
+            treeView.items = sampleData;
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeTree);
+        } else {
+            initializeTree();
+        }
+
+        // Log function
+        function logEvent(message) {
+            const eventLog = document.getElementById('event-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            eventLog.appendChild(logEntry);
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('event-log').innerHTML = '';
+        }
+
+        // Listen for context menu show events
+        document.addEventListener('context-menu-show', (event) => {
+            const detail = event.detail;
+
+            let logMessage = `Context menu shown at (${detail.x}, ${detail.y})`;
+            logMessage += `\\nTrigger: ${detail.trigger.tagName}${detail.trigger.id ? '#' + detail.trigger.id : ''}`;
+
+            if (detail.componentContext) {
+                const ctx = detail.componentContext;
+                logMessage += `\\nComponent Context:`;
+                logMessage += `\\n  - Type: ${ctx.componentType}`;
+                logMessage += `\\n  - Component ID: ${ctx.componentId}`;
+
+                if (ctx.componentType === 'tree-view') {
+                    const treeCtx = ctx;
+                    if (treeCtx.item) {
+                        logMessage += `\\n  - Item: ${treeCtx.item.label} (ID: ${treeCtx.itemId})`;
+                        logMessage += `\\n  - Icon: ${treeCtx.item.icon || 'none'}`;
+                        if (treeCtx.item.data) {
+                            logMessage += `\\n  - Data: ${JSON.stringify(treeCtx.item.data)}`;
+                        }
+                    } else {
+                        logMessage += `\\n  - Item: null (clicked on empty area)`;
+                    }
+                }
+            } else {
+                logMessage += `\\nNo component context available`;
+            }
+
+            logEvent(logMessage);
+        });
+
+        // Listen for context menu hide events
+        document.addEventListener('context-menu-hide', (event) => {
+            logEvent('Context menu hidden');
+        });
+
+        // Listen for context menu item clicks
+        document.addEventListener('context-menu-item-click', (event) => {
+            const detail = event.detail;
+            logEvent(`Context menu item clicked: ${detail.value || detail.itemId}`);
+        });
+
+        // Add some initial log entries
+        logEvent('Test initialized. Right-click on the tree items to test context menu integration.');
+
+        // Debug: Log when components are ready
+        waitForComponents().then(() => {
+            logEvent('All required web components are ready.');
+            logEvent('TreeView element found: ' + (document.getElementById('test-tree') ? 'Yes' : 'No'));
+        });
+    </script>
+</body>
+</html>

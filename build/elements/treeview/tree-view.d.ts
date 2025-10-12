@@ -17,6 +17,7 @@ export declare class TreeView extends HTMLElement implements EditorElementProper
     private setupTheme;
     private handleClick;
     private handleDoubleClick;
+    private handleContextMenu;
     private handleItemClick;
     private toggleExpanded;
     private findItemById;

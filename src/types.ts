@@ -138,6 +138,20 @@ export interface PromptDialogEvent extends DialogEvent {
 // Context Menu types & events
 // -----------------------------------------------------------------------------
 
+// Base interface for component-specific context information
+export interface ComponentContext {
+  componentType: string;
+  componentId: string;
+  component: HTMLElement;
+}
+
+// TreeView-specific context information
+export interface TreeViewContext extends ComponentContext {
+  componentType: 'tree-view';
+  item: TreeViewItem | null;
+  itemId: string | null;
+}
+
 export interface ContextMenuShowEvent extends EditorElementEvent {
   detail: {
     menuId: string;
@@ -145,6 +159,7 @@ export interface ContextMenuShowEvent extends EditorElementEvent {
     x: number;
     y: number;
     trigger: HTMLElement;
+    componentContext?: ComponentContext;
   };
 }
 

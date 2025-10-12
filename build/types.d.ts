@@ -100,6 +100,16 @@ export interface PromptDialogEvent extends DialogEvent {
         value: string | null;
     };
 }
+export interface ComponentContext {
+    componentType: string;
+    componentId: string;
+    component: HTMLElement;
+}
+export interface TreeViewContext extends ComponentContext {
+    componentType: 'tree-view';
+    item: TreeViewItem | null;
+    itemId: string | null;
+}
 export interface ContextMenuShowEvent extends EditorElementEvent {
     detail: {
         menuId: string;
@@ -107,6 +117,7 @@ export interface ContextMenuShowEvent extends EditorElementEvent {
         x: number;
         y: number;
         trigger: HTMLElement;
+        componentContext?: ComponentContext;
     };
 }
 export interface ContextMenuHideEvent extends EditorElementEvent {

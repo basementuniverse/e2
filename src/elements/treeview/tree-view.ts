@@ -7,6 +7,7 @@ import {
   EditorElementProperties,
   Theme,
   TreeViewCollapseEvent,
+  TreeViewContext,
   TreeViewExpandEvent,
   TreeViewItem,
   TreeViewItemClickEvent,
@@ -226,6 +227,10 @@ export class TreeView extends HTMLElement implements EditorElementProperties {
     container.addEventListener('dblclick', e => {
       this.handleDoubleClick(e);
     });
+
+    container.addEventListener('contextmenu', e => {
+      this.handleContextMenu(e);
+    });
   }
 
   private setupTheme(): void {
@@ -277,6 +282,36 @@ export class TreeView extends HTMLElement implements EditorElementProperties {
         }
       }
     }
+  }
+
+  private handleContextMenu(e: Event): void {
+    const mouseEvent = e as MouseEvent;
+    const target = mouseEvent.target as HTMLElement;
+
+    // Find the clicked tree item (if any)
+    const itemContent = target.closest('.tree-item-content') as HTMLElement;
+    let item: TreeViewItem | null = null;
+    let itemId: string | null = null;
+
+    if (itemContent) {
+      const itemElement = itemContent.closest('.tree-item') as HTMLElement;
+      itemId = itemElement?.dataset.itemId || null;
+      if (itemId) {
+        item = this.findItemById(itemId);
+      }
+    }
+
+    // Add component context to the event
+    const componentContext: TreeViewContext = {
+      componentType: 'tree-view',
+      componentId: this.id || generateId(),
+      component: this,
+      item,
+      itemId,
+    };
+
+    // Add the context to the event
+    (mouseEvent as any).componentContext = componentContext;
   }
 
   private handleItemClick(itemId: string, event: MouseEvent): void {

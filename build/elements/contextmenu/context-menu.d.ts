@@ -2,7 +2,7 @@
  * Context Menu Element
  * A popup menu that appears on right-click or programmatic trigger
  */
-import { EditorElementProperties, Theme } from '../../types';
+import { ComponentContext, EditorElementProperties, Theme } from '../../types';
 export declare class ContextMenu extends HTMLElement implements EditorElementProperties {
     private _theme;
     private _visible;
@@ -32,7 +32,7 @@ export declare class ContextMenu extends HTMLElement implements EditorElementPro
     get visible(): boolean;
     get target(): string | null;
     set target(value: string | null);
-    show(x: number, y: number, trigger?: HTMLElement): void;
+    show(x: number, y: number, trigger?: HTMLElement, componentContext?: ComponentContext): void;
     hide(): void;
     private adjustPosition;
     applyTheme(theme: Theme): void;

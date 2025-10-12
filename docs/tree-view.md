@@ -56,6 +56,154 @@ Gets or sets multi-select mode.
 - `expandAll()` - Expand all items
 - `collapseAll()` - Collapse all items
 
+## Context Menu Integration
+
+The TreeView component has built-in integration with the E2 context menu system. When you right-click on the TreeView, it automatically provides information about which tree item was clicked (if any) through the `componentContext` property of the `context-menu-show` event.
+
+### TreeViewContext
+
+When a context menu is triggered from a TreeView, the `context-menu-show` event will include a `componentContext` property with the following structure:
+
+```typescript
+interface TreeViewContext {
+  componentType: 'tree-view';     // Always 'tree-view' for TreeView components
+  componentId: string;            // The ID of the TreeView element
+  component: HTMLElement;         // Reference to the TreeView element
+  item: TreeViewItem | null;      // The clicked tree item, or null if clicked on empty area
+  itemId: string | null;          // The ID of the clicked item, or null if clicked on empty area
+}
+```
+
+### Usage Example
+
+```javascript
+// Set up a context menu for the tree view
+const treeView = document.querySelector('#myTreeView');
+
+// Listen for context menu events
+document.addEventListener('context-menu-show', (event) => {
+  const { componentContext } = event.detail;
+
+  if (componentContext?.componentType === 'tree-view') {
+    const treeContext = componentContext;
+
+    if (treeContext.item) {
+      // Right-clicked on a specific tree item
+      console.log(`Right-clicked on: ${treeContext.item.label}`);
+      console.log('Item data:', treeContext.item.data);
+
+      // You can access all properties of the clicked TreeViewItem
+      const hasChildren = treeContext.item.children && treeContext.item.children.length > 0;
+      const isDisabled = treeContext.item.disabled;
+
+      // Show different context menu options based on the item
+      updateContextMenuForItem(treeContext.item);
+    } else {
+      // Right-clicked on empty area of the tree view
+      console.log('Right-clicked on empty tree area');
+      updateContextMenuForEmptyArea();
+    }
+  }
+});
+
+function updateContextMenuForItem(item) {
+  // Enable/disable menu items based on the clicked tree item
+  const expandItem = document.querySelector('#expand-menu-item');
+  const collapseItem = document.querySelector('#collapse-menu-item');
+
+  const hasChildren = item.children && item.children.length > 0;
+  expandItem.disabled = !hasChildren;
+  collapseItem.disabled = !hasChildren;
+}
+```
+
+### Complete Integration Example
+
+```html
+<!-- TreeView with context menu -->
+<e2-tree-view id="fileTree"></e2-tree-view>
+
+<e2-context-menu target="#fileTree">
+  <e2-context-menu-item id="expand-item" label="Expand" value="expand"></e2-context-menu-item>
+  <e2-context-menu-item id="collapse-item" label="Collapse" value="collapse"></e2-context-menu-item>
+  <e2-context-menu-separator></e2-context-menu-separator>
+  <e2-context-menu-item id="rename-item" label="Rename" value="rename"></e2-context-menu-item>
+  <e2-context-menu-item id="delete-item" label="Delete" value="delete"></e2-context-menu-item>
+  <e2-context-menu-separator></e2-context-menu-separator>
+  <e2-context-menu-item id="new-folder" label="New Folder" value="new-folder"></e2-context-menu-item>
+</e2-context-menu>
+```
+
+```javascript
+const treeView = document.getElementById('fileTree');
+let rightClickedItem = null;
+
+// Update menu items based on context
+document.addEventListener('context-menu-show', (event) => {
+  const { componentContext } = event.detail;
+
+  if (componentContext?.componentType === 'tree-view') {
+    const treeContext = componentContext;
+    rightClickedItem = treeContext.item;
+
+    // Update menu items based on what was clicked
+    const expandItem = document.getElementById('expand-item');
+    const collapseItem = document.getElementById('collapse-item');
+    const renameItem = document.getElementById('rename-item');
+    const deleteItem = document.getElementById('delete-item');
+    const newFolderItem = document.getElementById('new-folder');
+
+    if (rightClickedItem) {
+      // Right-clicked on an item
+      const hasChildren = rightClickedItem.children && rightClickedItem.children.length > 0;
+      expandItem.disabled = !hasChildren;
+      collapseItem.disabled = !hasChildren;
+      renameItem.disabled = false;
+      deleteItem.disabled = false;
+      newFolderItem.disabled = false;
+    } else {
+      // Right-clicked on empty area
+      expandItem.disabled = true;
+      collapseItem.disabled = true;
+      renameItem.disabled = true;
+      deleteItem.disabled = true;
+      newFolderItem.disabled = false;
+    }
+  }
+});
+
+// Handle menu item clicks
+document.addEventListener('context-menu-item-click', (event) => {
+  const { value } = event.detail;
+
+  switch (value) {
+    case 'expand':
+      if (rightClickedItem) {
+        treeView.expandItem(rightClickedItem.id);
+      }
+      break;
+    case 'collapse':
+      if (rightClickedItem) {
+        treeView.collapseItem(rightClickedItem.id);
+      }
+      break;
+    case 'rename':
+      if (rightClickedItem) {
+        renameItem(rightClickedItem);
+      }
+      break;
+    case 'delete':
+      if (rightClickedItem) {
+        deleteItem(rightClickedItem);
+      }
+      break;
+    case 'new-folder':
+      createNewFolder(rightClickedItem); // Pass parent item or null for root
+      break;
+  }
+});
+```
+
 ## Events
 
 ### `tree-expand`

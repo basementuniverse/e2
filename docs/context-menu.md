@@ -65,6 +65,28 @@ menu.show(x, y, triggerElement);
 menu.hide();
 ```
 
+## Integration with E2 Components
+
+The context menu system has built-in integration with other E2 components, providing rich contextual information when right-clicking on specific parts of those components.
+
+### How It Works
+
+When you right-click on a supported E2 component, the component automatically detects what was clicked and enhances the `context-menu-show` event with additional context information. This allows your event handlers to know exactly what was right-clicked, even within the component's shadow DOM.
+
+### Component Context Interface
+
+All component context objects extend the base `ComponentContext` interface:
+
+```typescript
+interface ComponentContext {
+  componentType: string;    // Type of component (e.g., 'tree-view')
+  componentId: string;      // ID of the component instance
+  component: HTMLElement;   // Reference to the component element
+}
+```
+
+Each component type extends this interface with specific properties relevant to that component. See the individual component documentation for details on their specific context properties.
+
 ## Component Reference
 
 ### `<e2-context-menu>`
@@ -104,10 +126,12 @@ applyTheme(theme: Theme): void;
 
 #### Events
 
-| Event               | Detail                            | Description                   |
-| ------------------- | --------------------------------- | ----------------------------- |
-| `context-menu-show` | `{ menuId, menu, x, y, trigger }` | Fired when the menu is shown  |
-| `context-menu-hide` | `{ menuId, menu }`                | Fired when the menu is hidden |
+| Event               | Detail                                              | Description                   |
+| ------------------- | --------------------------------------------------- | ----------------------------- |
+| `context-menu-show` | `{ menuId, menu, x, y, trigger, componentContext? }` | Fired when the menu is shown  |
+| `context-menu-hide` | `{ menuId, menu }`                                  | Fired when the menu is hidden |
+
+The `context-menu-show` event includes an optional `componentContext` property when the menu is triggered from a supported E2 component. See the "Integration with E2 Components" section above for details.
 
 ### `<e2-context-menu-item>`
 
