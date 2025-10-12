@@ -95,6 +95,7 @@ export class ToolbarMenu
 
         .label {
           white-space: nowrap;
+          margin-left: 4px;
         }
 
         .dropdown-arrow {
