@@ -152,6 +152,22 @@ export interface TreeViewContext extends ComponentContext {
   itemId: string | null;
 }
 
+// ListView-specific context information
+export interface ListViewContext extends ComponentContext {
+  componentType: 'list-view';
+  item: ListViewItem | null;
+  itemId: string | null;
+}
+
+// KeyValueEditor-specific context information
+export interface KeyValueEditorContext extends ComponentContext {
+  componentType: 'keyvalue-editor';
+  key: string | null; // The key that was right-clicked
+  value: any; // The current value for that key
+  path: string[]; // Path for nested objects (e.g., ['parent', 'child'])
+  fieldType: string | null; // The type of field (string, number, boolean, etc.)
+}
+
 export interface ContextMenuShowEvent extends EditorElementEvent {
   detail: {
     menuId: string;

@@ -73,13 +73,77 @@ The context menu system has built-in integration with other E2 components, provi
 
 When you right-click on a supported E2 component, the component automatically detects what was clicked and enhances the `context-menu-show` event with additional context information. This allows your event handlers to know exactly what was right-clicked, even within the component's shadow DOM.
 
+### Supported Components
+
+Currently, the following E2 components provide enhanced context information:
+
+- **TreeView** (`<e2-tree-view>`) - Provides information about which tree item was right-clicked
+- **ListView** (`<e2-list-view>`) - Provides information about which list item was right-clicked
+- **KeyValueEditor** (`<e2-keyvalue-editor>`) - Provides information about which field was right-clicked
+
+### Using Component Context
+
+```javascript
+document.addEventListener('context-menu-show', (event) => {
+  const { componentContext } = event.detail;
+
+  if (componentContext) {
+    console.log(`Right-clicked on: ${componentContext.componentType}`);
+    console.log(`Component ID: ${componentContext.componentId}`);
+
+    // Handle different component types
+    switch (componentContext.componentType) {
+      case 'tree-view':
+        handleTreeViewContext(componentContext);
+        break;
+      case 'list-view':
+        handleListViewContext(componentContext);
+        break;
+      case 'keyvalue-editor':
+        handleKeyValueEditorContext(componentContext);
+        break;
+    }
+  } else {
+    console.log('Right-clicked on regular element');
+  }
+});
+
+function handleTreeViewContext(treeContext) {
+  if (treeContext.item) {
+    console.log(`Tree item: ${treeContext.item.label}`);
+    console.log('Item data:', treeContext.item.data);
+  } else {
+    console.log('Clicked on empty tree area');
+  }
+}
+
+function handleListViewContext(listContext) {
+  if (listContext.item) {
+    console.log(`List item: ${listContext.item.label}`);
+    console.log('Item data:', listContext.item.data);
+  } else {
+    console.log('Clicked on empty list area');
+  }
+}
+
+function handleKeyValueEditorContext(kvContext) {
+  if (kvContext.key) {
+    console.log(`Field: ${kvContext.key} = ${JSON.stringify(kvContext.value)}`);
+    console.log(`Field type: ${kvContext.fieldType}`);
+    console.log(`Field path: [${kvContext.path.join(', ')}]`);
+  } else {
+    console.log('Clicked on empty editor area');
+  }
+}
+```
+
 ### Component Context Interface
 
 All component context objects extend the base `ComponentContext` interface:
 
 ```typescript
 interface ComponentContext {
-  componentType: string;    // Type of component (e.g., 'tree-view')
+  componentType: string;    // Type of component (e.g., 'tree-view', 'list-view')
   componentId: string;      // ID of the component instance
   component: HTMLElement;   // Reference to the component element
 }

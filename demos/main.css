@@ -58,6 +58,11 @@ header p {
   margin: 10px 0;
 }
 
+.main-menu ul ul li {
+  margin-left: 20px;
+  font-size: 0.9em;
+}
+
 .main-menu ul a {
   text-decoration: none;
   color: #007bff;

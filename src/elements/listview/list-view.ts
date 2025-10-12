@@ -7,6 +7,7 @@
 import {
   EditorElementProperties,
   ListViewColumn,
+  ListViewContext,
   ListViewItem,
   ListViewItemClickEvent,
   ListViewItemDoubleClickEvent,
@@ -299,6 +300,7 @@ export class ListView extends HTMLElement implements EditorElementProperties {
 
     items.addEventListener('click', this.handleItemClick.bind(this));
     items.addEventListener('dblclick', this.handleItemDoubleClick.bind(this));
+    items.addEventListener('contextmenu', this.handleContextMenu.bind(this));
   }
 
   private handleItemClick(event: Event): void {
@@ -362,6 +364,35 @@ export class ListView extends HTMLElement implements EditorElementProperties {
         itemId,
       }
     );
+  }
+
+  private handleContextMenu(event: Event): void {
+    const mouseEvent = event as MouseEvent;
+    const target = mouseEvent.target as HTMLElement;
+
+    // Find the clicked list item (if any)
+    const itemElement = target.closest('.listview-item') as HTMLElement;
+    let item: ListViewItem | null = null;
+    let itemId: string | null = null;
+
+    if (itemElement && !itemElement.classList.contains('disabled')) {
+      itemId = itemElement.dataset.itemId || null;
+      if (itemId) {
+        item = this._items.find(i => i.id === itemId) || null;
+      }
+    }
+
+    // Add component context to the event
+    const componentContext: ListViewContext = {
+      componentType: 'list-view',
+      componentId: this.id || generateId(),
+      component: this,
+      item,
+      itemId,
+    };
+
+    // Add the context to the event
+    (mouseEvent as any).componentContext = componentContext;
   }
 
   private handleItemSelection(

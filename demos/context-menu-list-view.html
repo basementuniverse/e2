@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListView Context Menu Integration Test</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+        }
+        .event-log {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .view-controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .view-controls button {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .view-controls button.active {
+            background: #0078d4;
+            color: white;
+            border-color: #0078d4;
+        }
+        .view-controls button:hover:not(.active) {
+            background: #f0f0f0;
+        }
+        e2-list-view {
+            height: 300px;
+            margin: 20px 0;
+        }
+        e2-context-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        e2-context-menu-item:hover {
+            background: #f0f0f0;
+        }
+        e2-context-menu-item:last-child {
+            border-bottom: none;
+        }
+        .clear-log {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .clear-log:hover {
+            background: #005a9e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ListView Context Menu Integration Test</h1>
+        <p>This test demonstrates the ListView component's integration with the ContextMenu.</p>
+
+        <div class="test-section">
+            <h2>ListView with Context Menu</h2>
+            <p>Right-click on different parts of the list to see component context information.</p>
+
+            <div class="view-controls">
+                <label>View Mode:</label>
+                <button id="list-mode" class="active" data-mode="list">List</button>
+                <button id="details-mode" data-mode="details">Details</button>
+                <button id="icons-mode" data-mode="icons">Icons</button>
+                <label style="margin-left: 20px;">
+                    <input type="checkbox" id="multi-select"> Multi-select
+                </label>
+            </div>
+
+            <e2-list-view id="test-listview"></e2-list-view>
+
+            <e2-context-menu target="#test-listview">
+                <e2-context-menu-item value="open">Open</e2-context-menu-item>
+                <e2-context-menu-item value="edit">Edit</e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item value="copy">Copy</e2-context-menu-item>
+                <e2-context-menu-item value="cut">Cut</e2-context-menu-item>
+                <e2-context-menu-item value="paste">Paste</e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item value="rename">Rename</e2-context-menu-item>
+                <e2-context-menu-item value="delete">Delete</e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item value="properties">Properties</e2-context-menu-item>
+            </e2-context-menu>
+        </div>
+
+        <div class="test-section">
+            <h2>Event Log</h2>
+            <button class="clear-log" onclick="clearLog()">Clear Log</button>
+            <div id="event-log" class="event-log"></div>
+        </div>
+    </div>
+
+    <!-- Load the E2 library -->
+    <script src="build/e2.min.js"></script>
+
+    <script>
+        // Wait for components to be defined
+        async function waitForComponents() {
+            const componentsToWait = [
+                'e2-list-view',
+                'e2-context-menu',
+                'e2-context-menu-item',
+                'e2-context-menu-separator'
+            ];
+
+            await Promise.all(
+                componentsToWait.map(tag => customElements.whenDefined(tag))
+            );
+        }
+    </script>
+
+    <script>
+        // Initialize the list view with sample data after components are ready
+        async function initializeListView() {
+            await waitForComponents();
+
+            const listView = document.getElementById('test-listview');
+
+            const sampleData = [
+                {
+                    id: 'file1',
+                    label: 'Document.pdf',
+                    icon: '📄',
+                    data: {
+                        type: 'PDF Document',
+                        size: '2.3 MB',
+                        modified: '2024-10-12',
+                        status: 'Ready'
+                    }
+                },
+                {
+                    id: 'file2',
+                    label: 'Presentation.pptx',
+                    icon: '📊',
+                    data: {
+                        type: 'PowerPoint Presentation',
+                        size: '5.7 MB',
+                        modified: '2024-10-11',
+                        status: 'In Progress'
+                    }
+                },
+                {
+                    id: 'file3',
+                    label: 'Spreadsheet.xlsx',
+                    icon: '📈',
+                    data: {
+                        type: 'Excel Spreadsheet',
+                        size: '1.2 MB',
+                        modified: '2024-10-10',
+                        status: 'Complete'
+                    }
+                },
+                {
+                    id: 'file4',
+                    label: 'Image.jpg',
+                    icon: '🖼️',
+                    data: {
+                        type: 'JPEG Image',
+                        size: '856 KB',
+                        modified: '2024-10-09',
+                        status: 'Ready'
+                    }
+                },
+                {
+                    id: 'file5',
+                    label: 'Archive.zip',
+                    icon: '📦',
+                    data: {
+                        type: 'ZIP Archive',
+                        size: '12.4 MB',
+                        modified: '2024-10-08',
+                        status: 'Archived'
+                    }
+                },
+                {
+                    id: 'file6',
+                    label: 'Video.mp4',
+                    icon: '🎥',
+                    data: {
+                        type: 'MP4 Video',
+                        size: '45.2 MB',
+                        modified: '2024-10-07',
+                        status: 'Processing'
+                    }
+                }
+            ];
+
+            const columns = [
+                { id: 'label', label: 'Name', width: '200px' },
+                { id: 'type', label: 'Type', width: '150px' },
+                { id: 'size', label: 'Size', width: '100px' },
+                { id: 'modified', label: 'Modified', width: '120px' },
+                { id: 'status', label: 'Status', width: '100px' }
+            ];
+
+            listView.items = sampleData;
+            listView.columns = columns;
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeListView);
+        } else {
+            initializeListView();
+        }
+
+        // View mode controls
+        document.addEventListener('DOMContentLoaded', () => {
+            const listView = document.getElementById('test-listview');
+            const buttons = document.querySelectorAll('[data-mode]');
+            const multiSelectCheckbox = document.getElementById('multi-select');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    button.classList.add('active');
+                    listView.viewMode = button.dataset.mode;
+                });
+            });
+
+            multiSelectCheckbox.addEventListener('change', (e) => {
+                listView.multiSelect = e.target.checked;
+            });
+        });
+
+        // Log function
+        function logEvent(message) {
+            const eventLog = document.getElementById('event-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            eventLog.appendChild(logEntry);
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('event-log').innerHTML = '';
+        }
+
+        // Listen for context menu show events
+        document.addEventListener('context-menu-show', (event) => {
+            const detail = event.detail;
+
+            let logMessage = `Context menu shown at (${detail.x}, ${detail.y})`;
+            logMessage += `\\nTrigger: ${detail.trigger.tagName}${detail.trigger.id ? '#' + detail.trigger.id : ''}`;
+
+            if (detail.componentContext) {
+                const ctx = detail.componentContext;
+                logMessage += `\\nComponent Context:`;
+                logMessage += `\\n  - Type: ${ctx.componentType}`;
+                logMessage += `\\n  - Component ID: ${ctx.componentId}`;
+
+                if (ctx.componentType === 'list-view') {
+                    const listCtx = ctx;
+                    if (listCtx.item) {
+                        logMessage += `\\n  - Item: ${listCtx.item.label} (ID: ${listCtx.itemId})`;
+                        logMessage += `\\n  - Icon: ${listCtx.item.icon || 'none'}`;
+                        if (listCtx.item.data) {
+                            logMessage += `\\n  - Type: ${listCtx.item.data.type}`;
+                            logMessage += `\\n  - Size: ${listCtx.item.data.size}`;
+                            logMessage += `\\n  - Status: ${listCtx.item.data.status}`;
+                        }
+                    } else {
+                        logMessage += `\\n  - Item: null (clicked on empty area)`;
+                    }
+                }
+            } else {
+                logMessage += `\\nNo component context available`;
+            }
+
+            logEvent(logMessage);
+        });
+
+        // Listen for context menu hide events
+        document.addEventListener('context-menu-hide', (event) => {
+            logEvent('Context menu hidden');
+        });
+
+        // Listen for context menu item clicks
+        document.addEventListener('context-menu-item-click', (event) => {
+            const detail = event.detail;
+            logEvent(`Context menu item clicked: ${detail.value || detail.itemId}`);
+        });
+
+        // Listen for list view events
+        document.addEventListener('listview-item-click', (event) => {
+            const detail = event.detail;
+            logEvent(`ListView item clicked: ${detail.item.label}`);
+        });
+
+        document.addEventListener('listview-item-double-click', (event) => {
+            const detail = event.detail;
+            logEvent(`ListView item double-clicked: ${detail.item.label}`);
+        });
+
+        document.addEventListener('listview-selection-change', (event) => {
+            const detail = event.detail;
+            logEvent(`ListView selection changed: ${detail.selectedItems.length} items selected`);
+        });
+
+        // Add some initial log entries
+        logEvent('ListView context menu integration test initialized.');
+        logEvent('Try right-clicking on different list items and view modes!');
+
+        // Debug: Log when components are ready
+        waitForComponents().then(() => {
+            logEvent('All required web components are ready.');
+            logEvent('ListView element found: ' + (document.getElementById('test-listview') ? 'Yes' : 'No'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyValueEditor Context Menu Integration Test</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+        }
+        .event-log {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            height: 250px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .controls button {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .controls button:hover {
+            background: #f0f0f0;
+        }
+        .controls label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        e2-keyvalue-editor {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        e2-context-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        e2-context-menu-item:hover {
+            background: #f0f0f0;
+        }
+        e2-context-menu-item:last-child {
+            border-bottom: none;
+        }
+        .clear-log {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .clear-log:hover {
+            background: #005a9e;
+        }
+        .sample-data {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KeyValueEditor Context Menu Integration Test</h1>
+        <p>This test demonstrates the KeyValueEditor component's integration with the ContextMenu.</p>
+
+        <div class="test-section">
+            <h2>KeyValueEditor with Context Menu</h2>
+            <p>Right-click on different fields in the editor to see field-specific context information.</p>
+
+            <div class="controls">
+                <label>
+                    <input type="checkbox" id="readonly"> Read-only
+                </label>
+                <label>
+                    <input type="checkbox" id="compact"> Compact
+                </label>
+                <button id="reset-values">Reset Values</button>
+                <button id="add-field">Add Field</button>
+            </div>
+
+            <e2-keyvalue-editor id="test-editor" header-title="Configuration Editor"></e2-keyvalue-editor>
+
+            <div class="sample-data" id="current-data"></div>
+
+            <e2-context-menu target="#test-editor">
+                <e2-context-menu-item value="edit">Edit Field</e2-context-menu-item>
+                <e2-context-menu-item value="copy-key">Copy Key</e2-context-menu-item>
+                <e2-context-menu-item value="copy-value">Copy Value</e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item value="reset-field">Reset to Default</e2-context-menu-item>
+                <e2-context-menu-item value="delete-field">Delete Field</e2-context-menu-item>
+                <e2-context-menu-separator></e2-context-menu-separator>
+                <e2-context-menu-item value="add-field">Add New Field</e2-context-menu-item>
+                <e2-context-menu-item value="properties">Field Properties</e2-context-menu-item>
+            </e2-context-menu>
+        </div>
+
+        <div class="test-section">
+            <h2>Event Log</h2>
+            <button class="clear-log" onclick="clearLog()">Clear Log</button>
+            <div id="event-log" class="event-log"></div>
+        </div>
+    </div>
+
+    <!-- Load the E2 library -->
+    <script src="build/e2.min.js"></script>
+
+    <script>
+        // Wait for components to be defined
+        async function waitForComponents() {
+            const componentsToWait = [
+                'e2-keyvalue-editor',
+                'e2-context-menu',
+                'e2-context-menu-item',
+                'e2-context-menu-separator'
+            ];
+
+            await Promise.all(
+                componentsToWait.map(tag => customElements.whenDefined(tag))
+            );
+        }
+    </script>
+
+    <script>
+        let rightClickedField = null;
+
+        // Initialize the keyvalue editor with sample data after components are ready
+        async function initializeEditor() {
+            await waitForComponents();
+
+            const editor = document.getElementById('test-editor');
+
+            // Sample configuration data
+            const sampleData = {
+                appName: 'My Game Editor',
+                version: '1.0.0',
+                debug: true,
+                maxPlayers: 4,
+                difficulty: 'normal',
+                graphics: {
+                    resolution: '1920x1080',
+                    fullscreen: false,
+                    vsync: true
+                },
+                audio: {
+                    masterVolume: 0.8,
+                    musicVolume: 0.6,
+                    sfxVolume: 0.7
+                }
+            };
+
+            // Sample schema for validation and UI hints
+            const sampleSchema = {
+                type: 'object',
+                properties: {
+                    appName: {
+                        type: 'string',
+                        title: 'Application Name',
+                        description: 'The display name of your application'
+                    },
+                    version: {
+                        type: 'string',
+                        title: 'Version',
+                        description: 'Semantic version number',
+                        pattern: '^\\d+\\.\\d+\\.\\d+$'
+                    },
+                    debug: {
+                        type: 'boolean',
+                        title: 'Debug Mode',
+                        description: 'Enable debug logging and development tools'
+                    },
+                    maxPlayers: {
+                        type: 'integer',
+                        title: 'Max Players',
+                        description: 'Maximum number of concurrent players',
+                        minimum: 1,
+                        maximum: 100
+                    },
+                    difficulty: {
+                        type: 'string',
+                        title: 'Difficulty Level',
+                        description: 'Default game difficulty',
+                        enum: ['easy', 'normal', 'hard', 'expert']
+                    }
+                },
+                required: ['appName', 'version']
+            };
+
+            editor.value = sampleData;
+            editor.schema = sampleSchema;
+
+            // Update data display
+            updateDataDisplay();
+        }
+
+        function updateDataDisplay() {
+            const editor = document.getElementById('test-editor');
+            const dataDisplay = document.getElementById('current-data');
+            dataDisplay.textContent = JSON.stringify(editor.value, null, 2);
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeEditor);
+        } else {
+            initializeEditor();
+        }
+
+        // Controls
+        document.addEventListener('DOMContentLoaded', () => {
+            const editor = document.getElementById('test-editor');
+            const readonlyCheckbox = document.getElementById('readonly');
+            const compactCheckbox = document.getElementById('compact');
+            const resetButton = document.getElementById('reset-values');
+            const addFieldButton = document.getElementById('add-field');
+
+            readonlyCheckbox.addEventListener('change', (e) => {
+                editor.readonly = e.target.checked;
+            });
+
+            compactCheckbox.addEventListener('change', (e) => {
+                editor.compact = e.target.checked;
+            });
+
+            resetButton.addEventListener('click', () => {
+                initializeEditor();
+                logEvent('Values reset to defaults');
+            });
+
+            addFieldButton.addEventListener('click', () => {
+                const newKey = prompt('Enter new field name:');
+                if (newKey && !editor.value[newKey]) {
+                    editor.value[newKey] = '';
+                    updateDataDisplay();
+                    logEvent(`Added new field: ${newKey}`);
+                }
+            });
+        });
+
+        // Log function
+        function logEvent(message) {
+            const eventLog = document.getElementById('event-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            eventLog.appendChild(logEntry);
+            eventLog.scrollTop = eventLog.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('event-log').innerHTML = '';
+        }
+
+        // Listen for context menu show events
+        document.addEventListener('context-menu-show', (event) => {
+            const detail = event.detail;
+
+            let logMessage = `Context menu shown at (${detail.x}, ${detail.y})`;
+            logMessage += `\\nTrigger: ${detail.trigger.tagName}${detail.trigger.id ? '#' + detail.trigger.id : ''}`;
+
+            if (detail.componentContext) {
+                const ctx = detail.componentContext;
+                logMessage += `\\nComponent Context:`;
+                logMessage += `\\n  - Type: ${ctx.componentType}`;
+                logMessage += `\\n  - Component ID: ${ctx.componentId}`;
+
+                if (ctx.componentType === 'keyvalue-editor') {
+                    const kvCtx = ctx;
+                    rightClickedField = kvCtx; // Store for menu actions
+
+                    if (kvCtx.key) {
+                        logMessage += `\\n  - Field: ${kvCtx.key}`;
+                        logMessage += `\\n  - Value: ${JSON.stringify(kvCtx.value)}`;
+                        logMessage += `\\n  - Type: ${kvCtx.fieldType}`;
+                        logMessage += `\\n  - Path: [${kvCtx.path.join(', ')}]`;
+                    } else {
+                        logMessage += `\\n  - Field: null (clicked on empty area)`;
+                    }
+                }
+            } else {
+                logMessage += `\\nNo component context available`;
+            }
+
+            logEvent(logMessage);
+        });
+
+        // Listen for context menu hide events
+        document.addEventListener('context-menu-hide', (event) => {
+            logEvent('Context menu hidden');
+            rightClickedField = null;
+        });
+
+        // Listen for context menu item clicks
+        document.addEventListener('context-menu-item-click', (event) => {
+            const detail = event.detail;
+            const editor = document.getElementById('test-editor');
+
+            let actionMessage = `Context menu action: ${detail.value}`;
+
+            if (rightClickedField && rightClickedField.key) {
+                const field = rightClickedField;
+
+                switch (detail.value) {
+                    case 'edit':
+                        actionMessage += ` for field '${field.key}'`;
+                        // Focus the field (would need more complex implementation)
+                        break;
+                    case 'copy-key':
+                        navigator.clipboard.writeText(field.key);
+                        actionMessage += ` - copied key: ${field.key}`;
+                        break;
+                    case 'copy-value':
+                        navigator.clipboard.writeText(JSON.stringify(field.value));
+                        actionMessage += ` - copied value: ${JSON.stringify(field.value)}`;
+                        break;
+                    case 'reset-field':
+                        // Reset to default value (would need schema support)
+                        actionMessage += ` - reset field '${field.key}'`;
+                        break;
+                    case 'delete-field':
+                        delete editor.value[field.key];
+                        updateDataDisplay();
+                        actionMessage += ` - deleted field '${field.key}'`;
+                        break;
+                    case 'properties':
+                        actionMessage += ` - show properties for '${field.key}' (${field.fieldType})`;
+                        break;
+                    default:
+                        actionMessage += ` for field '${field.key}'`;
+                }
+            } else {
+                switch (detail.value) {
+                    case 'add-field':
+                        const newKey = prompt('Enter new field name:');
+                        if (newKey && !editor.value[newKey]) {
+                            editor.value[newKey] = '';
+                            updateDataDisplay();
+                            actionMessage += ` - added field: ${newKey}`;
+                        }
+                        break;
+                    default:
+                        actionMessage += ' (no field context)';
+                }
+            }
+
+            logEvent(actionMessage);
+        });
+
+        // Listen for keyvalue editor events
+        document.addEventListener('kv-change', (event) => {
+            const detail = event.detail;
+            logEvent(`Field changed: ${detail.key} = ${JSON.stringify(detail.newValue)}`);
+            updateDataDisplay();
+        });
+
+        document.addEventListener('kv-validation', (event) => {
+            const detail = event.detail;
+            logEvent(`Validation: ${detail.isValid ? 'PASSED' : 'FAILED'} (${detail.errors.length} errors)`);
+        });
+
+        // Add some initial log entries
+        logEvent('KeyValueEditor context menu integration test initialized.');
+        logEvent('Try right-clicking on different fields in the editor!');
+
+        // Debug: Log when components are ready
+        waitForComponents().then(() => {
+            logEvent('All required web components are ready.');
+            logEvent('KeyValueEditor element found: ' + (document.getElementById('test-editor') ? 'Yes' : 'No'));
+        });
+    </script>
+</body>
+</html>

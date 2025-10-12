@@ -110,6 +110,18 @@ export interface TreeViewContext extends ComponentContext {
     item: TreeViewItem | null;
     itemId: string | null;
 }
+export interface ListViewContext extends ComponentContext {
+    componentType: 'list-view';
+    item: ListViewItem | null;
+    itemId: string | null;
+}
+export interface KeyValueEditorContext extends ComponentContext {
+    componentType: 'keyvalue-editor';
+    key: string | null;
+    value: any;
+    path: string[];
+    fieldType: string | null;
+}
 export interface ContextMenuShowEvent extends EditorElementEvent {
     detail: {
         menuId: string;

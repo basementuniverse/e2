@@ -7,6 +7,7 @@
 import { Validator } from 'jsonschema';
 import {
   EditorElementProperties,
+  KeyValueEditorContext,
   KeyValueSchema,
   KeyValueValidationError,
   KeyValueValidationResult,
@@ -348,12 +349,78 @@ export class KeyValueEditorElement
     });
   }
 
+  private setupEventListeners(): void {
+    const content = this.shadowRoot?.querySelector('.keyvalue-content');
+    if (!content) return;
+
+    content.addEventListener('contextmenu', this.handleContextMenu.bind(this));
+  }
+
+  private handleContextMenu(event: Event): void {
+    const mouseEvent = event as MouseEvent;
+    const target = mouseEvent.target as HTMLElement;
+
+    // Find the field row that was right-clicked
+    const fieldRow = target.closest('.field-row') as HTMLElement;
+    let key: string | null = null;
+    let value: any = null;
+    let path: string[] = [];
+    let fieldType: string | null = null;
+
+    if (fieldRow) {
+      // Extract the key from the input element or label
+      const input = fieldRow.querySelector(
+        'input, select, textarea'
+      ) as HTMLInputElement;
+      const label = fieldRow.querySelector('.field-label') as HTMLElement;
+
+      if (input && input.id.startsWith('field-')) {
+        // Extract key from input ID (format: field-keyname)
+        key = input.id.replace('field-', '');
+
+        // Get the current value
+        value = this._value[key];
+
+        // Determine field type
+        fieldType = input.type || input.tagName.toLowerCase();
+
+        // For now, we'll use a simple path (just the key)
+        // In the future, this could be enhanced to support nested paths
+        path = [key];
+      } else if (label) {
+        // Try to extract key from label's for attribute
+        const forAttr = label.getAttribute('for');
+        if (forAttr && forAttr.startsWith('field-')) {
+          key = forAttr.replace('field-', '');
+          value = this._value[key];
+          fieldType = 'unknown';
+          path = [key];
+        }
+      }
+    }
+
+    // Add component context to the event
+    const componentContext: KeyValueEditorContext = {
+      componentType: 'keyvalue-editor',
+      componentId: this.id || generateId(),
+      component: this,
+      key,
+      value,
+      path,
+      fieldType,
+    };
+
+    // Add the context to the event
+    (mouseEvent as any).componentContext = componentContext;
+  }
+
   connectedCallback(): void {
     if (!this.id) {
       this.id = generateId('keyvalue-editor');
     }
 
     this.setupValueProxy();
+    this.setupEventListeners();
     this.render();
 
     // Set up theme inheritance if no explicit theme is set

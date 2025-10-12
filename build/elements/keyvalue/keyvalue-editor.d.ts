@@ -19,6 +19,8 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     constructor();
     private setupElement;
     private setupValueProxy;
+    private setupEventListeners;
+    private handleContextMenu;
     connectedCallback(): void;
     disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;

@@ -171,6 +171,181 @@ listView.refresh();
 listView.scrollToItem('item-5');
 ```
 
+## Context Menu Integration
+
+The ListView component has built-in integration with the E2 context menu system. When you right-click on the ListView, it automatically provides information about which list item was clicked (if any) through the `componentContext` property of the `context-menu-show` event.
+
+### ListViewContext
+
+When a context menu is triggered from a ListView, the `context-menu-show` event will include a `componentContext` property with the following structure:
+
+```typescript
+interface ListViewContext {
+  componentType: 'list-view';         // Always 'list-view' for ListView components
+  componentId: string;                // The ID of the ListView element
+  component: HTMLElement;             // Reference to the ListView element
+  item: ListViewItem | null;          // The clicked list item, or null if clicked on empty area
+  itemId: string | null;              // The ID of the clicked item, or null if clicked on empty area
+}
+```
+
+### Usage Example
+
+```javascript
+// Set up a context menu for the list view
+const listView = document.querySelector('#myListView');
+
+// Listen for context menu events
+document.addEventListener('context-menu-show', (event) => {
+  const { componentContext } = event.detail;
+
+  if (componentContext?.componentType === 'list-view') {
+    const listContext = componentContext;
+
+    if (listContext.item) {
+      // Right-clicked on a specific list item
+      console.log(`Right-clicked on: ${listContext.item.label}`);
+      console.log('Item data:', listContext.item.data);
+
+      // You can access all properties of the clicked ListViewItem
+      const hasIcon = listContext.item.icon;
+      const isDisabled = listContext.item.disabled;
+
+      // Show different context menu options based on the item
+      updateContextMenuForItem(listContext.item);
+    } else {
+      // Right-clicked on empty area of the list view
+      console.log('Right-clicked on empty list area');
+      updateContextMenuForEmptyArea();
+    }
+  }
+});
+
+function updateContextMenuForItem(item) {
+  // Enable/disable menu items based on the clicked list item
+  const openItem = document.querySelector('#open-menu-item');
+  const editItem = document.querySelector('#edit-menu-item');
+  const deleteItem = document.querySelector('#delete-menu-item');
+
+  openItem.disabled = false;
+  editItem.disabled = item.disabled;
+  deleteItem.disabled = item.disabled;
+}
+```
+
+### Complete Integration Example
+
+```html
+<!-- ListView with context menu -->
+<e2-list-view id="fileList" view-mode="details" multi-select></e2-list-view>
+
+<e2-context-menu target="#fileList">
+  <e2-context-menu-item id="open-item" label="Open" value="open"></e2-context-menu-item>
+  <e2-context-menu-item id="edit-item" label="Edit" value="edit"></e2-context-menu-item>
+  <e2-context-menu-separator></e2-context-menu-separator>
+  <e2-context-menu-item id="copy-item" label="Copy" value="copy"></e2-context-menu-item>
+  <e2-context-menu-item id="cut-item" label="Cut" value="cut"></e2-context-menu-item>
+  <e2-context-menu-item id="paste-item" label="Paste" value="paste"></e2-context-menu-item>
+  <e2-context-menu-separator></e2-context-menu-separator>
+  <e2-context-menu-item id="rename-item" label="Rename" value="rename"></e2-context-menu-item>
+  <e2-context-menu-item id="delete-item" label="Delete" value="delete"></e2-context-menu-item>
+  <e2-context-menu-separator></e2-context-menu-separator>
+  <e2-context-menu-item id="properties-item" label="Properties" value="properties"></e2-context-menu-item>
+</e2-context-menu>
+```
+
+```javascript
+const listView = document.getElementById('fileList');
+let rightClickedItem = null;
+
+// Sample data
+listView.items = [
+  { id: 'doc1', label: 'Document.pdf', icon: '📄', data: { type: 'PDF', size: '2.3 MB' } },
+  { id: 'img1', label: 'Photo.jpg', icon: '🖼️', data: { type: 'Image', size: '1.2 MB' } },
+  { id: 'vid1', label: 'Video.mp4', icon: '🎥', data: { type: 'Video', size: '45 MB' } }
+];
+
+// Columns for details view
+listView.columns = [
+  { id: 'label', label: 'Name', width: '40%' },
+  { id: 'type', label: 'Type', width: '30%' },
+  { id: 'size', label: 'Size', width: '30%' }
+];
+
+// Update menu items based on context
+document.addEventListener('context-menu-show', (event) => {
+  const { componentContext } = event.detail;
+
+  if (componentContext?.componentType === 'list-view') {
+    const listContext = componentContext;
+    rightClickedItem = listContext.item;
+
+    // Update menu items based on what was clicked
+    const openItem = document.getElementById('open-item');
+    const editItem = document.getElementById('edit-item');
+    const copyItem = document.getElementById('copy-item');
+    const cutItem = document.getElementById('cut-item');
+    const renameItem = document.getElementById('rename-item');
+    const deleteItem = document.getElementById('delete-item');
+    const propertiesItem = document.getElementById('properties-item');
+
+    if (rightClickedItem) {
+      // Right-clicked on an item
+      openItem.disabled = false;
+      editItem.disabled = rightClickedItem.disabled;
+      copyItem.disabled = false;
+      cutItem.disabled = rightClickedItem.disabled;
+      renameItem.disabled = rightClickedItem.disabled;
+      deleteItem.disabled = rightClickedItem.disabled;
+      propertiesItem.disabled = false;
+    } else {
+      // Right-clicked on empty area
+      openItem.disabled = true;
+      editItem.disabled = true;
+      copyItem.disabled = true;
+      cutItem.disabled = true;
+      renameItem.disabled = true;
+      deleteItem.disabled = true;
+      propertiesItem.disabled = true;
+    }
+  }
+});
+
+// Handle menu item clicks
+document.addEventListener('context-menu-item-click', (event) => {
+  const { value } = event.detail;
+
+  switch (value) {
+    case 'open':
+      if (rightClickedItem) {
+        console.log(`Opening: ${rightClickedItem.label}`);
+      }
+      break;
+    case 'edit':
+      if (rightClickedItem) {
+        console.log(`Editing: ${rightClickedItem.label}`);
+      }
+      break;
+    case 'copy':
+      if (rightClickedItem) {
+        console.log(`Copying: ${rightClickedItem.label}`);
+      }
+      break;
+    case 'delete':
+      if (rightClickedItem) {
+        console.log(`Deleting: ${rightClickedItem.label}`);
+        listView.removeItem(rightClickedItem.id);
+      }
+      break;
+    case 'properties':
+      if (rightClickedItem) {
+        console.log(`Properties for: ${rightClickedItem.label}`, rightClickedItem.data);
+      }
+      break;
+  }
+});
+```
+
 ## Events
 
 ### Selection Events

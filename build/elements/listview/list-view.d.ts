@@ -19,6 +19,7 @@ export declare class ListView extends HTMLElement implements EditorElementProper
     private setupEventHandlers;
     private handleItemClick;
     private handleItemDoubleClick;
+    private handleContextMenu;
     private handleItemSelection;
     private dispatchSelectionChange;
     private render;

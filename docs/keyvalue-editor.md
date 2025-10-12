@@ -19,6 +19,178 @@ A flexible form component that automatically generates appropriate input control
 | `readonly` | boolean                       | `false`  | Makes all inputs read-only while maintaining styling  |
 | `compact`  | boolean                       | `false`  | Uses tighter spacing for more compact display        |
 
+## Context Menu Integration
+
+The KeyValueEditor component has built-in integration with the E2 context menu system. When you right-click on the KeyValueEditor, it automatically provides information about which field was clicked through the `componentContext` property of the `context-menu-show` event.
+
+### KeyValueEditorContext
+
+When a context menu is triggered from a KeyValueEditor, the `context-menu-show` event will include a `componentContext` property with the following structure:
+
+```typescript
+interface KeyValueEditorContext {
+  componentType: 'keyvalue-editor';  // Always 'keyvalue-editor'
+  componentId: string;               // The ID of the KeyValueEditor element
+  component: HTMLElement;            // Reference to the KeyValueEditor element
+  key: string | null;                // The field name that was right-clicked, or null if empty area
+  value: any;                        // The current value of the field
+  path: string[];                    // Path array for nested fields (e.g., ['graphics', 'resolution'])
+  fieldType: string | null;          // The type of input field (text, number, checkbox, etc.)
+}
+```
+
+### Usage Example
+
+```javascript
+// Set up a context menu for the KeyValueEditor
+const editor = document.querySelector('#config-editor');
+
+// Listen for context menu events
+document.addEventListener('context-menu-show', (event) => {
+  const { componentContext } = event.detail;
+
+  if (componentContext?.componentType === 'keyvalue-editor') {
+    const kvContext = componentContext;
+
+    if (kvContext.key) {
+      // Right-clicked on a specific field
+      console.log(`Right-clicked on field: ${kvContext.key}`);
+      console.log(`Current value: ${JSON.stringify(kvContext.value)}`);
+      console.log(`Field type: ${kvContext.fieldType}`);
+      console.log(`Field path: [${kvContext.path.join(', ')}]`);
+
+      // Show different context menu options based on the field
+      updateContextMenuForField(kvContext);
+    } else {
+      // Right-clicked on empty area of the editor
+      console.log('Right-clicked on empty editor area');
+      updateContextMenuForEmptyArea();
+    }
+  }
+});
+
+function updateContextMenuForField(fieldContext) {
+  // Enable/disable menu items based on the field type and value
+  const copyValueItem = document.querySelector('#copy-value-item');
+  const resetFieldItem = document.querySelector('#reset-field-item');
+  const deleteFieldItem = document.querySelector('#delete-field-item');
+
+  copyValueItem.disabled = fieldContext.value == null;
+  resetFieldItem.disabled = fieldContext.fieldType === 'readonly';
+  deleteFieldItem.disabled = fieldContext.path.includes('required');
+}
+```
+
+### Complete Integration Example
+
+```html
+<!-- KeyValueEditor with context menu -->
+<e2-keyvalue-editor id="configEditor" header-title="Configuration"></e2-keyvalue-editor>
+
+<e2-context-menu target="#configEditor">
+  <e2-context-menu-item id="edit-field" label="Edit Field" value="edit"></e2-context-menu-item>
+  <e2-context-menu-item id="copy-key" label="Copy Key" value="copy-key"></e2-context-menu-item>
+  <e2-context-menu-item id="copy-value" label="Copy Value" value="copy-value"></e2-context-menu-item>
+  <e2-context-menu-separator></e2-context-menu-separator>
+  <e2-context-menu-item id="reset-field" label="Reset to Default" value="reset"></e2-context-menu-item>
+  <e2-context-menu-item id="delete-field" label="Delete Field" value="delete"></e2-context-menu-item>
+  <e2-context-menu-separator></e2-context-menu-separator>
+  <e2-context-menu-item id="add-field" label="Add New Field" value="add-field"></e2-context-menu-item>
+  <e2-context-menu-item id="field-props" label="Field Properties" value="properties"></e2-context-menu-item>
+</e2-context-menu>
+```
+
+```javascript
+const editor = document.getElementById('configEditor');
+let rightClickedField = null;
+
+// Update menu items based on context
+document.addEventListener('context-menu-show', (event) => {
+  const { componentContext } = event.detail;
+
+  if (componentContext?.componentType === 'keyvalue-editor') {
+    const fieldContext = componentContext;
+    rightClickedField = fieldContext;
+
+    // Update menu items based on what was clicked
+    const editItem = document.getElementById('edit-field');
+    const copyKeyItem = document.getElementById('copy-key');
+    const copyValueItem = document.getElementById('copy-value');
+    const resetItem = document.getElementById('reset-field');
+    const deleteItem = document.getElementById('delete-field');
+    const addFieldItem = document.getElementById('add-field');
+    const propertiesItem = document.getElementById('field-props');
+
+    if (fieldContext.key) {
+      // Right-clicked on a field
+      editItem.disabled = false;
+      copyKeyItem.disabled = false;
+      copyValueItem.disabled = fieldContext.value == null;
+      resetItem.disabled = false;
+      deleteItem.disabled = false;
+      propertiesItem.disabled = false;
+    } else {
+      // Right-clicked on empty area
+      editItem.disabled = true;
+      copyKeyItem.disabled = true;
+      copyValueItem.disabled = true;
+      resetItem.disabled = true;
+      deleteItem.disabled = true;
+      propertiesItem.disabled = true;
+    }
+  }
+});
+
+// Handle menu item clicks
+document.addEventListener('context-menu-item-click', (event) => {
+  const { value } = event.detail;
+
+  if (!rightClickedField) return;
+
+  switch (value) {
+    case 'edit':
+      // Focus the field for editing
+      focusField(rightClickedField.key);
+      break;
+    case 'copy-key':
+      navigator.clipboard.writeText(rightClickedField.key);
+      break;
+    case 'copy-value':
+      navigator.clipboard.writeText(JSON.stringify(rightClickedField.value));
+      break;
+    case 'reset':
+      resetFieldToDefault(rightClickedField.key);
+      break;
+    case 'delete':
+      deleteField(rightClickedField.key);
+      break;
+    case 'add-field':
+      showAddFieldDialog();
+      break;
+    case 'properties':
+      showFieldProperties(rightClickedField);
+      break;
+  }
+});
+
+function deleteField(fieldKey) {
+  const currentValue = editor.value;
+  delete currentValue[fieldKey];
+  editor.value = { ...currentValue }; // Trigger re-render
+}
+
+function resetFieldToDefault(fieldKey) {
+  // Reset to schema default if available
+  const schema = editor.schema;
+  const fieldDefault = schema?.properties?.[fieldKey]?.default;
+  if (fieldDefault !== undefined) {
+    const currentValue = editor.value;
+    currentValue[fieldKey] = fieldDefault;
+    editor.value = { ...currentValue };
+  }
+}
+```
+
 ### Events
 
 #### `keyvalue-change`
