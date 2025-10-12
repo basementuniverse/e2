@@ -276,6 +276,73 @@
         </e2-context-menu>
       </div>
 
+      <!-- Sub-Menu Demo -->
+      <div class="demo-section">
+        <h2>Sub-Menus</h2>
+        <p>Context menu with nested sub-menus:</p>
+
+        <div class="demo-area" id="submenu-demo">
+          Right-click here for context menu with sub-menus
+        </div>
+
+        <div class="code-example">
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('submenu-code')"
+          >
+            Copy
+          </button>
+          <h3>HTML Markup:</h3>
+          <pre id="submenu-code">
+&lt;e2-context-menu id="submenu-menu" target="#submenu-demo"&gt;
+  &lt;e2-context-menu-item label="Cut" icon="✂️" value="cut"&gt;&lt;/e2-context-menu-item&gt;
+  &lt;e2-context-menu-item label="Copy" icon="📋" value="copy"&gt;&lt;/e2-context-menu-item&gt;
+  &lt;e2-context-menu-item label="Paste" icon="📄" value="paste"&gt;&lt;/e2-context-menu-item&gt;
+  &lt;e2-context-menu-separator&gt;&lt;/e2-context-menu-separator&gt;
+  &lt;e2-context-menu-menu label="Format" icon="🎨"&gt;
+    &lt;e2-context-menu-item label="Bold" icon="💪" value="bold"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-item label="Italic" icon="📐" value="italic"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-item label="Underline" icon="⬇️" value="underline"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-separator&gt;&lt;/e2-context-menu-separator&gt;
+    &lt;e2-context-menu-menu label="Advanced" icon="⚡"&gt;
+      &lt;e2-context-menu-item label="Strikethrough" value="strikethrough"&gt;&lt;/e2-context-menu-item&gt;
+      &lt;e2-context-menu-item label="Superscript" value="superscript"&gt;&lt;/e2-context-menu-item&gt;
+      &lt;e2-context-menu-item label="Subscript" value="subscript"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;/e2-context-menu-menu&gt;
+  &lt;/e2-context-menu-menu&gt;
+  &lt;e2-context-menu-menu label="Insert" icon="➕"&gt;
+    &lt;e2-context-menu-item label="Image" icon="🖼️" value="insert-image"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-item label="Link" icon="🔗" value="insert-link"&gt;&lt;/e2-context-menu-item&gt;
+    &lt;e2-context-menu-item label="Table" icon="📊" value="insert-table"&gt;&lt;/e2-context-menu-item&gt;
+  &lt;/e2-context-menu-menu&gt;
+&lt;/e2-context-menu&gt;</pre>
+        </div>
+
+        <!-- Sub-Menu Context Menu -->
+        <e2-context-menu id="submenu-menu" target="#submenu-demo">
+          <e2-context-menu-item label="Cut" icon="✂️" value="cut"></e2-context-menu-item>
+          <e2-context-menu-item label="Copy" icon="📋" value="copy"></e2-context-menu-item>
+          <e2-context-menu-item label="Paste" icon="📄" value="paste"></e2-context-menu-item>
+          <e2-context-menu-separator></e2-context-menu-separator>
+          <e2-context-menu-menu label="Format" icon="🎨">
+            <e2-context-menu-item label="Bold" icon="💪" value="bold"></e2-context-menu-item>
+            <e2-context-menu-item label="Italic" icon="📐" value="italic"></e2-context-menu-item>
+            <e2-context-menu-item label="Underline" icon="⬇️" value="underline"></e2-context-menu-item>
+            <e2-context-menu-separator></e2-context-menu-separator>
+            <e2-context-menu-menu label="Advanced" icon="⚡">
+              <e2-context-menu-item label="Strikethrough" value="strikethrough"></e2-context-menu-item>
+              <e2-context-menu-item label="Superscript" value="superscript"></e2-context-menu-item>
+              <e2-context-menu-item label="Subscript" value="subscript"></e2-context-menu-item>
+            </e2-context-menu-menu>
+          </e2-context-menu-menu>
+          <e2-context-menu-menu label="Insert" icon="➕">
+            <e2-context-menu-item label="Image" icon="🖼️" value="insert-image"></e2-context-menu-item>
+            <e2-context-menu-item label="Link" icon="🔗" value="insert-link"></e2-context-menu-item>
+            <e2-context-menu-item label="Table" icon="📊" value="insert-table"></e2-context-menu-item>
+          </e2-context-menu-menu>
+        </e2-context-menu>
+      </div>
+
       <!-- Programmatic Context Menu Demo -->
       <div class="demo-section">
         <h2>Programmatic Control</h2>

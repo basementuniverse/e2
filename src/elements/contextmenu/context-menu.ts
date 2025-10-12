@@ -224,7 +224,26 @@ export class ContextMenu
     }
 
     const target = event.target as Node;
-    if (!this.contains(target) && !this.shadowRoot?.contains(target)) {
+
+    // Check if click is inside the context menu or any of its sub-menus
+    let clickInsideMenu =
+      this.contains(target) || this.shadowRoot?.contains(target);
+
+    // Also check if click is inside any sub-menu that might be positioned outside the main menu
+    if (!clickInsideMenu) {
+      const allSubMenus = Array.from(
+        this.querySelectorAll('e2-context-menu-menu')
+      );
+      for (const subMenu of allSubMenus) {
+        const subMenuElement = subMenu.shadowRoot?.querySelector('.submenu');
+        if (subMenuElement && subMenuElement.contains(target)) {
+          clickInsideMenu = true;
+          break;
+        }
+      }
+    }
+
+    if (!clickInsideMenu) {
       this.hide();
     }
   }
@@ -260,7 +279,9 @@ export class ContextMenu
   }
 
   private focusNextItem(): void {
-    const items = this.querySelectorAll('e2-context-menu-item:not([disabled])');
+    const items = this.querySelectorAll(
+      'e2-context-menu-item:not([disabled]), e2-context-menu-menu:not([disabled])'
+    );
     const currentIndex = Array.from(items).findIndex(
       item => item === document.activeElement || item.shadowRoot?.activeElement
     );
@@ -270,7 +291,9 @@ export class ContextMenu
   }
 
   private focusPreviousItem(): void {
-    const items = this.querySelectorAll('e2-context-menu-item:not([disabled])');
+    const items = this.querySelectorAll(
+      'e2-context-menu-item:not([disabled]), e2-context-menu-menu:not([disabled])'
+    );
     const currentIndex = Array.from(items).findIndex(
       item => item === document.activeElement || item.shadowRoot?.activeElement
     );
@@ -281,7 +304,11 @@ export class ContextMenu
 
   private activateFocusedItem(): void {
     const focused = document.activeElement;
-    if (focused && focused.tagName === 'e2-context-menu-ITEM') {
+    if (
+      focused &&
+      (focused.tagName === 'E2-CONTEXT-MENU-ITEM' ||
+        focused.tagName === 'E2-CONTEXT-MENU-MENU')
+    ) {
       (focused as any).click();
     }
   }
@@ -360,7 +387,7 @@ export class ContextMenu
     // Focus first item
     requestAnimationFrame(() => {
       const firstItem = this.querySelector(
-        'e2-context-menu-item:not([disabled])'
+        'e2-context-menu-item:not([disabled]), e2-context-menu-menu:not([disabled])'
       ) as HTMLElement;
       if (firstItem) {
         firstItem.focus();
@@ -392,6 +419,14 @@ export class ContextMenu
 
     this._visible = false;
     this.removeAttribute('visible');
+
+    // Reset all sub-menu states to ensure they don't reappear
+    const subMenus = this.querySelectorAll('e2-context-menu-menu');
+    subMenus.forEach(subMenu => {
+      if (typeof (subMenu as any).resetSubMenuState === 'function') {
+        (subMenu as any).resetSubMenuState();
+      }
+    });
 
     // Dispatch hide event
     dispatchCustomEvent<ContextMenuHideEvent['detail']>(
@@ -436,9 +471,9 @@ export class ContextMenu
     this._theme = theme;
     applyTheme(this, theme);
 
-    // Apply theme to all child context menu items and separators
+    // Apply theme to all child context menu items, separators, and sub-menus
     const childItems = this.querySelectorAll(
-      'e2-context-menu-item, e2-context-menu-separator'
+      'e2-context-menu-item, e2-context-menu-separator, e2-context-menu-menu'
     );
     childItems.forEach(child => {
       if (typeof (child as any).applyTheme === 'function') {

@@ -147,6 +147,25 @@ export interface ContextMenuItemClickEvent extends EditorElementEvent {
         value?: string;
     };
 }
+export interface ContextMenuMenuShowEvent extends EditorElementEvent {
+    detail: {
+        menuId: string;
+        menu: HTMLElement;
+        subMenuId: string;
+        subMenu: HTMLElement;
+        x: number;
+        y: number;
+        trigger: HTMLElement;
+    };
+}
+export interface ContextMenuMenuHideEvent extends EditorElementEvent {
+    detail: {
+        menuId: string;
+        menu: HTMLElement;
+        subMenuId: string;
+        subMenu: HTMLElement;
+    };
+}
 export interface TabSelectEvent extends EditorElementEvent {
     detail: {
         tabId: string;

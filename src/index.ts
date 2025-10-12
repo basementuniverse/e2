@@ -9,6 +9,7 @@
 import './elements/app/app';
 import './elements/contextmenu/context-menu';
 import './elements/contextmenu/context-menu-item';
+import './elements/contextmenu/context-menu-menu';
 import './elements/contextmenu/context-menu-separator';
 import './elements/dialog/alert';
 import './elements/dialog/confirm';

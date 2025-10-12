@@ -394,7 +394,6 @@ export class TabContainer
           tabElement.id = generateId('tab');
         } catch (e) {
           // If setting ID fails, skip this tab for now
-          console.warn('Failed to set tab ID, skipping:', e);
           return;
         }
       }
@@ -405,7 +404,6 @@ export class TabContainer
           tabElement.setAttribute('closable', '');
         } catch (e) {
           // If setting attribute fails, the element might still be initializing
-          console.warn('Failed to set closable attribute, skipping:', e);
         }
       }
 
@@ -414,7 +412,7 @@ export class TabContainer
         try {
           (tabElement as any).applyTheme(effectiveTheme);
         } catch (e) {
-          console.warn('Failed to apply theme to tab:', e);
+          // If applying theme fails, the element might still be initializing
         }
       }
 
@@ -429,14 +427,13 @@ export class TabContainer
             try {
               correspondingPanel.id = `${tabElement.id}-panel`;
             } catch (e) {
-              console.warn('Failed to set panel ID:', e);
               return;
             }
           }
           try {
             tabElement.setAttribute('panel', correspondingPanel.id);
           } catch (e) {
-            console.warn('Failed to link tab to panel:', e);
+            // If linking tab to panel fails, the element might still be initializing
           }
         }
       }
@@ -479,7 +476,6 @@ export class TabContainer
         try {
           panelElement.id = generateId('tab-panel');
         } catch (e) {
-          console.warn('Failed to set panel ID:', e);
           return;
         }
       }
@@ -492,7 +488,7 @@ export class TabContainer
         try {
           (panelElement as any).applyTheme(effectiveTheme);
         } catch (e) {
-          console.warn('Failed to apply theme to panel:', e);
+          // If applying theme fails, the element might still be initializing
         }
       }
 
@@ -503,14 +499,14 @@ export class TabContainer
           try {
             (panelElement as any).active = true;
           } catch (e) {
-            console.warn('Failed to set panel active property:', e);
+            // If setting panel active property fails, the element might still be initializing
           }
         } else {
           try {
             panelElement.setAttribute('active', '');
             panelElement.style.display = 'flex';
           } catch (e) {
-            console.warn('Failed to set panel active state:', e);
+            // If setting attribute fails, the element might still be initializing
           }
         }
       } else {
@@ -518,13 +514,13 @@ export class TabContainer
           try {
             (panelElement as any).active = false;
           } catch (e) {
-            console.warn('Failed to set panel inactive property:', e);
+            // If setting panel inactive property fails, the element might still be initializing
           }
         } else {
           try {
             panelElement.style.display = 'none';
           } catch (e) {
-            console.warn('Failed to hide panel:', e);
+            // If setting attribute fails, the element might still be initializing
           }
         }
       }
