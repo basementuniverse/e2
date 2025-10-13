@@ -29,6 +29,9 @@ export declare class ToolbarMenu extends HTMLElement implements EditorElementPro
     get theme(): Theme;
     set theme(value: Theme);
     applyTheme(theme: Theme): void;
+    private applyThemeToChildren;
+    private getCurrentTheme;
+    private findInheritedTheme;
     get label(): string;
     set label(value: string);
     get icon(): string;

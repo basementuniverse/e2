@@ -74,17 +74,68 @@ export class ToolbarMenu
           cursor: not-allowed;
         }
 
+        :host(.theme-light) .button {
+          color: var(--text-color-light, #333) !important;
+        }
+
+        :host(.theme-light) .button:hover {
+          background: var(--button-hover-bg-light, rgba(0, 0, 0, 0.1));
+          color: var(--text-color-light, #333) !important;
+        }
+
+        :host(.theme-light) .button:active,
+        :host(.theme-light) .button.open {
+          background: var(--button-active-bg-light, rgba(0, 0, 0, 0.2));
+          color: var(--text-color-light, #333) !important;
+        }
+
         :host(.theme-dark) .button {
-          color: var(--text-color-dark, #fff);
+          color: var(--text-color-dark, #fff) !important;
         }
 
         :host(.theme-dark) .button:hover {
           background: var(--button-hover-bg-dark, rgba(255, 255, 255, 0.1));
+          color: var(--text-color-dark, #fff) !important;
         }
 
         :host(.theme-dark) .button:active,
         :host(.theme-dark) .button.open {
           background: var(--button-active-bg-dark, rgba(255, 255, 255, 0.2));
+          color: var(--text-color-dark, #fff) !important;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          :host(.theme-auto) .button {
+            color: var(--text-color-dark, #fff) !important;
+          }
+
+          :host(.theme-auto) .button:hover {
+            background: var(--button-hover-bg-dark, rgba(255, 255, 255, 0.1));
+            color: var(--text-color-dark, #fff) !important;
+          }
+
+          :host(.theme-auto) .button:active,
+          :host(.theme-auto) .button.open {
+            background: var(--button-active-bg-dark, rgba(255, 255, 255, 0.2));
+            color: var(--text-color-dark, #fff) !important;
+          }
+        }
+
+        @media (prefers-color-scheme: light) {
+          :host(.theme-auto) .button {
+            color: var(--text-color-light, #333) !important;
+          }
+
+          :host(.theme-auto) .button:hover {
+            background: var(--button-hover-bg-light, rgba(0, 0, 0, 0.1));
+            color: var(--text-color-light, #333) !important;
+          }
+
+          :host(.theme-auto) .button:active,
+          :host(.theme-auto) .button.open {
+            background: var(--button-active-bg-light, rgba(0, 0, 0, 0.2));
+            color: var(--text-color-light, #333) !important;
+          }
         }
 
         .icon {
@@ -194,6 +245,12 @@ export class ToolbarMenu
     } else {
       this.applyTheme(this._theme);
     }
+
+    // Ensure initial theme is applied to child items
+    setTimeout(() => {
+      const currentTheme = this.getCurrentTheme();
+      this.applyTheme(currentTheme);
+    }, 0);
   }
 
   disconnectedCallback(): void {
@@ -400,21 +457,75 @@ export class ToolbarMenu
       this._themeCleanup = undefined;
     }
 
-    this.applyTheme(value);
+    // Apply the theme and update _theme since this is an explicit assignment
+    applyTheme(this, value);
+
+    // Apply to children
+    this.applyThemeToChildren(value);
   }
 
   applyTheme(theme: Theme): void {
+    // Only update _theme if this is an explicit theme change (via setter)
+    // Don't update it during inheritance-based theme application
     applyTheme(this, theme);
 
     // Apply theme to all child context menu items and separators
+    this.applyThemeToChildren(theme);
+  }
+
+  private applyThemeToChildren(theme: Theme): void {
     const childItems = this.querySelectorAll(
-      'e2-context-menu-item, e2-context-menu-separator'
+      'e2-context-menu, e2-context-menu-item, e2-context-menu-separator, e2-context-menu-menu'
     );
+
     childItems.forEach(child => {
+      // Set the theme attribute so the component can inherit properly
+      child.setAttribute('theme', theme);
+
+      // Also call applyTheme if available for immediate application
       if (typeof (child as any).applyTheme === 'function') {
         (child as any).applyTheme(theme);
       }
     });
+  }
+
+  private getCurrentTheme(): Theme {
+    // If element has explicit theme, use it
+    if (this.hasAttribute('theme')) {
+      const explicitTheme = this.getAttribute('theme') as Theme;
+      return explicitTheme;
+    }
+
+    // Look up the DOM tree for any element with theme classes
+    const inheritedTheme = this.findInheritedTheme();
+    return inheritedTheme;
+  }
+
+  private findInheritedTheme(): Theme {
+    let current = this.parentElement;
+    while (current) {
+      // Check for explicit theme attribute first
+      const themeAttr = current.getAttribute('theme');
+      if (themeAttr && ['light', 'dark', 'auto'].includes(themeAttr)) {
+        return themeAttr as Theme;
+      }
+
+      // Check for theme classes
+      if (current.classList.contains('theme-light')) {
+        return 'light';
+      }
+      if (current.classList.contains('theme-dark')) {
+        return 'dark';
+      }
+      if (current.classList.contains('theme-auto')) {
+        return 'auto';
+      }
+
+      current = current.parentElement;
+    }
+
+    // Fallback to auto if no theme found
+    return 'auto';
   }
 
   get label(): string {
@@ -463,7 +574,8 @@ export class ToolbarMenu
     this._justOpened = true;
 
     // Ensure all child items have the correct theme
-    this.applyTheme(this._theme);
+    const currentTheme = this.getCurrentTheme();
+    this.applyTheme(currentTheme);
 
     // Dispatch show event
     const showEvent = new CustomEvent('toolbar-menu-show', {

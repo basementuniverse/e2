@@ -35,6 +35,15 @@ export declare class ContextMenu extends HTMLElement implements EditorElementPro
     show(x: number, y: number, trigger?: HTMLElement, componentContext?: ComponentContext): void;
     hide(): void;
     private adjustPosition;
+    /**
+     * Apply effective theme based on target element's theme
+     * Context menus inherit theme from their target element, not their DOM position
+     */
+    private applyEffectiveThemeFromTarget;
+    /**
+     * Find the closest parent e2-app element for any element
+     */
+    private findParentApp;
     applyTheme(theme: Theme): void;
 }
 //# sourceMappingURL=context-menu.d.ts.map

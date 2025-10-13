@@ -115,8 +115,12 @@ export class ContextMenu
 
     // Set up theme inheritance if no explicit theme is set
     if (!this.hasAttribute('theme')) {
-      applyEffectiveTheme(this);
-      this._themeCleanup = setupThemeInheritance(this);
+      this.applyEffectiveThemeFromTarget();
+      // Set up theme inheritance with custom handler
+      this._themeCleanup = setupThemeInheritance(this, newTheme => {
+        // When theme changes, re-apply effective theme from target
+        this.applyEffectiveThemeFromTarget();
+      });
     } else {
       this.applyTheme(this._theme);
     }
@@ -146,17 +150,10 @@ export class ContextMenu
         // If theme attribute is being set, use explicit theme
         // If theme attribute is being removed, switch to inheritance
         if (newValue) {
-          this._theme = newValue as Theme;
-          // Clean up any existing theme inheritance
-          if (this._themeCleanup) {
-            this._themeCleanup();
-            this._themeCleanup = undefined;
-          }
-          this.applyTheme(this._theme);
+          this.theme = newValue as Theme;
         } else if (this.isConnected) {
           // Attribute was removed, switch to inheritance
-          this._theme = 'auto';
-          applyEffectiveTheme(this);
+          this.applyEffectiveThemeFromTarget();
           this._themeCleanup = setupThemeInheritance(this);
         }
         break;
@@ -320,13 +317,14 @@ export class ContextMenu
 
   set theme(value: Theme) {
     this._theme = value;
-    this.setAttribute('theme', value);
 
     // Clean up any existing theme inheritance
     if (this._themeCleanup) {
       this._themeCleanup();
       this._themeCleanup = undefined;
     }
+
+    this.applyTheme(value);
   }
 
   get disabled(): boolean {
@@ -380,6 +378,11 @@ export class ContextMenu
     setTimeout(() => {
       this._justShown = false;
     }, 50);
+
+    // Ensure we have the correct theme, especially if no explicit theme is set
+    if (!this.hasAttribute('theme')) {
+      this.applyEffectiveThemeFromTarget();
+    }
 
     // Ensure all child items have the correct theme
     this.applyTheme(this._theme);
@@ -465,6 +468,54 @@ export class ContextMenu
 
     this.style.left = `${left}px`;
     this.style.top = `${top}px`;
+  }
+
+  /**
+   * Apply effective theme based on target element's theme
+   * Context menus inherit theme from their target element, not their DOM position
+   */
+  private applyEffectiveThemeFromTarget(): void {
+    const targetSelector = this.getAttribute('target');
+    if (targetSelector) {
+      const targets = document.querySelectorAll(targetSelector);
+      if (targets.length > 0) {
+        const firstTarget = targets[0] as HTMLElement;
+
+        // First, check if the target element itself has a theme
+        const targetTheme = firstTarget.getAttribute('theme');
+        if (targetTheme && ['light', 'dark', 'auto'].includes(targetTheme)) {
+          this.applyTheme(targetTheme as Theme);
+          return;
+        }
+
+        // If target doesn't have a theme, find its parent app
+        const parentApp = this.findParentApp(firstTarget);
+        if (parentApp) {
+          const parentTheme = parentApp.getAttribute('theme');
+          if (parentTheme && ['light', 'dark', 'auto'].includes(parentTheme)) {
+            this.applyTheme(parentTheme as Theme);
+            return;
+          }
+        }
+      }
+    }
+
+    // Fallback to normal effective theme logic
+    applyEffectiveTheme(this);
+  }
+
+  /**
+   * Find the closest parent e2-app element for any element
+   */
+  private findParentApp(element: HTMLElement): HTMLElement | null {
+    let current = element.parentElement;
+    while (current) {
+      if (current.tagName.toLowerCase() === 'e2-app') {
+        return current;
+      }
+      current = current.parentElement;
+    }
+    return null;
   }
 
   applyTheme(theme: Theme): void {
