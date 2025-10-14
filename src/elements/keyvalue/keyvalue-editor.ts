@@ -180,9 +180,37 @@ export class KeyValueEditorElement
           gap: 4px;
         }
 
-        /* Input controls will inherit styles from e2-app */
+        /* Input controls - inherit e2-app styles via CSS custom properties */
         .input-control {
+          display: block;
           width: 100%;
+          padding: var(--input-padding, 6px 12px);
+          font-size: var(--input-font-size, 14px);
+          font-family: var(--font-family, system-ui, sans-serif);
+          line-height: var(--line-height, 1.4);
+          color: var(--input-text, #212529);
+          background-color: var(--input-bg, #ffffff);
+          background-clip: padding-box;
+          border: 1px solid var(--input-border, #ced4da);
+          border-radius: var(--input-border-radius, 4px);
+          transition: border-color var(--transition-fast, 0.15s ease-in-out), box-shadow var(--transition-fast, 0.15s ease-in-out);
+        }
+
+        .input-control:focus {
+          outline: 0;
+          border-color: var(--input-border-focus, #86b7fe);
+          box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+        }
+
+        .input-control::placeholder {
+          color: var(--input-placeholder, #6c757d);
+          opacity: 1;
+        }
+
+        .input-control:disabled {
+          background-color: var(--bg-tertiary, #e9ecef);
+          opacity: 0.6;
+          cursor: not-allowed;
         }
 
         .input-control.error {
@@ -205,13 +233,36 @@ export class KeyValueEditorElement
         .input-control[type="range"] {
           height: auto;
           padding: 0;
+          background: var(--bg-tertiary, #e9ecef);
+          cursor: pointer;
+          accent-color: var(--accent-color, #0d6efd);
         }
 
         .input-control[type="checkbox"] {
-          width: 1em;
-          height: 1em;
-          padding: 0;
+          width: 16px;
+          height: 16px;
           margin: 0;
+          cursor: pointer;
+          accent-color: var(--accent-color, #0d6efd);
+        }
+
+        .input-control[type="checkbox"]:disabled {
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+
+        .input-control[type="file"] {
+          cursor: pointer;
+        }
+
+        /* Textarea specific */
+        textarea.input-control {
+          resize: vertical;
+          min-height: 80px;
+        }
+
+        /* Select specific */
+        select.input-control {
           cursor: pointer;
         }
 
