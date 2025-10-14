@@ -184,6 +184,7 @@ export class KeyValueEditorElement
         .input-control {
           display: block;
           width: 100%;
+          box-sizing: border-box;
           padding: var(--input-padding, 6px 12px);
           font-size: var(--input-font-size, 14px);
           font-family: var(--font-family, system-ui, sans-serif);
@@ -372,8 +373,8 @@ export class KeyValueEditorElement
           // Dispatch change event
           self.dispatchChangeEvent(key, oldValue, value, [key]);
 
-          // Trigger re-render
-          self.render();
+          // Update the specific input field without full re-render
+          self.updateInputValue(key, value);
 
           // Validate after change
           self.validateField(key);
@@ -392,7 +393,7 @@ export class KeyValueEditorElement
           // Dispatch change event
           self.dispatchChangeEvent(key, oldValue, undefined, [key]);
 
-          // Trigger re-render
+          // Trigger re-render for deletions
           self.render();
         }
         return true;
@@ -914,11 +915,86 @@ export class KeyValueEditorElement
     const errors = this.validateValue(key, value, schema, [key]);
     this._validationErrors.push(...errors);
 
+    // Update error display for this specific field
+    this.updateFieldErrorDisplay(key);
+
     // Dispatch validation event
     dispatchCustomEvent(this, 'keyvalue-validation', {
       isValid: this._validationErrors.length === 0,
       errors: this._validationErrors,
     });
+  }
+
+  private updateInputValue(key: string, value: any): void {
+    const input = this.shadowRoot?.querySelector(`#field-${key}`) as
+      | HTMLInputElement
+      | HTMLSelectElement
+      | HTMLTextAreaElement;
+
+    if (!input) return;
+
+    // Update the input value only if it's different from the current value
+    // This prevents cursor position issues and unnecessary updates
+    if (input.type === 'checkbox') {
+      const checkbox = input as HTMLInputElement;
+      checkbox.checked = Boolean(value);
+    } else if (input.type === 'range') {
+      const range = input as HTMLInputElement;
+      range.value = String(value || 0);
+      // Also update the range value display
+      const rangeValue = range.nextElementSibling as HTMLElement;
+      if (rangeValue && rangeValue.classList.contains('range-value')) {
+        rangeValue.textContent = String(value || 0);
+      }
+    } else {
+      // For text inputs, select, and textarea elements
+      const stringValue =
+        value === null || value === undefined ? '' : String(value);
+      if (input.value !== stringValue) {
+        input.value = stringValue;
+      }
+    }
+  }
+
+  private updateFieldErrorDisplay(key: string): void {
+    // Update input error state
+    const input = this.shadowRoot?.querySelector(`#field-${key}`) as
+      | HTMLInputElement
+      | HTMLSelectElement
+      | HTMLTextAreaElement;
+
+    if (input) {
+      const hasError = this._validationErrors.some(e => e.key === key);
+      if (hasError) {
+        input.classList.add('error');
+      } else {
+        input.classList.remove('error');
+      }
+    }
+
+    // Update error message display
+    const fieldRow = this.shadowRoot
+      ?.querySelector(`label[for="field-${key}"]`)
+      ?.closest('.field-row');
+    if (!fieldRow) return;
+
+    const fieldInputContainer = fieldRow.querySelector('.field-input');
+    if (!fieldInputContainer) return;
+
+    // Remove existing error message
+    const existingError = fieldInputContainer.querySelector('.field-error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Add new error message if there's an error
+    const error = this._validationErrors.find(e => e.key === key);
+    if (error) {
+      const errorElement = document.createElement('div');
+      errorElement.className = 'field-error';
+      errorElement.textContent = error.message;
+      fieldInputContainer.appendChild(errorElement);
+    }
   }
 
   private validateValue(

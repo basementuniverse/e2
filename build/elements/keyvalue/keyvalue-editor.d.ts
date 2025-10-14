@@ -36,6 +36,8 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     private formatLabel;
     private dispatchChangeEvent;
     private validateField;
+    private updateInputValue;
+    private updateFieldErrorDisplay;
     private validateValue;
     private formatValidationError;
     updateValue(key: string, value: any): void;
