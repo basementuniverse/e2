@@ -243,6 +243,8 @@ export class KeyValueEditorElement
           width: 16px;
           height: 16px;
           margin: 0;
+          position: relative;
+          top: 0.5em;
           cursor: pointer;
           accent-color: var(--accent-color, #0d6efd);
         }
