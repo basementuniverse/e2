@@ -587,7 +587,7 @@ export class KeyValueEditorElement
       e => e.key === key && JSON.stringify(e.path) === JSON.stringify(fullPath)
     );
     const inputType = this.getInputType(value, schema);
-    const inputId = `field-${fullPath.join('.')}`;
+    const inputId = `field-${fullPath.join('-')}`;
 
     return `
       <div class="field-row">
@@ -940,13 +940,15 @@ export class KeyValueEditorElement
       }
     }
 
-    // Get schema for this field (only supports top-level schema for now)
-    const schema = this._schema?.properties?.[path[0]];
-    let fieldSchema = schema;
-
-    // For nested fields, try to get the nested schema
-    if (path.length > 1 && schema?.properties) {
-      fieldSchema = schema.properties[key];
+    // Navigate through the schema following the full path
+    let fieldSchema: any = this._schema;
+    for (let i = 0; i < path.length && fieldSchema; i++) {
+      if (fieldSchema.properties) {
+        fieldSchema = fieldSchema.properties[path[i]];
+      } else {
+        fieldSchema = undefined;
+        break;
+      }
     }
 
     if (!fieldSchema) return;
@@ -970,7 +972,7 @@ export class KeyValueEditorElement
   }
 
   private updateInputValueByPath(path: string[], value: any): void {
-    const fieldId = `field-${path.join('.')}`;
+    const fieldId = `field-${path.join('-')}`;
     const input = this.shadowRoot?.querySelector(`#${fieldId}`) as
       | HTMLInputElement
       | HTMLSelectElement
@@ -1007,7 +1009,7 @@ export class KeyValueEditorElement
 
   private updateFieldErrorDisplayByPath(path: string[]): void {
     const key = path[path.length - 1];
-    const fieldId = `field-${path.join('.')}`;
+    const fieldId = `field-${path.join('-')}`;
 
     // Update input error state
     const input = this.shadowRoot?.querySelector(`#${fieldId}`) as
@@ -1228,8 +1230,8 @@ export class KeyValueEditorElement
       for (const error of result.errors) {
         // Extract the property name from the error path
         const propertyPath = error.property.replace('instance.', '').split('.');
-        const key = propertyPath[0] || 'root';
-        const fieldSchema = this._schema.properties?.[key];
+        const key = propertyPath[propertyPath.length - 1] || 'root'; // Use the last part as the key
+        const fieldSchema = this._schema.properties?.[propertyPath[0]];
 
         const message = this.formatValidationError(error, fieldSchema);
 
@@ -1239,6 +1241,11 @@ export class KeyValueEditorElement
           message,
         });
       }
+    }
+
+    // Update field error displays for all fields with validation errors
+    for (const error of this._validationErrors) {
+      this.updateFieldErrorDisplayByPath(error.path);
     }
 
     const validationResult = {
@@ -1259,7 +1266,7 @@ export class KeyValueEditorElement
   }
 
   public focusFieldByPath(path: string[]): void {
-    const fieldId = `field-${path.join('.')}`;
+    const fieldId = `field-${path.join('-')}`;
     const input = this.shadowRoot?.querySelector(
       `#${fieldId}`
     ) as HTMLInputElement;
