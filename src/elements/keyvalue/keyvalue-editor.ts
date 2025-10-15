@@ -561,31 +561,39 @@ export class KeyValueEditorElement
 
     for (const [key, value] of Object.entries(this._value)) {
       const fieldSchema = this._schema?.properties?.[key];
-      fields.push(this.renderField(key, value, fieldSchema));
+      fields.push(this.renderField(key, value, fieldSchema, []));
     }
 
     return fields.join('');
   }
 
-  private renderField(key: string, value: any, schema?: any): string {
+  private renderField(
+    key: string,
+    value: any,
+    schema?: any,
+    path: string[] = []
+  ): string {
     const isNested =
       typeof value === 'object' && value !== null && !Array.isArray(value);
 
     if (isNested) {
-      return this.renderNestedField(key, value, schema);
+      return this.renderNestedField(key, value, schema, path);
     }
 
     const label = schema?.title || this.formatLabel(key);
     const description = schema?.description;
-    const error = this._validationErrors.find(e => e.key === key);
+    const fullPath = [...path, key];
+    const error = this._validationErrors.find(
+      e => e.key === key && JSON.stringify(e.path) === JSON.stringify(fullPath)
+    );
     const inputType = this.getInputType(value, schema);
-    const inputId = `field-${key}`;
+    const inputId = `field-${fullPath.join('.')}`;
 
     return `
       <div class="field-row">
         <label class="field-label" for="${inputId}">${label}</label>
         <div class="field-input">
-          ${this.renderInput(inputId, key, value, schema, inputType)}
+          ${this.renderInput(inputId, fullPath, value, schema, inputType)}
           ${
             description
               ? `<div class="field-description">${description}</div>`
@@ -600,11 +608,13 @@ export class KeyValueEditorElement
   private renderNestedField(
     key: string,
     value: Record<string, any>,
-    schema?: any
+    schema?: any,
+    path: string[] = []
   ): string {
     const label = schema?.title || this.formatLabel(key);
     const isExpanded = true; // TODO: Track expansion state
     const expandedClass = isExpanded ? 'expanded' : '';
+    const nestedPath = [...path, key];
 
     return `
       <div class="nested-section ${expandedClass}">
@@ -613,7 +623,7 @@ export class KeyValueEditorElement
           <span>${label}</span>
         </div>
         <div class="nested-content">
-          ${this.renderNestedFields(value, schema?.properties)}
+          ${this.renderNestedFields(value, schema?.properties, nestedPath)}
         </div>
       </div>
     `;
@@ -621,7 +631,8 @@ export class KeyValueEditorElement
 
   private renderNestedFields(
     value: Record<string, any>,
-    properties?: any
+    properties?: any,
+    path: string[] = []
   ): string {
     const fields: string[] = [];
 
@@ -629,7 +640,7 @@ export class KeyValueEditorElement
       const fieldSchema = properties?.[key];
       // For nested fields, we only support scalar types (no further nesting)
       if (typeof val !== 'object' || val === null || Array.isArray(val)) {
-        fields.push(this.renderField(key, val, fieldSchema));
+        fields.push(this.renderField(key, val, fieldSchema, path));
       }
     }
 
@@ -638,14 +649,18 @@ export class KeyValueEditorElement
 
   private renderInput(
     id: string,
-    key: string,
+    path: string[],
     value: any,
     schema?: any,
     inputType: string = 'text'
   ): string {
     const disabled = this.disabled || this._readonly;
-    const hasError = this._validationErrors.some(e => e.key === key);
+    const key = path[path.length - 1];
+    const hasError = this._validationErrors.some(
+      e => e.key === key && JSON.stringify(e.path) === JSON.stringify(path)
+    );
     const errorClass = hasError ? ' error' : '';
+    const pathString = JSON.stringify(path).replace(/"/g, '&quot;');
 
     switch (inputType) {
       case 'checkbox':
@@ -653,7 +668,7 @@ export class KeyValueEditorElement
           value ? 'checked' : ''
         } ${
           disabled ? 'disabled' : ''
-        } onchange="this.getRootNode().host.updateValue('${key}', this.checked)">`;
+        } onchange="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.checked)">`;
 
       case 'number':
         const min =
@@ -670,7 +685,7 @@ export class KeyValueEditorElement
           value || ''
         }" ${min} ${max} ${step} ${
           disabled ? 'disabled' : ''
-        } oninput="this.getRootNode().host.updateValue('${key}', this.valueAsNumber)">`;
+        } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.valueAsNumber)">`;
 
       case 'range':
         const rangeMin = schema?.minimum !== undefined ? schema.minimum : 0;
@@ -687,7 +702,7 @@ export class KeyValueEditorElement
           value || rangeMin
         }" min="${rangeMin}" max="${rangeMax}" step="${rangeStep}" ${
           disabled ? 'disabled' : ''
-        } oninput="this.getRootNode().host.updateValue('${key}', parseFloat(this.value)); this.nextElementSibling.textContent = this.value">
+        } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), parseFloat(this.value)); this.nextElementSibling.textContent = this.value">
             <span class="range-value">${value || rangeMin}</span>
           </div>
         `;
@@ -696,28 +711,28 @@ export class KeyValueEditorElement
         const colorValue = value || '#000000';
         return `<input type="color" id="${id}" class="input-control${errorClass}" value="${colorValue}" ${
           disabled ? 'disabled' : ''
-        } onchange="this.getRootNode().host.updateValue('${key}', this.value)">`;
+        } onchange="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
 
       case 'date':
         return `<input type="date" id="${id}" class="input-control${errorClass}" value="${
           value || ''
         }" ${
           disabled ? 'disabled' : ''
-        } onchange="this.getRootNode().host.updateValue('${key}', this.value)">`;
+        } onchange="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
 
       case 'time':
         return `<input type="time" id="${id}" class="input-control${errorClass}" value="${
           value || ''
         }" ${
           disabled ? 'disabled' : ''
-        } onchange="this.getRootNode().host.updateValue('${key}', this.value)">`;
+        } onchange="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
 
       case 'datetime-local':
         return `<input type="datetime-local" id="${id}" class="input-control${errorClass}" value="${
           value || ''
         }" ${
           disabled ? 'disabled' : ''
-        } onchange="this.getRootNode().host.updateValue('${key}', this.value)">`;
+        } onchange="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
 
       case 'email':
         const emailPattern = schema?.pattern || '';
@@ -725,14 +740,14 @@ export class KeyValueEditorElement
           value || ''
         }" ${emailPattern ? `pattern="${emailPattern}"` : ''} ${
           disabled ? 'disabled' : ''
-        } oninput="this.getRootNode().host.updateValue('${key}', this.value)">`;
+        } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
 
       case 'url':
         return `<input type="url" id="${id}" class="input-control${errorClass}" value="${
           value || ''
         }" ${
           disabled ? 'disabled' : ''
-        } oninput="this.getRootNode().host.updateValue('${key}', this.value)">`;
+        } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
 
       case 'tel':
         const telPattern = schema?.pattern || '';
@@ -740,7 +755,7 @@ export class KeyValueEditorElement
           value || ''
         }" ${telPattern ? `pattern="${telPattern}"` : ''} ${
           disabled ? 'disabled' : ''
-        } oninput="this.getRootNode().host.updateValue('${key}', this.value)">`;
+        } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
 
       case 'select':
         const options =
@@ -754,7 +769,7 @@ export class KeyValueEditorElement
             .join('') || '';
         return `<select id="${id}" class="input-control${errorClass}" ${
           disabled ? 'disabled' : ''
-        } onchange="this.getRootNode().host.updateValue('${key}', this.value)">${options}</select>`;
+        } onchange="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">${options}</select>`;
 
       case 'textarea':
         const rows = schema?.maxLength && schema.maxLength > 100 ? '4' : '2';
@@ -763,7 +778,7 @@ export class KeyValueEditorElement
           : '';
         return `<textarea id="${id}" class="input-control${errorClass}" rows="${rows}" ${maxLength} ${
           disabled ? 'disabled' : ''
-        } oninput="this.getRootNode().host.updateValue('${key}', this.value)">${
+        } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">${
           value || ''
         }</textarea>`;
 
@@ -778,14 +793,14 @@ export class KeyValueEditorElement
 
         // Use textarea for long text
         if (schema?.maxLength && schema.maxLength > 100) {
-          return this.renderInput(id, key, value, schema, 'textarea');
+          return this.renderInput(id, path, value, schema, 'textarea');
         }
 
         return `<input type="text" id="${id}" class="input-control${errorClass}" value="${
           value || ''
         }" ${pattern} ${maxLengthAttr} ${minLength} ${
           disabled ? 'disabled' : ''
-        } oninput="this.getRootNode().host.updateValue('${key}', this.value)">`;
+        } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
     }
   }
 
@@ -903,20 +918,45 @@ export class KeyValueEditorElement
   }
 
   private validateField(key: string): void {
-    // Remove existing errors for this field
-    this._validationErrors = this._validationErrors.filter(e => e.key !== key);
+    this.validateFieldByPath([key]);
+  }
 
-    const value = this._value[key];
-    const schema = this._schema?.properties?.[key];
+  private validateFieldByPath(path: string[]): void {
+    const key = path[path.length - 1];
 
-    if (!schema) return;
+    // Remove existing errors for this field path
+    this._validationErrors = this._validationErrors.filter(
+      e => !(e.key === key && JSON.stringify(e.path) === JSON.stringify(path))
+    );
+
+    // Get the value from the correct path
+    let value: any = this._value;
+    for (const pathPart of path) {
+      if (value && typeof value === 'object') {
+        value = value[pathPart];
+      } else {
+        value = undefined;
+        break;
+      }
+    }
+
+    // Get schema for this field (only supports top-level schema for now)
+    const schema = this._schema?.properties?.[path[0]];
+    let fieldSchema = schema;
+
+    // For nested fields, try to get the nested schema
+    if (path.length > 1 && schema?.properties) {
+      fieldSchema = schema.properties[key];
+    }
+
+    if (!fieldSchema) return;
 
     // Basic validation based on schema
-    const errors = this.validateValue(key, value, schema, [key]);
+    const errors = this.validateValue(key, value, fieldSchema, path);
     this._validationErrors.push(...errors);
 
     // Update error display for this specific field
-    this.updateFieldErrorDisplay(key);
+    this.updateFieldErrorDisplayByPath(path);
 
     // Dispatch validation event
     dispatchCustomEvent(this, 'keyvalue-validation', {
@@ -926,7 +966,12 @@ export class KeyValueEditorElement
   }
 
   private updateInputValue(key: string, value: any): void {
-    const input = this.shadowRoot?.querySelector(`#field-${key}`) as
+    this.updateInputValueByPath([key], value);
+  }
+
+  private updateInputValueByPath(path: string[], value: any): void {
+    const fieldId = `field-${path.join('.')}`;
+    const input = this.shadowRoot?.querySelector(`#${fieldId}`) as
       | HTMLInputElement
       | HTMLSelectElement
       | HTMLTextAreaElement;
@@ -957,14 +1002,23 @@ export class KeyValueEditorElement
   }
 
   private updateFieldErrorDisplay(key: string): void {
+    this.updateFieldErrorDisplayByPath([key]);
+  }
+
+  private updateFieldErrorDisplayByPath(path: string[]): void {
+    const key = path[path.length - 1];
+    const fieldId = `field-${path.join('.')}`;
+
     // Update input error state
-    const input = this.shadowRoot?.querySelector(`#field-${key}`) as
+    const input = this.shadowRoot?.querySelector(`#${fieldId}`) as
       | HTMLInputElement
       | HTMLSelectElement
       | HTMLTextAreaElement;
 
     if (input) {
-      const hasError = this._validationErrors.some(e => e.key === key);
+      const hasError = this._validationErrors.some(
+        e => e.key === key && JSON.stringify(e.path) === JSON.stringify(path)
+      );
       if (hasError) {
         input.classList.add('error');
       } else {
@@ -974,7 +1028,7 @@ export class KeyValueEditorElement
 
     // Update error message display
     const fieldRow = this.shadowRoot
-      ?.querySelector(`label[for="field-${key}"]`)
+      ?.querySelector(`label[for="${fieldId}"]`)
       ?.closest('.field-row');
     if (!fieldRow) return;
 
@@ -988,7 +1042,9 @@ export class KeyValueEditorElement
     }
 
     // Add new error message if there's an error
-    const error = this._validationErrors.find(e => e.key === key);
+    const error = this._validationErrors.find(
+      e => e.key === key && JSON.stringify(e.path) === JSON.stringify(path)
+    );
     if (error) {
       const errorElement = document.createElement('div');
       errorElement.className = 'field-error';
@@ -1112,6 +1168,35 @@ export class KeyValueEditorElement
     this._valueProxy[key] = value;
   }
 
+  public updateValueByPath(path: string[], value: any): void {
+    if (path.length === 1) {
+      // Top-level property
+      this._valueProxy[path[0]] = value;
+    } else {
+      // Nested property - navigate to the correct nested object
+      let target = this._value;
+      for (let i = 0; i < path.length - 1; i++) {
+        if (!target[path[i]] || typeof target[path[i]] !== 'object') {
+          target[path[i]] = {};
+        }
+        target = target[path[i]];
+      }
+
+      const finalKey = path[path.length - 1];
+      const oldValue = target[finalKey];
+      target[finalKey] = value;
+
+      // Dispatch change event
+      this.dispatchChangeEvent(finalKey, oldValue, value, path);
+
+      // Update the specific input field without full re-render
+      this.updateInputValueByPath(path, value);
+
+      // Validate after change
+      this.validateFieldByPath(path);
+    }
+  }
+
   public getValue(): Record<string, any> {
     return { ...this._value };
   }
@@ -1170,8 +1255,13 @@ export class KeyValueEditorElement
   }
 
   public focusField(key: string): void {
+    this.focusFieldByPath([key]);
+  }
+
+  public focusFieldByPath(path: string[]): void {
+    const fieldId = `field-${path.join('.')}`;
     const input = this.shadowRoot?.querySelector(
-      `#field-${key}`
+      `#${fieldId}`
     ) as HTMLInputElement;
     input?.focus();
   }

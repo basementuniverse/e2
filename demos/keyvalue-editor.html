@@ -615,6 +615,19 @@ console.log('Is valid:', result.isValid);</pre>
                 }
             };
             nestedEditor.value = nestedData;
+            nestedEditor.schema = {
+              type: 'object',
+              properties: {
+                name: { type: 'string', minLength: 1, maxLength: 10 },
+                position: {
+                  type: 'object',
+                  properties: {
+                    x: { type: 'number', minimum: 0, maximum: 1920 },
+                  },
+                },
+              },
+            };
+
             updateNestedOutput();
         }
 
