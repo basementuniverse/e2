@@ -30,6 +30,7 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     private renderField;
     private renderNestedField;
     private renderNestedFields;
+    private renderFunctionField;
     private renderInput;
     private formatEnumOption;
     private getInputType;
@@ -52,6 +53,7 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     isValid(): boolean;
     focusField(key: string): void;
     focusFieldByPath(path: string[]): void;
+    callFunction(path: string[]): void;
     get theme(): Theme;
     set theme(value: Theme);
     get disabled(): boolean;

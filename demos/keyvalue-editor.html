@@ -104,6 +104,26 @@
       </div>
 
       <div class="demo-section">
+        <h2>Function Buttons</h2>
+        <p>Function members are automatically rendered as buttons that can be clicked to execute:</p>
+
+        <e2-keyvalue-editor id="function-editor"></e2-keyvalue-editor>
+
+        <div class="controls">
+          <button onclick="setFunctionValue()">Set Sample Data with Functions</button>
+          <button onclick="getFunctionValue()">Get Current Value</button>
+          <button onclick="clearFunctionValue()">Clear</button>
+        </div>
+
+        <div class="output">
+          <h3>Current Value:</h3>
+          <pre id="function-output">{}</pre>
+          <h3>Function Calls:</h3>
+          <pre id="function-calls">No functions called yet</pre>
+        </div>
+      </div>
+
+      <div class="demo-section">
         <h2>Nested Objects</h2>
         <p>Editing objects with nested properties using collapsible sections:</p>
 
@@ -592,6 +612,126 @@ console.log('Is valid:', result.isValid);</pre>
             schemaOutput.textContent = JSON.stringify(schemaEditor.value, null, 2);
         }
 
+        // Function editor functionality
+        const functionEditor = document.getElementById('function-editor');
+        const functionOutput = document.getElementById('function-output');
+        const functionCalls = document.getElementById('function-calls');
+        const functionCallLog = [];
+
+        function setFunctionValue() {
+            const sampleData = {
+                counter: 0,
+                name: 'Widget',
+                enabled: true,
+                incrementCounter: function() {
+                    this.counter++;
+                    console.log('Counter incremented to:', this.counter);
+                    return this.counter;
+                },
+                resetCounter: function() {
+                    this.counter = 0;
+                    console.log('Counter reset to 0');
+                    return 0;
+                },
+                toggleEnabled: function() {
+                    this.enabled = !this.enabled;
+                    console.log('Enabled toggled to:', this.enabled);
+                    return this.enabled;
+                },
+                greet: function() {
+                    const message = `Hello from ${this.name}!`;
+                    console.log(message);
+                    return message;
+                }
+            };
+            functionEditor.value = sampleData;
+            functionEditor.schema = {
+                type: 'object',
+                properties: {
+                    counter: {
+                        type: 'number',
+                        title: 'Counter Value',
+                        description: 'Current counter value'
+                    },
+                    name: {
+                        type: 'string',
+                        title: 'Widget Name',
+                        description: 'Name of the widget'
+                    },
+                    enabled: {
+                        type: 'boolean',
+                        title: 'Enabled',
+                        description: 'Whether the widget is enabled'
+                    },
+                    incrementCounter: {
+                        title: 'Increment Counter',
+                        description: 'Increase the counter by 1'
+                    },
+                    resetCounter: {
+                        title: 'Reset Counter',
+                        description: 'Reset the counter to 0'
+                    },
+                    toggleEnabled: {
+                        title: 'Toggle Enabled',
+                        description: 'Toggle the enabled state'
+                    },
+                    greet: {
+                        title: 'Show Greeting',
+                        description: 'Display a greeting message'
+                    }
+                }
+            };
+            updateFunctionOutput();
+        }
+
+        function getFunctionValue() {
+            updateFunctionOutput();
+        }
+
+        function clearFunctionValue() {
+            functionEditor.value = {};
+            functionCallLog.length = 0;
+            updateFunctionOutput();
+            updateFunctionCallsDisplay();
+        }
+
+        function updateFunctionOutput() {
+            const value = functionEditor.value;
+            // Create a copy without functions for display
+            const displayValue = {};
+            for (const [key, val] of Object.entries(value)) {
+                if (typeof val !== 'function') {
+                    displayValue[key] = val;
+                }
+            }
+            functionOutput.textContent = JSON.stringify(displayValue, null, 2);
+        }
+
+        function updateFunctionCallsDisplay() {
+            if (functionCallLog.length === 0) {
+                functionCalls.textContent = 'No functions called yet';
+            } else {
+                functionCalls.textContent = functionCallLog.join('\n');
+            }
+        }
+
+        // Listen for function calls
+        functionEditor.addEventListener('keyvalue-function-call', (event) => {
+            const { key, result } = event.detail;
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${key}() called, returned: ${JSON.stringify(result)}`;
+            functionCallLog.push(logEntry);
+
+            // Keep only last 10 calls
+            if (functionCallLog.length > 10) {
+                functionCallLog.shift();
+            }
+
+            updateFunctionCallsDisplay();
+            // Update the output to show any changed values
+            updateFunctionOutput();
+        });
+
         // Nested editor functionality
         const nestedEditor = document.getElementById('nested-editor');
         const nestedOutput = document.getElementById('nested-output');
@@ -747,6 +887,7 @@ console.log('Is valid:', result.isValid);</pre>
             setBasicValue();
             setAdvancedValue();
             setSchemaValue();
+            setFunctionValue();
             setNestedValue();
             setThemeData();
 

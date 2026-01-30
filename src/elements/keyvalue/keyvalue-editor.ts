@@ -152,10 +152,6 @@ export class KeyValueEditorElement
           gap: var(--spacing);
         }
 
-        .field-row:last-child {
-          margin-bottom: 0;
-        }
-
         :host([compact]) .field-row {
           margin: calc(var(--spacing) / 2) var(--spacing);
         }
@@ -346,6 +342,40 @@ export class KeyValueEditorElement
           color: var(--text-secondary, #6c757d);
           padding: calc(var(--spacing) * 3) var(--spacing);
           font-style: italic;
+        }
+
+        .function-button {
+          display: inline-block;
+          padding: var(--input-padding, 6px 12px);
+          font-size: var(--input-font-size, 14px);
+          font-family: var(--font-family, system-ui, sans-serif);
+          font-weight: 500;
+          line-height: var(--line-height, 1.4);
+          color: var(--button-text, #ffffff);
+          background-color: var(--accent-color, #0d6efd);
+          border: 1px solid var(--accent-color, #0d6efd);
+          border-radius: var(--input-border-radius, 4px);
+          cursor: pointer;
+          transition: background-color var(--transition-fast, 0.15s ease-in-out), border-color var(--transition-fast, 0.15s ease-in-out);
+          user-select: none;
+        }
+
+        .function-button:hover:not(:disabled) {
+          background-color: color-mix(in srgb, var(--accent-color, #0d6efd) 85%, black);
+          border-color: color-mix(in srgb, var(--accent-color, #0d6efd) 85%, black);
+        }
+
+        .function-button:active:not(:disabled) {
+          background-color: color-mix(in srgb, var(--accent-color, #0d6efd) 75%, black);
+          border-color: color-mix(in srgb, var(--accent-color, #0d6efd) 75%, black);
+        }
+
+        .function-button:disabled {
+          background-color: var(--bg-tertiary, #e9ecef);
+          border-color: var(--bg-tertiary, #e9ecef);
+          color: var(--text-secondary, #6c757d);
+          cursor: not-allowed;
+          opacity: 0.6;
         }
       </style>
 
@@ -574,6 +604,12 @@ export class KeyValueEditorElement
     schema?: any,
     path: string[] = []
   ): string {
+    const isFunction = typeof value === 'function';
+
+    if (isFunction) {
+      return this.renderFunctionField(key, value, schema, path);
+    }
+
     const isNested =
       typeof value === 'object' && value !== null && !Array.isArray(value);
 
@@ -646,6 +682,38 @@ export class KeyValueEditorElement
     }
 
     return fields.join('');
+  }
+
+  private renderFunctionField(
+    key: string,
+    value: Function,
+    schema?: any,
+    path: string[] = []
+  ): string {
+    const label = schema?.title || this.formatLabel(key);
+    const description = schema?.description;
+    const fullPath = [...path, key];
+    const disabled = this.disabled || this._readonly;
+    const pathString = JSON.stringify(fullPath).replace(/"/g, '&quot;');
+
+    return `
+      <div class="field-row">
+        <label class="field-label">${label}</label>
+        <div class="field-input">
+          <button
+            class="function-button"
+            ${disabled ? 'disabled' : ''}
+            onclick="this.getRootNode().host.callFunction(JSON.parse('${pathString}'))">
+            ${label}
+          </button>
+          ${
+            description
+              ? `<div class="field-description">${description}</div>`
+              : ''
+          }
+        </div>
+      </div>
+    `;
   }
 
   private renderInput(
@@ -1272,6 +1340,40 @@ export class KeyValueEditorElement
       `#${fieldId}`
     ) as HTMLInputElement;
     input?.focus();
+  }
+
+  public callFunction(path: string[]): void {
+    let target = this._value;
+    for (let i = 0; i < path.length - 1; i++) {
+      if (target && typeof target === 'object') {
+        target = target[path[i]];
+      } else {
+        return;
+      }
+    }
+
+    const key = path[path.length - 1];
+    const func = target[key];
+
+    if (typeof func === 'function') {
+      // Call the function with the value object as context
+      const result = func.call(this._value);
+
+      // Re-render to reflect any changes the function made to the object
+      this.render();
+
+      // Re-validate in case the function changed values that need validation
+      if (this._schema) {
+        this.validate();
+      }
+
+      // Dispatch an event with the function call details
+      dispatchCustomEvent(this, 'keyvalue-function-call', {
+        key,
+        path,
+        result,
+      });
+    }
   }
 
   // Properties

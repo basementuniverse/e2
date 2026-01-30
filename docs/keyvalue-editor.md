@@ -412,6 +412,7 @@ The KeyValue Editor automatically selects appropriate input controls based on da
 - **Strings**: Text input (with pattern-based detection for emails, URLs, etc.)
 - **Enums**: Dropdown select
 - **Objects**: Collapsible nested sections
+- **Functions**: Clickable buttons that execute the function
 
 ### Schema Format Support
 
@@ -457,6 +458,208 @@ Text inputs automatically become textareas for longer content:
   }
 }
 ```
+
+## Function Buttons
+
+The KeyValue Editor can render function members as clickable buttons. When a field's value is a function, it is automatically displayed as a button that executes the function when clicked.
+
+### Basic Usage
+
+```javascript
+const editor = document.querySelector('e2-keyvalue-editor');
+
+editor.value = {
+  counter: 0,
+  name: 'Widget',
+  increment: function() {
+    this.counter++;
+    return this.counter;
+  },
+  reset: function() {
+    this.counter = 0;
+    return 0;
+  },
+  greet: function() {
+    return `Hello from ${this.name}!`;
+  }
+};
+```
+
+### Function Context
+
+Functions are called with the entire value object as their `this` context, allowing them to:
+- Access other properties in the object
+- Modify other properties (changes will trigger `keyvalue-change` events)
+- Return values that can be captured via events
+
+```javascript
+const data = {
+  volume: 50,
+  muted: false,
+  increaseVolume: function() {
+    if (this.volume < 100) {
+      this.volume += 10;
+    }
+    return this.volume;
+  },
+  toggleMute: function() {
+    this.muted = !this.muted;
+    return this.muted;
+  }
+};
+```
+
+### Schema Support
+
+You can provide schema information for function fields to customize their display:
+
+```javascript
+editor.schema = {
+  type: 'object',
+  properties: {
+    counter: {
+      type: 'number',
+      title: 'Counter Value'
+    },
+    increment: {
+      title: 'Increment Counter',
+      description: 'Increases the counter by 1'
+    },
+    reset: {
+      title: 'Reset Counter',
+      description: 'Resets the counter to 0'
+    }
+  }
+};
+```
+
+### Function Call Events
+
+When a function button is clicked, a `keyvalue-function-call` event is dispatched:
+
+```typescript
+interface KeyValueFunctionCallEvent extends CustomEvent {
+  detail: {
+    key: string;      // The function name
+    path: string[];   // Path to the function (for nested objects)
+    result: any;      // The return value of the function
+  };
+}
+```
+
+```javascript
+editor.addEventListener('keyvalue-function-call', event => {
+  const { key, result } = event.detail;
+  console.log(`Function "${key}" returned:`, result);
+});
+```
+
+### Complete Example
+
+```html
+<e2-keyvalue-editor id="widget-editor"></e2-keyvalue-editor>
+
+<script>
+  const editor = document.getElementById('widget-editor');
+
+  // Create an object with both data and function members
+  const widget = {
+    name: 'Counter Widget',
+    count: 0,
+    enabled: true,
+
+    // Functions that manipulate the widget state
+    increment: function() {
+      if (this.enabled) {
+        this.count++;
+      }
+      return this.count;
+    },
+
+    decrement: function() {
+      if (this.enabled && this.count > 0) {
+        this.count--;
+      }
+      return this.count;
+    },
+
+    reset: function() {
+      this.count = 0;
+      return 'Counter reset';
+    },
+
+    toggle: function() {
+      this.enabled = !this.enabled;
+      return this.enabled ? 'Enabled' : 'Disabled';
+    },
+
+    getStatus: function() {
+      return `${this.name}: ${this.count} (${this.enabled ? 'enabled' : 'disabled'})`;
+    }
+  };
+
+  // Set up schema with descriptions
+  editor.schema = {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        title: 'Widget Name'
+      },
+      count: {
+        type: 'number',
+        title: 'Count'
+      },
+      enabled: {
+        type: 'boolean',
+        title: 'Enabled'
+      },
+      increment: {
+        title: 'Increment',
+        description: 'Increase count by 1'
+      },
+      decrement: {
+        title: 'Decrement',
+        description: 'Decrease count by 1'
+      },
+      reset: {
+        title: 'Reset',
+        description: 'Reset count to 0'
+      },
+      toggle: {
+        title: 'Toggle Enabled',
+        description: 'Toggle the enabled state'
+      },
+      getStatus: {
+        title: 'Get Status',
+        description: 'Get current widget status'
+      }
+    }
+  };
+
+  editor.value = widget;
+
+  // Log function calls and their results
+  editor.addEventListener('keyvalue-function-call', event => {
+    const { key, result } = event.detail;
+    console.log(`${key}() called - returned:`, result);
+  });
+
+  // Log value changes triggered by functions
+  editor.addEventListener('keyvalue-change', event => {
+    const { key, newValue } = event.detail;
+    console.log(`Property "${key}" changed to:`, newValue);
+  });
+</script>
+```
+
+### Use Cases
+
+Function buttons are particularly useful for:
+- **Interactive debugging**: Add helper functions to inspect or manipulate object state
+- **Game entity editors**: Add functions like `spawn()`, `destroy()`, `reset()`
+- **Configuration panels**: Add functions like `loadDefaults()`, `validate()`, `export()`
+- **Property panels**: Add functions like `refresh()`, `recalculate()`, `apply()`
 
 ## Validation
 
