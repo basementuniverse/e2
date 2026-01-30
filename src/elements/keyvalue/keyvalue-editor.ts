@@ -97,21 +97,21 @@ export class KeyValueEditorElement
         }
 
         :host(.theme-dark) .nested-section {
-          border-color: var(--border-color-dark, #3e3e42);
+          background: var(--bg-secondary-dark, #252526);
         }
 
         :host(.theme-dark) .nested-header {
-          background: var(--bg-secondary-dark, #252526);
-          border-bottom-color: var(--border-color-dark, #3e3e42);
+          background: transparent;
+          border-bottom-color: var(--border-color-dark, rgba(255, 255, 255, 0.1));
           color: var(--text-primary-dark, #e6edf3);
         }
 
         :host(.theme-dark) .nested-header:hover {
-          background: var(--bg-tertiary-dark, #2d2d30);
+          background: var(--bg-hover-dark, rgba(255, 255, 255, 0.05));
         }
 
         :host(.theme-dark) .nested-content {
-          background: var(--bg-primary-dark, #1e1e1e);
+          background: transparent;
         }
 
         :host(.theme-dark) .empty-state {
@@ -142,13 +142,13 @@ export class KeyValueEditorElement
         }
 
         .keyvalue-content {
-          padding: var(--spacing);
+          padding: 0;
         }
 
         .field-row {
           display: flex;
           align-items: flex-start;
-          margin-bottom: var(--spacing);
+          margin: var(--spacing);
           gap: var(--spacing);
         }
 
@@ -157,7 +157,7 @@ export class KeyValueEditorElement
         }
 
         :host([compact]) .field-row {
-          margin-bottom: calc(var(--spacing) / 2);
+          margin: calc(var(--spacing) / 2) var(--spacing);
         }
 
         .field-label {
@@ -297,15 +297,13 @@ export class KeyValueEditorElement
         }
 
         .nested-section {
-          border: 1px solid var(--border-color, #dee2e6);
-          border-radius: var(--border-radius);
-          margin-bottom: var(--spacing);
+          background: var(--bg-secondary, #f8f9fa);
           overflow: hidden;
         }
 
         .nested-header {
-          background: var(--bg-secondary, #f8f9fa);
-          border-bottom: 1px solid var(--border-color, #dee2e6);
+          background: transparent;
+          border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
           padding: var(--spacing);
           cursor: pointer;
           user-select: none;
@@ -317,7 +315,7 @@ export class KeyValueEditorElement
         }
 
         .nested-header:hover {
-          background: var(--bg-tertiary, #e9ecef);
+          background: var(--bg-hover, rgba(0, 0, 0, 0.05));
         }
 
         .nested-toggle {
@@ -336,6 +334,7 @@ export class KeyValueEditorElement
         .nested-content {
           padding: var(--spacing);
           display: none;
+          background: transparent;
         }
 
         .nested-section.expanded .nested-content {
@@ -345,7 +344,7 @@ export class KeyValueEditorElement
         .empty-state {
           text-align: center;
           color: var(--text-secondary, #6c757d);
-          padding: calc(var(--spacing) * 2);
+          padding: calc(var(--spacing) * 3) var(--spacing);
           font-style: italic;
         }
       </style>
@@ -681,10 +680,10 @@ export class KeyValueEditorElement
           schema?.type === 'integer'
             ? 'step="1"'
             : schema?.multipleOf
-            ? `step="${schema.multipleOf}"`
-            : '';
+              ? `step="${schema.multipleOf}"`
+              : '';
         return `<input type="number" id="${id}" class="input-control${errorClass}" value="${
-          value || ''
+          value ?? ''
         }" ${min} ${max} ${step} ${
           disabled ? 'disabled' : ''
         } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.valueAsNumber)">`;
@@ -696,15 +695,15 @@ export class KeyValueEditorElement
           schema?.type === 'integer'
             ? '1'
             : schema?.multipleOf
-            ? schema.multipleOf.toString()
-            : '1';
+              ? schema.multipleOf.toString()
+              : '1';
         return `
           <div class="range-container">
             <input type="range" id="${id}" class="input-control${errorClass}" value="${
-          value || rangeMin
-        }" min="${rangeMin}" max="${rangeMax}" step="${rangeStep}" ${
-          disabled ? 'disabled' : ''
-        } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), parseFloat(this.value)); this.nextElementSibling.textContent = this.value">
+              value || rangeMin
+            }" min="${rangeMin}" max="${rangeMax}" step="${rangeStep}" ${
+              disabled ? 'disabled' : ''
+            } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), parseFloat(this.value)); this.nextElementSibling.textContent = this.value">
             <span class="range-value">${value || rangeMin}</span>
           </div>
         `;
@@ -799,7 +798,7 @@ export class KeyValueEditorElement
         }
 
         return `<input type="text" id="${id}" class="input-control${errorClass}" value="${
-          value || ''
+          value ?? ''
         }" ${pattern} ${maxLengthAttr} ${minLength} ${
           disabled ? 'disabled' : ''
         } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), this.value)">`;
