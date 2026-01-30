@@ -1,6 +1,6 @@
 {
   "name": "@basementuniverse/e2",
-  "version": "1.5.5",
+  "version": "1.6.0",
   "description": "A set of web components for building game editors.",
   "author": "Gordon Larrigan <gordonlarrigan@gmail.com> (https://gordonlarrigan.com)",
   "license": "MIT",
