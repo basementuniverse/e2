@@ -407,6 +407,195 @@ export class KeyValueEditorElement
           cursor: not-allowed;
           opacity: 0.6;
         }
+
+        /* Array editor styles */
+        .array-section {
+          background: var(--bg-secondary, #f8f9fa);
+          overflow: hidden;
+        }
+
+        .array-header {
+          background: transparent;
+          border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+          padding: var(--spacing);
+          cursor: pointer;
+          user-select: none;
+          display: flex;
+          align-items: center;
+          gap: var(--spacing);
+          font-weight: 500;
+          transition: background-color var(--transition-fast, 0.15s ease-in-out);
+        }
+
+        .array-header:hover {
+          background: var(--bg-hover, rgba(0, 0, 0, 0.05));
+        }
+
+        .array-toggle {
+          width: 16px;
+          height: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.2s ease;
+        }
+
+        .array-section.expanded .array-toggle {
+          transform: rotate(90deg);
+        }
+
+        .array-count {
+          color: var(--text-secondary, #6c757d);
+          font-size: 12px;
+          font-weight: normal;
+        }
+
+        .array-content {
+          padding: var(--spacing);
+          display: none;
+          background: transparent;
+        }
+
+        .array-section.expanded .array-content {
+          display: block;
+        }
+
+        .array-items {
+          display: flex;
+          flex-direction: column;
+          gap: calc(var(--spacing) / 2);
+          margin-bottom: var(--spacing);
+        }
+
+        .array-item {
+          display: flex;
+          align-items: center;
+          gap: calc(var(--spacing) / 2);
+          background: var(--bg-primary, #ffffff);
+          padding: calc(var(--spacing) / 2);
+          border-radius: calc(var(--border-radius) / 2);
+          border: 1px solid var(--border-color, #dee2e6);
+        }
+
+        :host(.theme-dark) .array-section {
+          background: var(--bg-secondary-dark, #252526);
+        }
+
+        :host(.theme-dark) .array-header {
+          border-bottom-color: var(--border-color-dark, #3e3e42);
+          color: var(--text-primary-dark, #e6edf3);
+        }
+
+        :host(.theme-dark) .array-header:hover {
+          background: var(--bg-hover-dark, rgba(255, 255, 255, 0.05));
+        }
+
+        :host(.theme-dark) .array-item {
+          background: var(--bg-primary-dark, #1e1e1e);
+          border-color: var(--border-color-dark, #3e3e42);
+        }
+
+        .array-item-index {
+          flex: 0 0 30px;
+          font-size: 12px;
+          color: var(--text-secondary, #6c757d);
+          text-align: right;
+          font-weight: 500;
+        }
+
+        .array-item-input {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .array-item-controls {
+          flex: 0 0 auto;
+          display: flex;
+          gap: 4px;
+        }
+
+        .array-item-button {
+          width: 28px;
+          height: 28px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          background: var(--bg-secondary, #f8f9fa);
+          border: 1px solid var(--border-color, #dee2e6);
+          border-radius: calc(var(--border-radius) / 2);
+          cursor: pointer;
+          transition: background-color var(--transition-fast, 0.15s ease-in-out);
+          user-select: none;
+        }
+
+        .array-item-button:hover:not(:disabled) {
+          background: var(--bg-tertiary, #e9ecef);
+        }
+
+        .array-item-button:active:not(:disabled) {
+          background: var(--bg-hover, #dee2e6);
+        }
+
+        .array-item-button:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+
+        .array-item-button.danger:hover:not(:disabled) {
+          background: var(--error-color);
+          border-color: var(--error-color);
+          color: white;
+        }
+
+        :host(.theme-dark) .array-item-button {
+          background: var(--bg-tertiary-dark, #333333);
+          border-color: var(--border-color-dark, #3e3e42);
+          color: var(--text-primary-dark, #e6edf3);
+        }
+
+        :host(.theme-dark) .array-item-button:hover:not(:disabled) {
+          background: var(--bg-hover-dark, #404040);
+        }
+
+        .array-add-button {
+          width: 100%;
+          padding: var(--input-padding, 6px 12px);
+          font-size: var(--input-font-size, 14px);
+          font-family: var(--font-family, system-ui, sans-serif);
+          font-weight: 500;
+          line-height: var(--line-height, 1.4);
+          color: var(--accent-color, #0d6efd);
+          background-color: transparent;
+          border: 1px dashed var(--accent-color, #0d6efd);
+          border-radius: var(--input-border-radius, 4px);
+          cursor: pointer;
+          transition: background-color var(--transition-fast, 0.15s ease-in-out), border-color var(--transition-fast, 0.15s ease-in-out);
+          user-select: none;
+        }
+
+        .array-add-button:hover:not(:disabled) {
+          background-color: color-mix(in srgb, var(--accent-color, #0d6efd) 10%, transparent);
+          border-style: solid;
+        }
+
+        .array-add-button:active:not(:disabled) {
+          background-color: color-mix(in srgb, var(--accent-color, #0d6efd) 20%, transparent);
+        }
+
+        .array-add-button:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+
+        .array-empty {
+          text-align: center;
+          color: var(--text-secondary, #6c757d);
+          padding: var(--spacing);
+          font-style: italic;
+          font-size: 13px;
+        }
       </style>
 
       <div class="keyvalue-container">
@@ -654,6 +843,17 @@ export class KeyValueEditorElement
       return this.renderFunctionField(key, value, schema, path);
     }
 
+    const isArray = Array.isArray(value);
+
+    if (isArray) {
+      // Check if it's a simple array (only scalar types)
+      const isSimpleArray = this.isSimpleArray(value, schema);
+      if (isSimpleArray) {
+        return this.renderArrayField(key, value, schema, path);
+      }
+      // Fall through to render as text for complex arrays
+    }
+
     const isNested =
       typeof value === 'object' && value !== null && !Array.isArray(value);
 
@@ -726,6 +926,172 @@ export class KeyValueEditorElement
     }
 
     return fields.join('');
+  }
+
+  private isSimpleArray(value: any[], schema?: any): boolean {
+    // Empty arrays are simple
+    if (value.length === 0) {
+      // Check if schema defines array items
+      if (schema?.items) {
+        const itemType = schema.items.type;
+        // Only support simple types
+        return ['string', 'number', 'integer', 'boolean'].includes(itemType);
+      }
+      // Allow empty arrays without schema
+      return true;
+    }
+
+    // Check if all items are scalar types (no objects or nested arrays)
+    for (const item of value) {
+      if (item === null || item === undefined) continue;
+      const itemType = typeof item;
+      if (itemType === 'object') {
+        return false; // Objects and nested arrays not supported
+      }
+    }
+
+    return true;
+  }
+
+  private renderArrayField(
+    key: string,
+    value: any[],
+    schema?: any,
+    path: string[] = []
+  ): string {
+    const label = schema?.title || this.formatLabel(key);
+    const isExpanded = true; // TODO: Track expansion state
+    const expandedClass = isExpanded ? 'expanded' : '';
+    const arrayPath = [...path, key];
+    const itemCount = value.length;
+    const itemSchema = schema?.items;
+    const disabled = this.disabled || this._readonly;
+
+    // Get default value for new items
+    const defaultValue = this.getDefaultArrayItemValue(value, itemSchema);
+    const pathString = JSON.stringify(arrayPath).replace(/"/g, '&quot;');
+
+    let itemsHtml = '';
+    if (value.length === 0) {
+      itemsHtml = '<div class="array-empty">No items</div>';
+    } else {
+      itemsHtml = '<div class="array-items">';
+      for (let i = 0; i < value.length; i++) {
+        itemsHtml += this.renderArrayItem(
+          arrayPath,
+          i,
+          value[i],
+          itemSchema,
+          value.length
+        );
+      }
+      itemsHtml += '</div>';
+    }
+
+    const description = schema?.description;
+
+    return `
+      <div class="array-section ${expandedClass}">
+        <div class="array-header" onclick="this.parentElement.classList.toggle('expanded')">
+          <span class="array-toggle">▶</span>
+          <span>${label}</span>
+          <span class="array-count">(${itemCount} ${itemCount === 1 ? 'item' : 'items'})</span>
+        </div>
+        <div class="array-content">
+          ${description ? `<div class="field-description" style="margin-bottom: var(--spacing);">${description}</div>` : ''}
+          ${itemsHtml}
+          <button
+            class="array-add-button"
+            ${disabled ? 'disabled' : ''}
+            onclick="this.getRootNode().host.addArrayItem(JSON.parse('${pathString}'), ${JSON.stringify(defaultValue).replace(/"/g, '&quot;')})">
+            + Add Item
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  private renderArrayItem(
+    arrayPath: string[],
+    index: number,
+    value: any,
+    itemSchema?: any,
+    totalItems: number = 1
+  ): string {
+    const itemPath = [...arrayPath, index.toString()];
+    const inputType = this.getInputType(value, itemSchema);
+    const inputId = `field-${itemPath.join('-')}`;
+    const disabled = this.disabled || this._readonly;
+    const pathString = JSON.stringify(arrayPath).replace(/"/g, '&quot;');
+
+    const canMoveUp = index > 0;
+    const canMoveDown = index < totalItems - 1;
+
+    return `
+      <div class="array-item">
+        <span class="array-item-index">${index}</span>
+        <div class="array-item-input">
+          ${this.renderInput(inputId, itemPath, value, itemSchema, inputType)}
+        </div>
+        <div class="array-item-controls">
+          <button
+            class="array-item-button"
+            title="Move up"
+            ${disabled || !canMoveUp ? 'disabled' : ''}
+            onclick="this.getRootNode().host.moveArrayItem(JSON.parse('${pathString}'), ${index}, 'up')">
+            ↑
+          </button>
+          <button
+            class="array-item-button"
+            title="Move down"
+            ${disabled || !canMoveDown ? 'disabled' : ''}
+            onclick="this.getRootNode().host.moveArrayItem(JSON.parse('${pathString}'), ${index}, 'down')">
+            ↓
+          </button>
+          <button
+            class="array-item-button danger"
+            title="Remove item"
+            ${disabled ? 'disabled' : ''}
+            onclick="this.getRootNode().host.removeArrayItem(JSON.parse('${pathString}'), ${index})">
+            ×
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  private getDefaultArrayItemValue(array: any[], itemSchema?: any): any {
+    // Use schema type if available
+    if (itemSchema?.type) {
+      switch (itemSchema.type) {
+        case 'string':
+          return itemSchema.default ?? '';
+        case 'number':
+        case 'integer':
+          return itemSchema.default ?? 0;
+        case 'boolean':
+          return itemSchema.default ?? false;
+      }
+    }
+
+    // Infer from existing items
+    if (array.length > 0) {
+      const lastItem = array[array.length - 1];
+      const itemType = typeof lastItem;
+
+      switch (itemType) {
+        case 'number':
+          return 0;
+        case 'boolean':
+          return false;
+        case 'string':
+        default:
+          return '';
+      }
+    }
+
+    // Default to empty string
+    return '';
   }
 
   private renderFunctionField(
@@ -1333,27 +1699,66 @@ export class KeyValueEditorElement
       // Top-level property
       this._valueProxy[path[0]] = value;
     } else {
-      // Nested property - navigate to the correct nested object
+      // Nested property or array item - navigate to the correct nested object/array
       let target = this._value;
       for (let i = 0; i < path.length - 1; i++) {
-        if (!target[path[i]] || typeof target[path[i]] !== 'object') {
-          target[path[i]] = {};
+        const pathPart = path[i];
+
+        // Check if this is an array index (numeric string)
+        const isArrayIndex = /^\d+$/.test(pathPart);
+
+        if (isArrayIndex) {
+          // Navigating through an array
+          const index = parseInt(pathPart, 10);
+          if (Array.isArray(target) && index >= 0 && index < target.length) {
+            target = target[index];
+          } else {
+            return; // Invalid array index
+          }
+        } else {
+          // Navigating through an object
+          if (!target[pathPart] || typeof target[pathPart] !== 'object') {
+            target[pathPart] = {};
+          }
+          target = target[pathPart];
         }
-        target = target[path[i]];
       }
 
       const finalKey = path[path.length - 1];
-      const oldValue = target[finalKey];
-      target[finalKey] = value;
 
-      // Dispatch change event
-      this.dispatchChangeEvent(finalKey, oldValue, value, path);
+      // Check if final key is an array index
+      const isFinalArrayIndex = /^\d+$/.test(finalKey);
 
-      // Update the specific input field without full re-render
-      this.updateInputValueByPath(path, value);
+      if (isFinalArrayIndex) {
+        // Setting an array item
+        const index = parseInt(finalKey, 10);
+        if (Array.isArray(target) && index >= 0 && index < target.length) {
+          const oldValue = target[index];
+          target[index] = value;
 
-      // Validate after change
-      this.validateFieldByPath(path);
+          // Dispatch change event
+          this.dispatchChangeEvent(finalKey, oldValue, value, path);
+
+          // Update the specific input field without full re-render
+          this.updateInputValueByPath(path, value);
+
+          // Validate the array item
+          this.validateFieldByPath(path);
+        }
+      } else {
+        // Setting an object property
+        const oldValue = target[finalKey];
+        target[finalKey] = value;
+
+        // Dispatch change event
+        this.dispatchChangeEvent(finalKey, oldValue, value, path);
+
+        // Update the specific input field without full re-render
+        this.updateInputValueByPath(path, value);
+
+        // Validate after change
+        this.validateFieldByPath(path);
+      }
     }
   }
 
@@ -1510,6 +1915,114 @@ export class KeyValueEditorElement
         result,
       });
     }
+  }
+
+  // Array manipulation methods
+  public addArrayItem(path: string[], defaultValue: any = ''): void {
+    if (this.disabled || this._readonly) return;
+
+    // Navigate to the array
+    let target = this._value;
+    for (const pathPart of path) {
+      if (target && typeof target === 'object') {
+        target = target[pathPart];
+      } else {
+        return;
+      }
+    }
+
+    // Ensure target is an array
+    if (!Array.isArray(target)) return;
+
+    const oldArray = [...target];
+
+    // Add new item
+    target.push(defaultValue);
+
+    // Dispatch change event
+    const key = path[path.length - 1];
+    this.dispatchChangeEvent(key, oldArray, target, path);
+
+    // Re-render the array section
+    this.render();
+
+    // Validate the array
+    this.validateFieldByPath(path);
+  }
+
+  public removeArrayItem(path: string[], index: number): void {
+    if (this.disabled || this._readonly) return;
+
+    // Navigate to the array
+    let target = this._value;
+    for (const pathPart of path) {
+      if (target && typeof target === 'object') {
+        target = target[pathPart];
+      } else {
+        return;
+      }
+    }
+
+    // Ensure target is an array and index is valid
+    if (!Array.isArray(target) || index < 0 || index >= target.length) return;
+
+    const oldArray = [...target];
+
+    // Remove item
+    target.splice(index, 1);
+
+    // Dispatch change event
+    const key = path[path.length - 1];
+    this.dispatchChangeEvent(key, oldArray, target, path);
+
+    // Re-render the array section
+    this.render();
+
+    // Validate the array
+    this.validateFieldByPath(path);
+  }
+
+  public moveArrayItem(
+    path: string[],
+    index: number,
+    direction: 'up' | 'down'
+  ): void {
+    if (this.disabled || this._readonly) return;
+
+    // Navigate to the array
+    let target = this._value;
+    for (const pathPart of path) {
+      if (target && typeof target === 'object') {
+        target = target[pathPart];
+      } else {
+        return;
+      }
+    }
+
+    // Ensure target is an array and index is valid
+    if (!Array.isArray(target) || index < 0 || index >= target.length) return;
+
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+
+    // Check bounds
+    if (newIndex < 0 || newIndex >= target.length) return;
+
+    const oldArray = [...target];
+
+    // Swap items
+    const temp = target[index];
+    target[index] = target[newIndex];
+    target[newIndex] = temp;
+
+    // Dispatch change event
+    const key = path[path.length - 1];
+    this.dispatchChangeEvent(key, oldArray, target, path);
+
+    // Re-render the array section
+    this.render();
+
+    // Validate the array
+    this.validateFieldByPath(path);
   }
 
   // Properties

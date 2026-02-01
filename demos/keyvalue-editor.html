@@ -24,184 +24,232 @@
         E2 - KeyValue Editor Demo
       </h1>
       <p>
-        Interactive demonstration of the <code>&lt;e2-keyvalue-editor&gt;</code> element
+        Interactive demonstration of the
+        <code>&lt;e2-keyvalue-editor&gt;</code> element
       </p>
     </header>
 
     <main>
+      <e2-app id="demo-app" theme="light">
+        <div class="demo-section">
+          <h2>Basic Usage</h2>
+          <p>Simple object editing without schema validation:</p>
 
-      <div class="demo-section">
-        <h2>Basic Usage</h2>
-        <p>Simple object editing without schema validation:</p>
+          <e2-keyvalue-editor id="basic-editor"></e2-keyvalue-editor>
 
-        <e2-keyvalue-editor id="basic-editor"></e2-keyvalue-editor>
-
-        <div class="controls">
-          <button onclick="setBasicValue()">Set Sample Data</button>
-          <button onclick="getBasicValue()">Get Current Value</button>
-          <button onclick="clearBasicValue()">Clear</button>
-        </div>
-
-        <div class="output">
-          <h3>Current Value:</h3>
-          <pre id="basic-output">{}</pre>
-        </div>
-      </div>
-
-      <div class="demo-section">
-        <h2>Header Title Configuration</h2>
-        <p>Demonstration of configurable header titles:</p>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-          <div>
-            <h3>No Header (default)</h3>
-            <e2-keyvalue-editor id="no-header-editor"></e2-keyvalue-editor>
+          <div class="controls">
+            <button onclick="setBasicValue()">Set Sample Data</button>
+            <button onclick="getBasicValue()">Get Current Value</button>
+            <button onclick="clearBasicValue()">Clear</button>
           </div>
-          <div>
-            <h3>Custom Header Title</h3>
-            <e2-keyvalue-editor id="custom-header-editor" header-title="Game Settings"></e2-keyvalue-editor>
+
+          <div class="output">
+            <h3>Current Value:</h3>
+            <pre id="basic-output">{}</pre>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-          <div>
-            <h3>Default "Properties" Header</h3>
-            <e2-keyvalue-editor id="default-header-editor" header-title=""></e2-keyvalue-editor>
-          </div>
-          <div>
-            <h3>Dynamic Header</h3>
-            <e2-keyvalue-editor id="dynamic-header-editor" header-title="Configuration"></e2-keyvalue-editor>
-          </div>
-        </div>
+        <div class="demo-section">
+          <h2>Header Title Configuration</h2>
+          <p>Demonstration of configurable header titles:</p>
 
-        <div class="controls">
-          <button onclick="setHeaderSampleData()">Set Sample Data</button>
-          <button onclick="toggleDynamicHeader()">Toggle Dynamic Header</button>
-          <button onclick="changeDynamicHeaderTitle()">Change Dynamic Title</button>
-          <button onclick="clearHeaderEditors()">Clear All</button>
-        </div>
-      </div>
-
-      <div class="demo-section">
-        <h2>Advanced Input Types</h2>
-        <p>Showcase of all supported input types with schema constraints:</p>
-
-        <e2-keyvalue-editor id="advanced-editor"></e2-keyvalue-editor>
-
-        <div class="controls">
-          <button onclick="setAdvancedValue()">Set Sample Data with Advanced Types</button>
-          <button onclick="getAdvancedValue()">Get Current Value</button>
-          <button onclick="validateAdvanced()">Validate</button>
-          <button onclick="clearAdvancedValue()">Clear</button>
-        </div>
-
-        <div class="output">
-          <h3>Current Value:</h3>
-          <pre id="advanced-output">{}</pre>
-          <h3>Validation:</h3>
-          <pre id="advanced-validation">Not validated</pre>
-        </div>
-      </div>
-
-      <div class="demo-section">
-        <h2>Function Buttons</h2>
-        <p>Function members are automatically rendered as buttons that can be clicked to execute:</p>
-
-        <e2-keyvalue-editor id="function-editor"></e2-keyvalue-editor>
-
-        <div class="controls">
-          <button onclick="setFunctionValue()">Set Sample Data with Functions</button>
-          <button onclick="getFunctionValue()">Get Current Value</button>
-          <button onclick="clearFunctionValue()">Clear</button>
-        </div>
-
-        <div class="output">
-          <h3>Current Value:</h3>
-          <pre id="function-output">{}</pre>
-          <h3>Function Calls:</h3>
-          <pre id="function-calls">No functions called yet</pre>
-        </div>
-      </div>
-
-      <div class="demo-section">
-        <h2>Nested Objects</h2>
-        <p>Editing objects with nested properties using collapsible sections:</p>
-
-        <e2-keyvalue-editor id="nested-editor"></e2-keyvalue-editor>
-
-        <div class="controls">
-          <button onclick="setNestedValue()">Set Nested Data</button>
-          <button onclick="getNestedValue()">Get Current Value</button>
-          <button onclick="clearNestedValue()">Clear</button>
-        </div>
-
-        <div class="output">
-          <h3>Current Value:</h3>
-          <pre id="nested-output">{}</pre>
-        </div>
-      </div>
-
-      <div class="demo-section">
-        <h2>Comprehensive Schema Demo</h2>
-        <p>Complete example with validation, required fields, and error handling:</p>
-
-        <e2-keyvalue-editor id="schema-editor"></e2-keyvalue-editor>
-
-        <div class="controls">
-          <button onclick="setSchemaValue()">Set Schema & Sample Data</button>
-          <button onclick="getSchemaValue()">Get Current Value</button>
-          <button onclick="validateSchema()">Validate</button>
-          <button onclick="clearSchemaValue()">Clear</button>
-        </div>
-
-        <div class="output">
-          <h3>Current Value:</h3>
-          <pre id="schema-output">{}</pre>
-          <h3>Validation:</h3>
-          <pre id="validation-output">Not validated</pre>
-        </div>
-      </div>
-
-      <div class="demo-section">
-        <h2>Theme & Style Options</h2>
-        <p>Different themes and layout options:</p>
-
-        <div class="demo-row">
-          <div class="demo-container">
-            <h3>Compact Mode</h3>
-            <e2-keyvalue-editor id="compact-editor" compact></e2-keyvalue-editor>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 20px;
+              margin-bottom: 20px;
+            "
+          >
+            <div>
+              <h3>No Header (default)</h3>
+              <e2-keyvalue-editor id="no-header-editor"></e2-keyvalue-editor>
+            </div>
+            <div>
+              <h3>Custom Header Title</h3>
+              <e2-keyvalue-editor
+                id="custom-header-editor"
+                header-title="Game Settings"
+              ></e2-keyvalue-editor>
+            </div>
           </div>
 
-          <div class="demo-container">
-            <h3>Read-only Mode</h3>
-            <e2-keyvalue-editor id="readonly-editor" readonly></e2-keyvalue-editor>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 20px;
+              margin-bottom: 20px;
+            "
+          >
+            <div>
+              <h3>Default "Properties" Header</h3>
+              <e2-keyvalue-editor
+                id="default-header-editor"
+                header-title=""
+              ></e2-keyvalue-editor>
+            </div>
+            <div>
+              <h3>Dynamic Header</h3>
+              <e2-keyvalue-editor
+                id="dynamic-header-editor"
+                header-title="Configuration"
+              ></e2-keyvalue-editor>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button onclick="setHeaderSampleData()">Set Sample Data</button>
+            <button onclick="toggleDynamicHeader()">
+              Toggle Dynamic Header
+            </button>
+            <button onclick="changeDynamicHeaderTitle()">
+              Change Dynamic Title
+            </button>
+            <button onclick="clearHeaderEditors()">Clear All</button>
           </div>
         </div>
 
-        <div class="controls">
-          <button onclick="setThemeData()">Set Data for Theme Examples</button>
+        <div class="demo-section">
+          <h2>Advanced Input Types</h2>
+          <p>Showcase of all supported input types with schema constraints:</p>
+
+          <e2-keyvalue-editor id="advanced-editor"></e2-keyvalue-editor>
+
+          <div class="controls">
+            <button onclick="setAdvancedValue()">
+              Set Sample Data with Advanced Types
+            </button>
+            <button onclick="getAdvancedValue()">Get Current Value</button>
+            <button onclick="validateAdvanced()">Validate</button>
+            <button onclick="clearAdvancedValue()">Clear</button>
+          </div>
+
+          <div class="output">
+            <h3>Current Value:</h3>
+            <pre id="advanced-output">{}</pre>
+            <h3>Validation:</h3>
+            <pre id="advanced-validation">Not validated</pre>
+          </div>
         </div>
-      </div>
 
-      <div class="demo-section">
-        <h2>Event Handling</h2>
-        <p>Real-time event output:</p>
+        <div class="demo-section">
+          <h2>Function Buttons</h2>
+          <p>
+            Function members are automatically rendered as buttons that can be
+            clicked to execute:
+          </p>
 
-        <div class="output-container" id="event-output">
-          <div>Events will appear here...</div>
+          <e2-keyvalue-editor id="function-editor"></e2-keyvalue-editor>
+
+          <div class="controls">
+            <button onclick="setFunctionValue()">
+              Set Sample Data with Functions
+            </button>
+            <button onclick="getFunctionValue()">Get Current Value</button>
+            <button onclick="clearFunctionValue()">Clear</button>
+          </div>
+
+          <div class="output">
+            <h3>Current Value:</h3>
+            <pre id="function-output">{}</pre>
+            <h3>Function Calls:</h3>
+            <pre id="function-calls">No functions called yet</pre>
+          </div>
         </div>
-      </div>
 
-      <div class="demo-section">
-        <h2>Code Examples</h2>
-        <p>Copy and paste these examples to get started:</p>
+        <div class="demo-section">
+          <h2>Nested Objects</h2>
+          <p>
+            Editing objects with nested properties using collapsible sections:
+          </p>
 
-        <div class="code-example">
-          <h3>Basic KeyValue Editor:</h3>
-          <button class="copy-button" onclick="copyToClipboard('basic-code')">
-            Copy
-          </button>
-          <pre id="basic-code">
+          <e2-keyvalue-editor id="nested-editor"></e2-keyvalue-editor>
+
+          <div class="controls">
+            <button onclick="setNestedValue()">Set Nested Data</button>
+            <button onclick="getNestedValue()">Get Current Value</button>
+            <button onclick="clearNestedValue()">Clear</button>
+          </div>
+
+          <div class="output">
+            <h3>Current Value:</h3>
+            <pre id="nested-output">{}</pre>
+          </div>
+        </div>
+
+        <div class="demo-section">
+          <h2>Comprehensive Schema Demo</h2>
+          <p>
+            Complete example with validation, required fields, and error
+            handling:
+          </p>
+
+          <e2-keyvalue-editor id="schema-editor"></e2-keyvalue-editor>
+
+          <div class="controls">
+            <button onclick="setSchemaValue()">Set Schema & Sample Data</button>
+            <button onclick="getSchemaValue()">Get Current Value</button>
+            <button onclick="validateSchema()">Validate</button>
+            <button onclick="clearSchemaValue()">Clear</button>
+          </div>
+
+          <div class="output">
+            <h3>Current Value:</h3>
+            <pre id="schema-output">{}</pre>
+            <h3>Validation:</h3>
+            <pre id="validation-output">Not validated</pre>
+          </div>
+        </div>
+
+        <div class="demo-section">
+          <h2>Theme & Style Options</h2>
+          <p>Different themes and layout options:</p>
+
+          <div class="demo-row">
+            <div class="demo-container">
+              <h3>Compact Mode</h3>
+              <e2-keyvalue-editor
+                id="compact-editor"
+                compact
+              ></e2-keyvalue-editor>
+            </div>
+
+            <div class="demo-container">
+              <h3>Read-only Mode</h3>
+              <e2-keyvalue-editor
+                id="readonly-editor"
+                readonly
+              ></e2-keyvalue-editor>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button onclick="setThemeData()">
+              Set Data for Theme Examples
+            </button>
+          </div>
+        </div>
+
+        <div class="demo-section">
+          <h2>Event Handling</h2>
+          <p>Real-time event output:</p>
+
+          <div class="output-container" id="event-output">
+            <div>Events will appear here...</div>
+          </div>
+        </div>
+
+        <div class="demo-section">
+          <h2>Code Examples</h2>
+          <p>Copy and paste these examples to get started:</p>
+
+          <div class="code-example">
+            <h3>Basic KeyValue Editor:</h3>
+            <button class="copy-button" onclick="copyToClipboard('basic-code')">
+              Copy
+            </button>
+            <pre id="basic-code">
 &lt;e2-keyvalue-editor id="my-editor"&gt;&lt;/e2-keyvalue-editor&gt;
 
 &lt;script&gt;
@@ -216,15 +264,19 @@
 
   // Get current value
   console.log(editor.value);
-&lt;/script&gt;</pre>
-        </div>
+&lt;/script&gt;</pre
+            >
+          </div>
 
-        <div class="code-example">
-          <h3>With Schema Validation:</h3>
-          <button class="copy-button" onclick="copyToClipboard('schema-code')">
-            Copy
-          </button>
-          <pre id="schema-code">
+          <div class="code-example">
+            <h3>With Schema Validation:</h3>
+            <button
+              class="copy-button"
+              onclick="copyToClipboard('schema-code')"
+            >
+              Copy
+            </button>
+            <pre id="schema-code">
 &lt;e2-keyvalue-editor id="schema-editor"&gt;&lt;/e2-keyvalue-editor&gt;
 
 &lt;script&gt;
@@ -260,15 +312,19 @@
     email: 'jane@example.com',
     age: 25
   };
-&lt;/script&gt;</pre>
-        </div>
+&lt;/script&gt;</pre
+            >
+          </div>
 
-        <div class="code-example">
-          <h3>Advanced Input Types:</h3>
-          <button class="copy-button" onclick="copyToClipboard('advanced-code')">
-            Copy
-          </button>
-          <pre id="advanced-code">
+          <div class="code-example">
+            <h3>Advanced Input Types:</h3>
+            <button
+              class="copy-button"
+              onclick="copyToClipboard('advanced-code')"
+            >
+              Copy
+            </button>
+            <pre id="advanced-code">
 &lt;e2-keyvalue-editor id="advanced-editor"&gt;&lt;/e2-keyvalue-editor&gt;
 
 &lt;script&gt;
@@ -300,15 +356,19 @@
       }
     }
   };
-&lt;/script&gt;</pre>
-        </div>
+&lt;/script&gt;</pre
+            >
+          </div>
 
-        <div class="code-example">
-          <h3>Event Handling:</h3>
-          <button class="copy-button" onclick="copyToClipboard('events-code')">
-            Copy
-          </button>
-          <pre id="events-code">
+          <div class="code-example">
+            <h3>Event Handling:</h3>
+            <button
+              class="copy-button"
+              onclick="copyToClipboard('events-code')"
+            >
+              Copy
+            </button>
+            <pre id="events-code">
 // Listen for value changes
 editor.addEventListener('keyvalue-change', event => {
   const { key, oldValue, newValue, path, isValid } = event.detail;
@@ -325,574 +385,602 @@ editor.addEventListener('keyvalue-validation', event => {
 
 // Programmatic validation
 const result = editor.validate();
-console.log('Is valid:', result.isValid);</pre>
+console.log('Is valid:', result.isValid);</pre
+            >
+          </div>
         </div>
-      </div>
+      </e2-app>
     </main>
 
     <script>
-        // Basic editor functionality
-        const basicEditor = document.getElementById('basic-editor');
-        const basicOutput = document.getElementById('basic-output');
+      const app = document.getElementById('demo-app');
 
-        function setBasicValue() {
-            const sampleData = {
-                name: 'John Doe',
-                age: 30,
-                email: 'john@example.com',
-                active: true
-            };
-            basicEditor.value = sampleData;
-            updateBasicOutput();
+      // Basic editor functionality
+      const basicEditor = document.getElementById('basic-editor');
+      const basicOutput = document.getElementById('basic-output');
+
+      function setBasicValue() {
+        const sampleData = {
+          name: 'John Doe',
+          age: 30,
+          email: 'john@example.com',
+          active: true,
+        };
+        basicEditor.value = sampleData;
+        updateBasicOutput();
+      }
+
+      function getBasicValue() {
+        updateBasicOutput();
+      }
+
+      function clearBasicValue() {
+        basicEditor.value = {};
+        updateBasicOutput();
+      }
+
+      function updateBasicOutput() {
+        basicOutput.textContent = JSON.stringify(basicEditor.value, null, 2);
+      }
+
+      // Header title demo functionality
+      const noHeaderEditor = document.getElementById('no-header-editor');
+      const customHeaderEditor = document.getElementById(
+        'custom-header-editor'
+      );
+      const defaultHeaderEditor = document.getElementById(
+        'default-header-editor'
+      );
+      const dynamicHeaderEditor = document.getElementById(
+        'dynamic-header-editor'
+      );
+
+      function setHeaderSampleData() {
+        const sampleData = {
+          username: 'player1',
+          difficulty: 'normal',
+          soundEnabled: true,
+          volume: 75,
+        };
+        noHeaderEditor.value = sampleData;
+        customHeaderEditor.value = sampleData;
+        defaultHeaderEditor.value = sampleData;
+        dynamicHeaderEditor.value = sampleData;
+      }
+
+      let headerVisible = true;
+      function toggleDynamicHeader() {
+        headerVisible = !headerVisible;
+        if (headerVisible) {
+          dynamicHeaderEditor.headerTitle = 'Configuration';
+        } else {
+          dynamicHeaderEditor.headerTitle = null;
+        }
+      }
+
+      let titleIndex = 0;
+      const titleOptions = [
+        'Configuration',
+        'Settings',
+        'Options',
+        'Parameters',
+        'Properties',
+      ];
+      function changeDynamicHeaderTitle() {
+        titleIndex = (titleIndex + 1) % titleOptions.length;
+        dynamicHeaderEditor.headerTitle = titleOptions[titleIndex];
+      }
+
+      function clearHeaderEditors() {
+        noHeaderEditor.value = {};
+        customHeaderEditor.value = {};
+        defaultHeaderEditor.value = {};
+        dynamicHeaderEditor.value = {};
+      }
+
+      // Advanced types editor functionality
+      const advancedEditor = document.getElementById('advanced-editor');
+      const advancedOutput = document.getElementById('advanced-output');
+      const advancedValidation = document.getElementById('advanced-validation');
+
+      function setAdvancedValue() {
+        const schema = {
+          type: 'object',
+          properties: {
+            // Text inputs
+            name: {
+              type: 'string',
+              title: 'Name',
+              description: 'Your full name',
+              minLength: 2,
+              maxLength: 50,
+            },
+            bio: {
+              type: 'string',
+              title: 'Biography',
+              description: 'Tell us about yourself',
+              maxLength: 500,
+            },
+            // Numbers and ranges
+            age: {
+              type: 'integer',
+              title: 'Age',
+              minimum: 13,
+              maximum: 120,
+            },
+            volume: {
+              type: 'number',
+              title: 'Volume',
+              description: 'Volume level (0-100)',
+              minimum: 0,
+              maximum: 100,
+              multipleOf: 5,
+            },
+            // Specialized string inputs
+            email: {
+              type: 'string',
+              title: 'Email',
+              format: 'email',
+              description: 'Your email address',
+            },
+            website: {
+              type: 'string',
+              title: 'Website',
+              format: 'url',
+              description: 'Your personal website',
+            },
+            phone: {
+              type: 'string',
+              title: 'Phone Number',
+              format: 'tel',
+              pattern: '^\\+?[0-9\\s\\-\\(\\)]+$',
+            },
+            // Color picker
+            favoriteColor: {
+              type: 'string',
+              title: 'Favorite Color',
+              format: 'color',
+              description: 'Pick your favorite color',
+            },
+            // Date and time
+            birthDate: {
+              type: 'string',
+              title: 'Birth Date',
+              format: 'date',
+            },
+            preferredTime: {
+              type: 'string',
+              title: 'Preferred Meeting Time',
+              format: 'time',
+            },
+            // Enum/select
+            category: {
+              type: 'string',
+              title: 'Category',
+              enum: ['developer', 'designer', 'manager', 'student', 'other'],
+              description: 'Choose your primary role',
+            },
+            // Boolean
+            newsletter: {
+              type: 'boolean',
+              title: 'Subscribe to Newsletter',
+              description: 'Receive updates and news',
+            },
+          },
+          required: ['name', 'email', 'category'],
+        };
+
+        const sampleData = {
+          name: 'Alex Johnson',
+          bio: 'Software developer with 5 years of experience in web technologies.',
+          age: 28,
+          volume: 75,
+          email: 'alex@example.com',
+          website: 'https://alexjohnson.dev',
+          phone: '+1-555-0123',
+          favoriteColor: '#3498db',
+          birthDate: '1995-06-15',
+          preferredTime: '14:30',
+          category: 'developer',
+          newsletter: true,
+        };
+
+        advancedEditor.schema = schema;
+        advancedEditor.value = sampleData;
+        updateAdvancedOutput();
+      }
+
+      function getAdvancedValue() {
+        updateAdvancedOutput();
+      }
+
+      function validateAdvanced() {
+        const result = advancedEditor.validate();
+        advancedValidation.textContent = JSON.stringify(result, null, 2);
+      }
+
+      function clearAdvancedValue() {
+        advancedEditor.value = {};
+        updateAdvancedOutput();
+      }
+
+      function updateAdvancedOutput() {
+        advancedOutput.textContent = JSON.stringify(
+          advancedEditor.value,
+          null,
+          2
+        );
+      }
+
+      // Schema editor functionality
+      const schemaEditor = document.getElementById('schema-editor');
+      const schemaOutput = document.getElementById('schema-output');
+      const validationOutput = document.getElementById('validation-output');
+
+      function setSchemaValue() {
+        const schema = {
+          type: 'object',
+          properties: {
+            // Required fields
+            username: {
+              type: 'string',
+              title: 'Username',
+              description: 'Must be unique, 3-20 characters',
+              minLength: 3,
+              maxLength: 20,
+              pattern: '^[a-zA-Z0-9_]+$',
+            },
+            password: {
+              type: 'string',
+              title: 'Password',
+              description: 'At least 8 characters with mixed case and numbers',
+              minLength: 8,
+              pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$',
+            },
+            // Optional fields with validation
+            score: {
+              type: 'integer',
+              title: 'Score',
+              description: 'Game score (0-1000)',
+              minimum: 0,
+              maximum: 1000,
+              multipleOf: 10,
+            },
+            difficulty: {
+              type: 'string',
+              title: 'Difficulty Level',
+              enum: ['easy', 'medium', 'hard', 'expert'],
+              description: 'Choose game difficulty',
+            },
+            notifications: {
+              type: 'boolean',
+              title: 'Enable Notifications',
+              description: 'Receive game updates and alerts',
+            },
+          },
+          required: ['username', 'password'],
+        };
+
+        const sampleData = {
+          username: 'player123',
+          password: 'SecurePass1',
+          score: 750,
+          difficulty: 'medium',
+          notifications: true,
+        };
+
+        schemaEditor.schema = schema;
+        schemaEditor.value = sampleData;
+        updateSchemaOutput();
+      }
+
+      function getSchemaValue() {
+        updateSchemaOutput();
+      }
+
+      function validateSchema() {
+        const result = schemaEditor.validate();
+        validationOutput.textContent = JSON.stringify(result, null, 2);
+      }
+
+      function clearSchemaValue() {
+        schemaEditor.value = {};
+        updateSchemaOutput();
+      }
+
+      function updateSchemaOutput() {
+        schemaOutput.textContent = JSON.stringify(schemaEditor.value, null, 2);
+      }
+
+      // Function editor functionality
+      const functionEditor = document.getElementById('function-editor');
+      const functionOutput = document.getElementById('function-output');
+      const functionCalls = document.getElementById('function-calls');
+      const functionCallLog = [];
+
+      function setFunctionValue() {
+        const sampleData = {
+          counter: 0,
+          name: 'Widget',
+          enabled: true,
+          incrementCounter: function () {
+            this.counter++;
+            console.log('Counter incremented to:', this.counter);
+            return this.counter;
+          },
+          resetCounter: function () {
+            this.counter = 0;
+            console.log('Counter reset to 0');
+            return 0;
+          },
+          toggleEnabled: function () {
+            this.enabled = !this.enabled;
+            console.log('Enabled toggled to:', this.enabled);
+            return this.enabled;
+          },
+          greet: function () {
+            const message = `Hello from ${this.name}!`;
+            console.log(message);
+            return message;
+          },
+        };
+        functionEditor.value = sampleData;
+        functionEditor.schema = {
+          type: 'object',
+          properties: {
+            counter: {
+              type: 'number',
+              title: 'Counter Value',
+              description: 'Current counter value',
+            },
+            name: {
+              type: 'string',
+              title: 'Widget Name',
+              description: 'Name of the widget',
+            },
+            enabled: {
+              type: 'boolean',
+              title: 'Enabled',
+              description: 'Whether the widget is enabled',
+            },
+            incrementCounter: {
+              title: 'Increment Counter',
+              description: 'Increase the counter by 1',
+            },
+            resetCounter: {
+              title: 'Reset Counter',
+              description: 'Reset the counter to 0',
+            },
+            toggleEnabled: {
+              title: 'Toggle Enabled',
+              description: 'Toggle the enabled state',
+            },
+            greet: {
+              title: 'Show Greeting',
+              description: 'Display a greeting message',
+            },
+          },
+        };
+        updateFunctionOutput();
+      }
+
+      function getFunctionValue() {
+        updateFunctionOutput();
+      }
+
+      function clearFunctionValue() {
+        functionEditor.value = {};
+        functionCallLog.length = 0;
+        updateFunctionOutput();
+        updateFunctionCallsDisplay();
+      }
+
+      function updateFunctionOutput() {
+        const value = functionEditor.value;
+        // Create a copy without functions for display
+        const displayValue = {};
+        for (const [key, val] of Object.entries(value)) {
+          if (typeof val !== 'function') {
+            displayValue[key] = val;
+          }
+        }
+        functionOutput.textContent = JSON.stringify(displayValue, null, 2);
+      }
+
+      function updateFunctionCallsDisplay() {
+        if (functionCallLog.length === 0) {
+          functionCalls.textContent = 'No functions called yet';
+        } else {
+          functionCalls.textContent = functionCallLog.join('\n');
+        }
+      }
+
+      // Listen for function calls
+      functionEditor.addEventListener('keyvalue-function-call', event => {
+        const { key, result } = event.detail;
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = `[${timestamp}] ${key}() called, returned: ${JSON.stringify(result)}`;
+        functionCallLog.push(logEntry);
+
+        // Keep only last 10 calls
+        if (functionCallLog.length > 10) {
+          functionCallLog.shift();
         }
 
-        function getBasicValue() {
-            updateBasicOutput();
-        }
+        updateFunctionCallsDisplay();
+        // Update the output to show any changed values
+        updateFunctionOutput();
+      });
 
-        function clearBasicValue() {
-            basicEditor.value = {};
-            updateBasicOutput();
-        }
+      // Nested editor functionality
+      const nestedEditor = document.getElementById('nested-editor');
+      const nestedOutput = document.getElementById('nested-output');
 
-        function updateBasicOutput() {
-            basicOutput.textContent = JSON.stringify(basicEditor.value, null, 2);
-        }
-
-        // Header title demo functionality
-        const noHeaderEditor = document.getElementById('no-header-editor');
-        const customHeaderEditor = document.getElementById('custom-header-editor');
-        const defaultHeaderEditor = document.getElementById('default-header-editor');
-        const dynamicHeaderEditor = document.getElementById('dynamic-header-editor');
-
-        function setHeaderSampleData() {
-            const sampleData = {
-                username: 'player1',
-                difficulty: 'normal',
-                soundEnabled: true,
-                volume: 75
-            };
-            noHeaderEditor.value = sampleData;
-            customHeaderEditor.value = sampleData;
-            defaultHeaderEditor.value = sampleData;
-            dynamicHeaderEditor.value = sampleData;
-        }
-
-        let headerVisible = true;
-        function toggleDynamicHeader() {
-            headerVisible = !headerVisible;
-            if (headerVisible) {
-                dynamicHeaderEditor.headerTitle = 'Configuration';
-            } else {
-                dynamicHeaderEditor.headerTitle = null;
-            }
-        }
-
-        let titleIndex = 0;
-        const titleOptions = ['Configuration', 'Settings', 'Options', 'Parameters', 'Properties'];
-        function changeDynamicHeaderTitle() {
-            titleIndex = (titleIndex + 1) % titleOptions.length;
-            dynamicHeaderEditor.headerTitle = titleOptions[titleIndex];
-        }
-
-        function clearHeaderEditors() {
-            noHeaderEditor.value = {};
-            customHeaderEditor.value = {};
-            defaultHeaderEditor.value = {};
-            dynamicHeaderEditor.value = {};
-        }
-
-        // Advanced types editor functionality
-        const advancedEditor = document.getElementById('advanced-editor');
-        const advancedOutput = document.getElementById('advanced-output');
-        const advancedValidation = document.getElementById('advanced-validation');
-
-        function setAdvancedValue() {
-            const schema = {
-                type: 'object',
-                properties: {
-                    // Text inputs
-                    name: {
-                        type: 'string',
-                        title: 'Name',
-                        description: 'Your full name',
-                        minLength: 2,
-                        maxLength: 50
-                    },
-                    bio: {
-                        type: 'string',
-                        title: 'Biography',
-                        description: 'Tell us about yourself',
-                        maxLength: 500
-                    },
-                    // Numbers and ranges
-                    age: {
-                        type: 'integer',
-                        title: 'Age',
-                        minimum: 13,
-                        maximum: 120
-                    },
-                    volume: {
-                        type: 'number',
-                        title: 'Volume',
-                        description: 'Volume level (0-100)',
-                        minimum: 0,
-                        maximum: 100,
-                        multipleOf: 5
-                    },
-                    // Specialized string inputs
-                    email: {
-                        type: 'string',
-                        title: 'Email',
-                        format: 'email',
-                        description: 'Your email address'
-                    },
-                    website: {
-                        type: 'string',
-                        title: 'Website',
-                        format: 'url',
-                        description: 'Your personal website'
-                    },
-                    phone: {
-                        type: 'string',
-                        title: 'Phone Number',
-                        format: 'tel',
-                        pattern: '^\\+?[0-9\\s\\-\\(\\)]+$'
-                    },
-                    // Color picker
-                    favoriteColor: {
-                        type: 'string',
-                        title: 'Favorite Color',
-                        format: 'color',
-                        description: 'Pick your favorite color'
-                    },
-                    // Date and time
-                    birthDate: {
-                        type: 'string',
-                        title: 'Birth Date',
-                        format: 'date'
-                    },
-                    preferredTime: {
-                        type: 'string',
-                        title: 'Preferred Meeting Time',
-                        format: 'time'
-                    },
-                    // Enum/select
-                    category: {
-                        type: 'string',
-                        title: 'Category',
-                        enum: ['developer', 'designer', 'manager', 'student', 'other'],
-                        description: 'Choose your primary role'
-                    },
-                    // Boolean
-                    newsletter: {
-                        type: 'boolean',
-                        title: 'Subscribe to Newsletter',
-                        description: 'Receive updates and news'
-                    }
-                },
-                required: ['name', 'email', 'category']
-            };
-
-            const sampleData = {
-                name: 'Alex Johnson',
-                bio: 'Software developer with 5 years of experience in web technologies.',
-                age: 28,
-                volume: 75,
-                email: 'alex@example.com',
-                website: 'https://alexjohnson.dev',
-                phone: '+1-555-0123',
-                favoriteColor: '#3498db',
-                birthDate: '1995-06-15',
-                preferredTime: '14:30',
-                category: 'developer',
-                newsletter: true
-            };
-
-            advancedEditor.schema = schema;
-            advancedEditor.value = sampleData;
-            updateAdvancedOutput();
-        }
-
-        function getAdvancedValue() {
-            updateAdvancedOutput();
-        }
-
-        function validateAdvanced() {
-            const result = advancedEditor.validate();
-            advancedValidation.textContent = JSON.stringify(result, null, 2);
-        }
-
-        function clearAdvancedValue() {
-            advancedEditor.value = {};
-            updateAdvancedOutput();
-        }
-
-        function updateAdvancedOutput() {
-            advancedOutput.textContent = JSON.stringify(advancedEditor.value, null, 2);
-        }
-
-        // Schema editor functionality
-        const schemaEditor = document.getElementById('schema-editor');
-        const schemaOutput = document.getElementById('schema-output');
-        const validationOutput = document.getElementById('validation-output');
-
-        function setSchemaValue() {
-            const schema = {
-                type: 'object',
-                properties: {
-                    // Required fields
-                    username: {
-                        type: 'string',
-                        title: 'Username',
-                        description: 'Must be unique, 3-20 characters',
-                        minLength: 3,
-                        maxLength: 20,
-                        pattern: '^[a-zA-Z0-9_]+$'
-                    },
-                    password: {
-                        type: 'string',
-                        title: 'Password',
-                        description: 'At least 8 characters with mixed case and numbers',
-                        minLength: 8,
-                        pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$'
-                    },
-                    // Optional fields with validation
-                    score: {
-                        type: 'integer',
-                        title: 'Score',
-                        description: 'Game score (0-1000)',
-                        minimum: 0,
-                        maximum: 1000,
-                        multipleOf: 10
-                    },
-                    difficulty: {
-                        type: 'string',
-                        title: 'Difficulty Level',
-                        enum: ['easy', 'medium', 'hard', 'expert'],
-                        description: 'Choose game difficulty'
-                    },
-                    notifications: {
-                        type: 'boolean',
-                        title: 'Enable Notifications',
-                        description: 'Receive game updates and alerts'
-                    }
-                },
-                required: ['username', 'password']
-            };
-
-            const sampleData = {
-                username: 'player123',
-                password: 'SecurePass1',
-                score: 750,
-                difficulty: 'medium',
-                notifications: true
-            };
-
-            schemaEditor.schema = schema;
-            schemaEditor.value = sampleData;
-            updateSchemaOutput();
-        }
-
-        function getSchemaValue() {
-            updateSchemaOutput();
-        }
-
-        function validateSchema() {
-            const result = schemaEditor.validate();
-            validationOutput.textContent = JSON.stringify(result, null, 2);
-        }
-
-        function clearSchemaValue() {
-            schemaEditor.value = {};
-            updateSchemaOutput();
-        }
-
-        function updateSchemaOutput() {
-            schemaOutput.textContent = JSON.stringify(schemaEditor.value, null, 2);
-        }
-
-        // Function editor functionality
-        const functionEditor = document.getElementById('function-editor');
-        const functionOutput = document.getElementById('function-output');
-        const functionCalls = document.getElementById('function-calls');
-        const functionCallLog = [];
-
-        function setFunctionValue() {
-            const sampleData = {
-                counter: 0,
-                name: 'Widget',
-                enabled: true,
-                incrementCounter: function() {
-                    this.counter++;
-                    console.log('Counter incremented to:', this.counter);
-                    return this.counter;
-                },
-                resetCounter: function() {
-                    this.counter = 0;
-                    console.log('Counter reset to 0');
-                    return 0;
-                },
-                toggleEnabled: function() {
-                    this.enabled = !this.enabled;
-                    console.log('Enabled toggled to:', this.enabled);
-                    return this.enabled;
-                },
-                greet: function() {
-                    const message = `Hello from ${this.name}!`;
-                    console.log(message);
-                    return message;
-                }
-            };
-            functionEditor.value = sampleData;
-            functionEditor.schema = {
-                type: 'object',
-                properties: {
-                    counter: {
-                        type: 'number',
-                        title: 'Counter Value',
-                        description: 'Current counter value'
-                    },
-                    name: {
-                        type: 'string',
-                        title: 'Widget Name',
-                        description: 'Name of the widget'
-                    },
-                    enabled: {
-                        type: 'boolean',
-                        title: 'Enabled',
-                        description: 'Whether the widget is enabled'
-                    },
-                    incrementCounter: {
-                        title: 'Increment Counter',
-                        description: 'Increase the counter by 1'
-                    },
-                    resetCounter: {
-                        title: 'Reset Counter',
-                        description: 'Reset the counter to 0'
-                    },
-                    toggleEnabled: {
-                        title: 'Toggle Enabled',
-                        description: 'Toggle the enabled state'
-                    },
-                    greet: {
-                        title: 'Show Greeting',
-                        description: 'Display a greeting message'
-                    }
-                }
-            };
-            updateFunctionOutput();
-        }
-
-        function getFunctionValue() {
-            updateFunctionOutput();
-        }
-
-        function clearFunctionValue() {
-            functionEditor.value = {};
-            functionCallLog.length = 0;
-            updateFunctionOutput();
-            updateFunctionCallsDisplay();
-        }
-
-        function updateFunctionOutput() {
-            const value = functionEditor.value;
-            // Create a copy without functions for display
-            const displayValue = {};
-            for (const [key, val] of Object.entries(value)) {
-                if (typeof val !== 'function') {
-                    displayValue[key] = val;
-                }
-            }
-            functionOutput.textContent = JSON.stringify(displayValue, null, 2);
-        }
-
-        function updateFunctionCallsDisplay() {
-            if (functionCallLog.length === 0) {
-                functionCalls.textContent = 'No functions called yet';
-            } else {
-                functionCalls.textContent = functionCallLog.join('\n');
-            }
-        }
-
-        // Listen for function calls
-        functionEditor.addEventListener('keyvalue-function-call', (event) => {
-            const { key, result } = event.detail;
-            const timestamp = new Date().toLocaleTimeString();
-            const logEntry = `[${timestamp}] ${key}() called, returned: ${JSON.stringify(result)}`;
-            functionCallLog.push(logEntry);
-
-            // Keep only last 10 calls
-            if (functionCallLog.length > 10) {
-                functionCallLog.shift();
-            }
-
-            updateFunctionCallsDisplay();
-            // Update the output to show any changed values
-            updateFunctionOutput();
-        });
-
-        // Nested editor functionality
-        const nestedEditor = document.getElementById('nested-editor');
-        const nestedOutput = document.getElementById('nested-output');
-
-        function setNestedValue() {
-            const nestedData = {
-                name: 'Game Object',
-                visible: true,
-                position: {
-                    x: 100,
-                    y: 200
-                },
-                scale: {
-                    x: 1.5,
-                    y: 1.5
-                },
-                color: {
-                    r: 255,
-                    g: 128,
-                    b: 64
-                }
-            };
-            nestedEditor.value = nestedData;
-            nestedEditor.schema = {
+      function setNestedValue() {
+        const nestedData = {
+          name: 'Game Object',
+          visible: true,
+          position: {
+            x: 100,
+            y: 200,
+          },
+          scale: {
+            x: 1.5,
+            y: 1.5,
+          },
+          color: {
+            r: 255,
+            g: 128,
+            b: 64,
+          },
+        };
+        nestedEditor.value = nestedData;
+        nestedEditor.schema = {
+          type: 'object',
+          properties: {
+            name: { type: 'string', minLength: 1, maxLength: 10 },
+            position: {
               type: 'object',
               properties: {
-                name: { type: 'string', minLength: 1, maxLength: 10 },
-                position: {
-                  type: 'object',
-                  properties: {
-                    x: { type: 'number', minimum: 0, maximum: 1920 },
-                  },
-                },
+                x: { type: 'number', minimum: 0, maximum: 1920 },
               },
-            };
+            },
+          },
+        };
 
-            updateNestedOutput();
+        updateNestedOutput();
+      }
+
+      function getNestedValue() {
+        updateNestedOutput();
+      }
+
+      function clearNestedValue() {
+        nestedEditor.value = {};
+        updateNestedOutput();
+      }
+
+      function updateNestedOutput() {
+        nestedOutput.textContent = JSON.stringify(nestedEditor.value, null, 2);
+      }
+
+      // Theme examples
+      function setThemeData() {
+        const sampleData = {
+          title: 'Sample Item',
+          count: 42,
+          enabled: true,
+        };
+        document.getElementById('compact-editor').value = sampleData;
+        document.getElementById('readonly-editor').value = sampleData;
+      }
+
+      // Event listeners for all editors
+      document.querySelectorAll('e2-keyvalue-editor').forEach(editor => {
+        editor.addEventListener('keyvalue-change', event => {
+          console.log('KeyValue changed:', event.detail);
+        });
+
+        editor.addEventListener('keyvalue-validation', event => {
+          console.log('KeyValue validation:', event.detail);
+        });
+      });
+
+      // Event listeners specifically for the advanced editor
+      advancedEditor.addEventListener('keyvalue-change', event => {
+        console.log('Advanced editor changed:', event.detail);
+        updateAdvancedOutput();
+      });
+
+      advancedEditor.addEventListener('keyvalue-validation', event => {
+        console.log('Advanced editor validation:', event.detail);
+        advancedValidation.textContent = JSON.stringify(event.detail, null, 2);
+      });
+
+      // Event output for demonstration
+      const eventOutput = document.getElementById('event-output');
+
+      function addEventToOutput(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.innerHTML = `[${timestamp}] ${message}`;
+        eventOutput.appendChild(div);
+        eventOutput.scrollTop = eventOutput.scrollHeight;
+
+        // Keep only last 20 events
+        while (eventOutput.children.length > 20) {
+          eventOutput.removeChild(eventOutput.firstChild);
         }
+      }
 
-        function getNestedValue() {
-            updateNestedOutput();
-        }
+      // Enhanced event listeners for all editors
+      document
+        .querySelectorAll('e2-keyvalue-editor')
+        .forEach((editor, index) => {
+          const editorName = editor.id || `editor-${index}`;
 
-        function clearNestedValue() {
-            nestedEditor.value = {};
-            updateNestedOutput();
-        }
+          editor.addEventListener('keyvalue-change', event => {
+            const { key, oldValue, newValue, isValid } = event.detail;
+            addEventToOutput(
+              `<strong>${editorName}</strong>: "${key}" changed from "${oldValue}" to "${newValue}" (valid: ${isValid})`
+            );
+          });
 
-        function updateNestedOutput() {
-            nestedOutput.textContent = JSON.stringify(nestedEditor.value, null, 2);
-        }
+          editor.addEventListener('keyvalue-validation', event => {
+            const { isValid, errors } = event.detail;
+            const errorCount = errors.length;
+            addEventToOutput(
+              `<strong>${editorName}</strong>: Validation ${isValid ? 'passed' : `failed (${errorCount} errors)`}`
+            );
+          });
+        });
 
-        // Theme examples
-        function setThemeData() {
-            const sampleData = {
-                title: 'Sample Item',
-                count: 42,
-                enabled: true
-            };
-            document.getElementById('compact-editor').value = sampleData;
-            document.getElementById('readonly-editor').value = sampleData;
-        }
+      // Copy to clipboard functionality
+      function copyToClipboard(id) {
+        const element = document.getElementById(id);
+        const text = element.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const button = element.previousElementSibling;
+          const originalText = button.textContent;
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        });
+      }
 
-        // Event listeners for all editors
+      // Theme control
+      let currentTheme = 'light';
+
+      function setTheme(theme) {
+        currentTheme = theme;
+
+        app.theme = theme;
+        document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+        // Update theme buttons
+        document.querySelectorAll('.theme-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // Apply theme to all keyvalue editors
         document.querySelectorAll('e2-keyvalue-editor').forEach(editor => {
-            editor.addEventListener('keyvalue-change', (event) => {
-                console.log('KeyValue changed:', event.detail);
-            });
-
-            editor.addEventListener('keyvalue-validation', (event) => {
-                console.log('KeyValue validation:', event.detail);
-            });
+          editor.theme = theme;
         });
+      }
 
-        // Event listeners specifically for the advanced editor
-        advancedEditor.addEventListener('keyvalue-change', (event) => {
-            console.log('Advanced editor changed:', event.detail);
-            updateAdvancedOutput();
-        });
+      // Initialize with some sample data
+      setTimeout(() => {
+        setBasicValue();
+        setAdvancedValue();
+        setSchemaValue();
+        setFunctionValue();
+        setNestedValue();
+        setThemeData();
 
-        advancedEditor.addEventListener('keyvalue-validation', (event) => {
-            console.log('Advanced editor validation:', event.detail);
-            advancedValidation.textContent = JSON.stringify(event.detail, null, 2);
-        });
-
-        // Event output for demonstration
-        const eventOutput = document.getElementById('event-output');
-
-        function addEventToOutput(message) {
-            const timestamp = new Date().toLocaleTimeString();
-            const div = document.createElement('div');
-            div.innerHTML = `[${timestamp}] ${message}`;
-            eventOutput.appendChild(div);
-            eventOutput.scrollTop = eventOutput.scrollHeight;
-
-            // Keep only last 20 events
-            while (eventOutput.children.length > 20) {
-                eventOutput.removeChild(eventOutput.firstChild);
-            }
-        }
-
-        // Enhanced event listeners for all editors
-        document.querySelectorAll('e2-keyvalue-editor').forEach((editor, index) => {
-            const editorName = editor.id || `editor-${index}`;
-
-            editor.addEventListener('keyvalue-change', (event) => {
-                const { key, oldValue, newValue, isValid } = event.detail;
-                addEventToOutput(`<strong>${editorName}</strong>: "${key}" changed from "${oldValue}" to "${newValue}" (valid: ${isValid})`);
-            });
-
-            editor.addEventListener('keyvalue-validation', (event) => {
-                const { isValid, errors } = event.detail;
-                const errorCount = errors.length;
-                addEventToOutput(`<strong>${editorName}</strong>: Validation ${isValid ? 'passed' : `failed (${errorCount} errors)`}`);
-            });
-        });
-
-        // Copy to clipboard functionality
-        function copyToClipboard(id) {
-            const element = document.getElementById(id);
-            const text = element.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const button = element.previousElementSibling;
-                const originalText = button.textContent;
-                button.textContent = 'Copied!';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 2000);
-            });
-        }
-
-        // Theme control
-        let currentTheme = 'light';
-
-        function setTheme(theme) {
-            currentTheme = theme;
-            document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
-
-            // Update theme buttons
-            document.querySelectorAll('.theme-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // Apply theme to all keyvalue editors
-            document.querySelectorAll('e2-keyvalue-editor').forEach(editor => {
-                editor.theme = theme;
-            });
-        }
-
-        // Initialize with some sample data
-        setTimeout(() => {
-            setBasicValue();
-            setAdvancedValue();
-            setSchemaValue();
-            setFunctionValue();
-            setNestedValue();
-            setThemeData();
-
-            addEventToOutput('Demo initialized with sample data');
-        }, 100);
+        addEventToOutput('Demo initialized with sample data');
+      }, 100);
     </script>
   </body>
 </html>

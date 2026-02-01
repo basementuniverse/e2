@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KeyValue Editor - Array Support Test</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="../build/e2.min.js"></script>
+</head>
+<body>
+  <div class="theme-controls">
+    <button class="theme-button active" onclick="setTheme('light')">
+      Light
+    </button>
+    <button class="theme-button" onclick="setTheme('dark')">Dark</button>
+    <button class="theme-button" onclick="setTheme('auto')">Auto</button>
+  </div>
+
+  <header>
+    <h1>
+      <a href="index.html" style="text-decoration: none; color: inherit">
+        &laquo;
+      </a>
+      E2 - KeyValue Editor with Arrays Demo
+    </h1>
+    <p>Demonstration of e2-keyvalue-editor handling various array scenarios.</p>
+  </header>
+
+  <main>
+    <e2-app id="demo-app" theme="light">
+
+  <!-- Test 1: Simple string array -->
+  <div class="demo-section">
+    <h2>1. Simple String Array</h2>
+    <e2-keyvalue-editor id="editor1" header-title="Tags"></e2-keyvalue-editor>
+    <div class="controls">
+      <button onclick="getValues('editor1')">Get Values</button>
+      <button class="secondary" onclick="validateEditor('editor1')">Validate</button>
+    </div>
+    <div id="output1" class="output">Values will appear here</div>
+  </div>
+
+  <!-- Test 2: Number array -->
+  <div class="demo-section">
+    <h2>2. Number Array</h2>
+    <e2-keyvalue-editor id="editor2" header-title="Scores"></e2-keyvalue-editor>
+    <div class="controls">
+      <button onclick="getValues('editor2')">Get Values</button>
+      <button class="secondary" onclick="validateEditor('editor2')">Validate</button>
+    </div>
+    <div id="output2" class="output">Values will appear here</div>
+  </div>
+
+  <!-- Test 3: Mixed types with array -->
+  <div class="demo-section">
+    <h2>3. Mixed Object with Arrays</h2>
+    <e2-keyvalue-editor id="editor3" header-title="Game Settings"></e2-keyvalue-editor>
+    <div class="controls">
+      <button onclick="getValues('editor3')">Get Values</button>
+      <button class="secondary" onclick="validateEditor('editor3')">Validate</button>
+    </div>
+    <div id="output3" class="output">Values will appear here</div>
+  </div>
+
+  <!-- Test 4: Array with schema validation -->
+  <div class="demo-section">
+    <h2>4. Array with Schema Validation</h2>
+    <e2-keyvalue-editor id="editor4" header-title="User Data"></e2-keyvalue-editor>
+    <div class="controls">
+      <button onclick="getValues('editor4')">Get Values</button>
+      <button class="secondary" onclick="validateEditor('editor4')">Validate</button>
+    </div>
+    <div id="output4" class="output">Values will appear here</div>
+  </div>
+
+  <!-- Test 5: Empty array -->
+  <div class="demo-section">
+    <h2>5. Empty Array (Start Fresh)</h2>
+    <e2-keyvalue-editor id="editor5" header-title="New List"></e2-keyvalue-editor>
+    <div class="controls">
+      <button onclick="getValues('editor5')">Get Values</button>
+      <button class="secondary" onclick="validateEditor('editor5')">Validate</button>
+    </div>
+    <div id="output5" class="output">Values will appear here</div>
+  </div>
+
+  <!-- Test 6: Color array -->
+  <div class="demo-section">
+    <h2>6. Color Palette Array</h2>
+    <e2-keyvalue-editor id="editor6" header-title="Color Palette"></e2-keyvalue-editor>
+    <div class="controls">
+      <button onclick="getValues('editor6')">Get Values</button>
+      <button class="secondary" onclick="validateEditor('editor6')">Validate</button>
+    </div>
+    <div id="output6" class="output">Values will appear here</div>
+  </div>
+    </e2-app>
+  </main>
+
+  <script>
+    const app = document.getElementById('demo-app');
+
+    // Test 1: Simple string array
+    const editor1 = document.getElementById('editor1');
+    editor1.value = {
+      tags: ['javascript', 'typescript', 'web-components']
+    };
+
+    // Test 2: Number array
+    const editor2 = document.getElementById('editor2');
+    editor2.value = {
+      scores: [95, 87, 92, 78, 88]
+    };
+    editor2.schema = {
+      type: 'object',
+      properties: {
+        scores: {
+          type: 'array',
+          title: 'Test Scores',
+          description: 'Array of test scores (0-100)',
+          items: {
+            type: 'integer',
+            minimum: 0,
+            maximum: 100
+          }
+        }
+      }
+    };
+
+    // Test 3: Mixed types with arrays
+    const editor3 = document.getElementById('editor3');
+    editor3.value = {
+      name: 'Super Game',
+      maxPlayers: 4,
+      difficulty: 'medium',
+      enablePowerups: true,
+      allowedWeapons: ['sword', 'bow', 'staff'],
+      spawnPoints: [10, 20, 30, 40]
+    };
+    editor3.schema = {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          title: 'Game Name'
+        },
+        maxPlayers: {
+          type: 'integer',
+          title: 'Max Players',
+          minimum: 1,
+          maximum: 10
+        },
+        difficulty: {
+          type: 'string',
+          title: 'Difficulty',
+          enum: ['easy', 'medium', 'hard']
+        },
+        enablePowerups: {
+          type: 'boolean',
+          title: 'Enable Powerups'
+        },
+        allowedWeapons: {
+          type: 'array',
+          title: 'Allowed Weapons',
+          description: 'List of weapons players can use',
+          items: {
+            type: 'string'
+          }
+        },
+        spawnPoints: {
+          type: 'array',
+          title: 'Spawn Point IDs',
+          items: {
+            type: 'integer',
+            minimum: 0
+          }
+        }
+      }
+    };
+
+    // Test 4: Array with strict validation
+    const editor4 = document.getElementById('editor4');
+    editor4.value = {
+      username: 'john_doe',
+      email: 'john@example.com',
+      roles: ['user', 'moderator'],
+      permissions: [1, 2, 3, 5]
+    };
+    editor4.schema = {
+      type: 'object',
+      properties: {
+        username: {
+          type: 'string',
+          title: 'Username',
+          minLength: 3,
+          maxLength: 20
+        },
+        email: {
+          type: 'string',
+          title: 'Email',
+          format: 'email'
+        },
+        roles: {
+          type: 'array',
+          title: 'User Roles',
+          items: {
+            type: 'string',
+            enum: ['user', 'moderator', 'admin']
+          }
+        },
+        permissions: {
+          type: 'array',
+          title: 'Permission IDs',
+          items: {
+            type: 'integer',
+            minimum: 1
+          }
+        }
+      },
+      required: ['username', 'email']
+    };
+
+    // Test 5: Empty array
+    const editor5 = document.getElementById('editor5');
+    editor5.value = {
+      items: []
+    };
+    editor5.schema = {
+      type: 'object',
+      properties: {
+        items: {
+          type: 'array',
+          title: 'Items',
+          description: 'Add items to the list',
+          items: {
+            type: 'string'
+          }
+        }
+      }
+    };
+
+    // Test 6: Color array
+    const editor6 = document.getElementById('editor6');
+    editor6.value = {
+      colors: ['#ff0000', '#00ff00', '#0000ff']
+    };
+    editor6.schema = {
+      type: 'object',
+      properties: {
+        colors: {
+          type: 'array',
+          title: 'Color Palette',
+          description: 'Custom color palette for the theme',
+          items: {
+            type: 'string',
+            format: 'color'
+          }
+        }
+      }
+    };
+
+    // Listen for change events
+    document.querySelectorAll('e2-keyvalue-editor').forEach(editor => {
+      editor.addEventListener('keyvalue-change', (e) => {
+        console.log(`${editor.id} changed:`, e.detail);
+      });
+    });
+
+    // Helper functions
+    function getValues(editorId) {
+      const editor = document.getElementById(editorId);
+      const output = document.getElementById('output' + editorId.slice(-1));
+      const values = editor.getValue();
+      output.textContent = JSON.stringify(values, null, 2);
+    }
+
+    function validateEditor(editorId) {
+      const editor = document.getElementById(editorId);
+      const output = document.getElementById('output' + editorId.slice(-1));
+      const result = editor.validate();
+
+      let text = `Valid: ${result.isValid}\n\n`;
+      if (result.errors.length > 0) {
+        text += 'Errors:\n';
+        result.errors.forEach(error => {
+          text += `  - ${error.key} (${error.path.join('.')}): ${error.message}\n`;
+        });
+      } else {
+        text += 'No validation errors!';
+      }
+
+      output.textContent = text;
+    }
+
+    // Theme control
+    function setTheme(theme) {
+      app.theme = theme;
+      document.body.className = theme === 'auto' ? '' : `theme-${theme}`;
+
+      // Update theme buttons
+      document.querySelectorAll('.theme-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>

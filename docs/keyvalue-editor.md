@@ -483,6 +483,262 @@ Text inputs automatically become textareas for longer content:
 }
 ```
 
+## Array Support
+
+The KeyValue Editor provides full support for editing arrays of simple scalar types. Arrays are displayed as collapsible sections with interactive controls for adding, removing, and reordering items.
+
+### Supported Array Types
+
+Arrays are automatically rendered with a custom editor interface when they contain simple types:
+
+- **Strings**: Text inputs
+- **Numbers**: Number inputs or range sliders (with min/max constraints)
+- **Booleans**: Checkboxes
+- **Colors**: Color pickers (when format is specified)
+- **Dates/Times**: Date and time pickers (when format is specified)
+- **Enums**: Dropdown selects (when enum values are specified)
+
+**Not Supported:**
+- Arrays of objects
+- Nested arrays (arrays of arrays)
+- Mixed-type arrays
+
+### Basic Array Usage
+
+```javascript
+const editor = document.querySelector('e2-keyvalue-editor');
+
+// Simple string array
+editor.value = {
+  tags: ['javascript', 'typescript', 'web-components']
+};
+
+// Number array
+editor.value = {
+  scores: [95, 87, 92, 78, 88]
+};
+
+// Mixed object with arrays
+editor.value = {
+  name: 'My Project',
+  version: '1.0.0',
+  keywords: ['editor', 'ui', 'web-components'],
+  contributors: 5
+};
+```
+
+### Array Schema Support
+
+Define array schemas using JSON Schema's `items` property to specify validation rules and input types:
+
+```javascript
+editor.schema = {
+  type: 'object',
+  properties: {
+    tags: {
+      type: 'array',
+      title: 'Tags',
+      description: 'Project tags for categorization',
+      items: {
+        type: 'string',
+        minLength: 2,
+        maxLength: 20
+      }
+    },
+    scores: {
+      type: 'array',
+      title: 'Test Scores',
+      description: 'Array of test scores (0-100)',
+      items: {
+        type: 'integer',
+        minimum: 0,
+        maximum: 100
+      }
+    },
+    colors: {
+      type: 'array',
+      title: 'Color Palette',
+      description: 'Custom color palette',
+      items: {
+        type: 'string',
+        format: 'color'
+      }
+    },
+    permissions: {
+      type: 'array',
+      title: 'User Roles',
+      items: {
+        type: 'string',
+        enum: ['user', 'moderator', 'admin']
+      }
+    }
+  }
+};
+```
+
+### Array Editor Features
+
+The array editor provides an intuitive interface for managing array items:
+
+- **Collapsible Sections**: Arrays appear as collapsible sections showing the item count
+- **Item Index**: Each item displays its index number for easy reference
+- **Appropriate Input Controls**: Each item uses the same input type detection as regular fields
+- **Reordering**: Up/Down arrow buttons to move items within the array
+- **Deletion**: Remove button (×) to delete individual items
+- **Addition**: "Add Item" button to append new items with smart default values
+- **Validation**: Full validation support for array items based on schema
+- **Empty State**: Clear message when arrays have no items
+
+### Smart Default Values
+
+When adding new items to an array, the editor intelligently determines default values:
+
+1. **Schema Default**: Uses the schema's `default` property if specified
+2. **Type-Based**: Infers from schema's `items.type` (0 for numbers, "" for strings, false for booleans)
+3. **Existing Items**: Analyzes existing array items to determine the appropriate type
+4. **Fallback**: Defaults to empty string if no type information is available
+
+```javascript
+// Schema with custom defaults
+editor.schema = {
+  type: 'object',
+  properties: {
+    priorities: {
+      type: 'array',
+      items: {
+        type: 'integer',
+        default: 5,  // New items start at 5
+        minimum: 1,
+        maximum: 10
+      }
+    }
+  }
+};
+```
+
+### Empty Arrays
+
+Empty arrays can be edited just like populated ones. The schema's `items` property defines what type of items can be added:
+
+```javascript
+editor.value = {
+  newList: []
+};
+
+editor.schema = {
+  type: 'object',
+  properties: {
+    newList: {
+      type: 'array',
+      title: 'Items',
+      description: 'Add items to the list',
+      items: {
+        type: 'string'
+      }
+    }
+  }
+};
+```
+
+### Array Change Events
+
+Array modifications trigger the standard `keyvalue-change` event:
+
+```javascript
+editor.addEventListener('keyvalue-change', event => {
+  const { key, oldValue, newValue, path } = event.detail;
+
+  if (Array.isArray(newValue)) {
+    console.log(`Array "${key}" changed:`);
+    console.log(`  Old length: ${oldValue?.length ?? 0}`);
+    console.log(`  New length: ${newValue.length}`);
+    console.log(`  Items: ${JSON.stringify(newValue)}`);
+  }
+});
+```
+
+### Complete Array Example
+
+```html
+<e2-keyvalue-editor id="game-editor" header-title="Game Settings"></e2-keyvalue-editor>
+
+<script>
+  const editor = document.getElementById('game-editor');
+
+  // Define schema with multiple array types
+  editor.schema = {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        title: 'Game Name'
+      },
+      maxPlayers: {
+        type: 'integer',
+        minimum: 1,
+        maximum: 10,
+        title: 'Max Players'
+      },
+      allowedWeapons: {
+        type: 'array',
+        title: 'Allowed Weapons',
+        description: 'Weapons available to players',
+        items: {
+          type: 'string',
+          minLength: 2
+        }
+      },
+      spawnPoints: {
+        type: 'array',
+        title: 'Spawn Point IDs',
+        description: 'Location IDs where players can spawn',
+        items: {
+          type: 'integer',
+          minimum: 0
+        }
+      },
+      difficulties: {
+        type: 'array',
+        title: 'Available Difficulties',
+        items: {
+          type: 'string',
+          enum: ['easy', 'medium', 'hard', 'expert']
+        }
+      }
+    }
+  };
+
+  // Set initial data
+  editor.value = {
+    name: 'Super Game',
+    maxPlayers: 4,
+    allowedWeapons: ['sword', 'bow', 'staff'],
+    spawnPoints: [10, 20, 30, 40],
+    difficulties: ['easy', 'medium', 'hard']
+  };
+
+  // Listen for changes
+  editor.addEventListener('keyvalue-change', event => {
+    const { key, newValue } = event.detail;
+    console.log(`${key} changed to:`, newValue);
+
+    // Save to localStorage or send to server
+    saveGameSettings(editor.getValue());
+  });
+
+  // Validate before saving
+  function saveGameSettings(data) {
+    const result = editor.validate();
+    if (result.isValid) {
+      localStorage.setItem('gameSettings', JSON.stringify(data));
+      console.log('Settings saved successfully');
+    } else {
+      console.error('Validation errors:', result.errors);
+    }
+  }
+</script>
+```
+
 ## Function Buttons
 
 The KeyValue Editor can render function members as clickable buttons. When a field's value is a function, it is automatically displayed as a button that executes the function when clicked.

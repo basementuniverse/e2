@@ -32,6 +32,10 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     private renderField;
     private renderNestedField;
     private renderNestedFields;
+    private isSimpleArray;
+    private renderArrayField;
+    private renderArrayItem;
+    private getDefaultArrayItemValue;
     private renderFunctionField;
     private renderInput;
     private formatEnumOption;
@@ -58,6 +62,9 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     handleSliderInput(path: string[], value: string, numberId: string): void;
     handleNumberInput(path: string[], value: string, sliderId: string): void;
     callFunction(path: string[]): void;
+    addArrayItem(path: string[], defaultValue?: any): void;
+    removeArrayItem(path: string[], index: number): void;
+    moveArrayItem(path: string[], index: number, direction: 'up' | 'down'): void;
     get theme(): Theme;
     set theme(value: Theme);
     get disabled(): boolean;
