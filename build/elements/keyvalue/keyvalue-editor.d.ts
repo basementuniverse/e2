@@ -15,9 +15,11 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     private _headerTitle;
     private _validationErrors;
     private _validator;
+    private _throttleTimers;
     static get observedAttributes(): string[];
     constructor();
     private setupElement;
+    private throttleUpdate;
     private setupValueProxy;
     private setupEventListeners;
     private handleContextMenu;
@@ -53,6 +55,8 @@ export declare class KeyValueEditorElement extends HTMLElement implements Editor
     isValid(): boolean;
     focusField(key: string): void;
     focusFieldByPath(path: string[]): void;
+    handleSliderInput(path: string[], value: string, numberId: string): void;
+    handleNumberInput(path: string[], value: string, sliderId: string): void;
     callFunction(path: string[]): void;
     get theme(): Theme;
     set theme(value: Theme);

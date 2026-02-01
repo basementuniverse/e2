@@ -432,7 +432,13 @@ Use the `format` property in your JSON Schema to specify input types:
 
 ### Range Sliders
 
-Number inputs automatically become range sliders when min/max constraints are specified:
+Number inputs automatically become interactive range sliders when both `minimum` and `maximum` constraints are specified in the schema. The slider includes several user-friendly features:
+
+- **Dual input**: Slider with a synchronized number input for precise control
+- **Visual markers**: Min/max values displayed below the slider
+- **Real-time feedback**: Number input updates immediately as you drag the slider
+- **Optimized performance**: Updates are throttled at ~60fps to prevent excessive events
+- **Bidirectional sync**: Changes to either the slider or number input update the other
 
 ```javascript
 {
@@ -440,10 +446,28 @@ Number inputs automatically become range sliders when min/max constraints are sp
     type: 'integer',
     minimum: 0,
     maximum: 100,
-    title: 'Volume Level'
+    title: 'Volume Level',
+    description: 'Adjust the volume level'
+  },
+  opacity: {
+    type: 'number',
+    minimum: 0,
+    maximum: 1,
+    multipleOf: 0.01,  // Step size for decimal values
+    title: 'Opacity',
+    description: 'Element opacity from 0 (transparent) to 1 (opaque)'
+  },
+  quality: {
+    type: 'integer',
+    minimum: 1,
+    maximum: 10,
+    title: 'Quality Setting',
+    description: 'Quality level from 1 (low) to 10 (high)'
   }
 }
 ```
+
+The slider respects the `multipleOf` property for step increments, defaulting to 1 for integers and 0.01 for floating-point numbers.
 
 ### Long Text Areas
 

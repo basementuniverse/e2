@@ -36,6 +36,7 @@ export class KeyValueEditorElement
   private _headerTitle: string | null = null;
   private _validationErrors: KeyValueValidationError[] = [];
   private _validator: Validator = new Validator();
+  private _throttleTimers: Map<string, number> = new Map();
 
   static get observedAttributes(): string[] {
     return ['theme', 'disabled', 'readonly', 'compact', 'header-title'];
@@ -267,15 +268,44 @@ export class KeyValueEditorElement
 
         .range-container {
           display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .range-slider-row {
+          display: flex;
           align-items: center;
           gap: 8px;
         }
 
-        .range-value {
-          min-width: 60px;
-          font-size: 12px;
+        .range-slider-wrapper {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .range-slider-track {
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+
+        .range-slider-track input[type="range"] {
+          flex: 1;
+        }
+
+        .range-markers {
+          display: flex;
+          justify-content: space-between;
+          font-size: 11px;
           color: var(--text-secondary, #6c757d);
-          text-align: right;
+          padding: 0 2px;
+        }
+
+        .range-number-input {
+          width: 80px;
+          flex-shrink: 0;
         }
 
         .field-error {
@@ -386,6 +416,20 @@ export class KeyValueEditorElement
         </div>
       </div>
     `;
+  }
+
+  private throttleUpdate(
+    key: string,
+    callback: () => void,
+    delay: number = 16
+  ): void {
+    const now = Date.now();
+    const lastTime = this._throttleTimers.get(key) || 0;
+
+    if (now - lastTime >= delay) {
+      this._throttleTimers.set(key, now);
+      callback();
+    }
   }
 
   private setupValueProxy(): void {
@@ -764,15 +808,43 @@ export class KeyValueEditorElement
             ? '1'
             : schema?.multipleOf
               ? schema.multipleOf.toString()
-              : '1';
+              : '0.01';
+        const rangeValue =
+          value !== undefined && value !== null ? value : rangeMin;
+        const sliderId = `${id}-slider`;
+        const numberId = `${id}-number`;
         return `
           <div class="range-container">
-            <input type="range" id="${id}" class="input-control${errorClass}" value="${
-              value || rangeMin
-            }" min="${rangeMin}" max="${rangeMax}" step="${rangeStep}" ${
-              disabled ? 'disabled' : ''
-            } oninput="this.getRootNode().host.updateValueByPath(JSON.parse('${pathString}'), parseFloat(this.value)); this.nextElementSibling.textContent = this.value">
-            <span class="range-value">${value || rangeMin}</span>
+            <div class="range-slider-row">
+              <div class="range-slider-wrapper">
+                <div class="range-slider-track">
+                  <input
+                    type="range"
+                    id="${sliderId}"
+                    class="input-control${errorClass}"
+                    value="${rangeValue}"
+                    min="${rangeMin}"
+                    max="${rangeMax}"
+                    step="${rangeStep}"
+                    ${disabled ? 'disabled' : ''}
+                    oninput="this.getRootNode().host.handleSliderInput(JSON.parse('${pathString}'), this.value, '${numberId}')">
+                </div>
+                <div class="range-markers">
+                  <span>${rangeMin}</span>
+                  <span>${rangeMax}</span>
+                </div>
+              </div>
+              <input
+                type="number"
+                id="${numberId}"
+                class="input-control range-number-input${errorClass}"
+                value="${rangeValue}"
+                min="${rangeMin}"
+                max="${rangeMax}"
+                step="${rangeStep}"
+                ${disabled ? 'disabled' : ''}
+                oninput="this.getRootNode().host.handleNumberInput(JSON.parse('${pathString}'), this.value, '${sliderId}')">
+            </div>
           </div>
         `;
 
@@ -915,12 +987,9 @@ export class KeyValueEditorElement
 
     // Check for range/slider based on min/max constraints
     if (schema?.type === 'number' || schema?.type === 'integer') {
+      // Use slider when both min and max are defined
       if (schema.minimum !== undefined && schema.maximum !== undefined) {
-        // Use slider for bounded numbers, especially for smaller ranges
-        const range = schema.maximum - schema.minimum;
-        if (range <= 100 && schema.type === 'integer') {
-          return 'range';
-        }
+        return 'range';
       }
       return 'number';
     }
@@ -932,10 +1001,7 @@ export class KeyValueEditorElement
       case 'number':
         // Check if we should use range based on schema
         if (schema?.minimum !== undefined && schema?.maximum !== undefined) {
-          const range = schema.maximum - schema.minimum;
-          if (range <= 100 && Number.isInteger(value)) {
-            return 'range';
-          }
+          return 'range';
         }
         return 'number';
       default:
@@ -1056,11 +1122,34 @@ export class KeyValueEditorElement
       checkbox.checked = Boolean(value);
     } else if (input.type === 'range') {
       const range = input as HTMLInputElement;
-      range.value = String(value || 0);
-      // Also update the range value display
-      const rangeValue = range.nextElementSibling as HTMLElement;
-      if (rangeValue && rangeValue.classList.contains('range-value')) {
-        rangeValue.textContent = String(value || 0);
+      const stringValue = String(
+        value !== undefined && value !== null ? value : 0
+      );
+      range.value = stringValue;
+
+      // Also update the corresponding number input
+      const numberId = input.id.replace('-slider', '-number');
+      const numberInput = this.shadowRoot?.querySelector(
+        `#${numberId}`
+      ) as HTMLInputElement;
+      if (numberInput) {
+        numberInput.value = stringValue;
+      }
+    } else if (input.type === 'number' && input.id.includes('-number')) {
+      // Handle number input that's part of a range control
+      const numberInput = input as HTMLInputElement;
+      const stringValue = String(
+        value !== undefined && value !== null ? value : 0
+      );
+      numberInput.value = stringValue;
+
+      // Also update the corresponding slider
+      const sliderId = input.id.replace('-number', '-slider');
+      const sliderInput = this.shadowRoot?.querySelector(
+        `#${sliderId}`
+      ) as HTMLInputElement;
+      if (sliderInput) {
+        sliderInput.value = stringValue;
       }
     } else {
       // For text inputs, select, and textarea elements
@@ -1340,6 +1429,53 @@ export class KeyValueEditorElement
       `#${fieldId}`
     ) as HTMLInputElement;
     input?.focus();
+  }
+
+  public handleSliderInput(
+    path: string[],
+    value: string,
+    numberId: string
+  ): void {
+    const numValue = parseFloat(value);
+    const pathKey = path.join('.');
+
+    // Update the number input immediately (no throttle for visual feedback)
+    const numberInput = this.shadowRoot?.querySelector(
+      `#${numberId}`
+    ) as HTMLInputElement;
+    if (numberInput) {
+      numberInput.value = value;
+    }
+
+    // Throttle the actual value update and validation
+    this.throttleUpdate(
+      `slider-${pathKey}`,
+      () => {
+        this.updateValueByPath(path, numValue);
+      },
+      16 // ~60fps
+    );
+  }
+
+  public handleNumberInput(
+    path: string[],
+    value: string,
+    sliderId: string
+  ): void {
+    const numValue = parseFloat(value);
+
+    // Update the slider immediately
+    const sliderInput = this.shadowRoot?.querySelector(
+      `#${sliderId}`
+    ) as HTMLInputElement;
+    if (sliderInput) {
+      sliderInput.value = value;
+    }
+
+    // Update the value
+    if (!isNaN(numValue)) {
+      this.updateValueByPath(path, numValue);
+    }
   }
 
   public callFunction(path: string[]): void {
